@@ -2,7 +2,14 @@ import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect } from "react";
 import {save } from "@material-ui/icons";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 export default function Table() {
+  
+  const darkTheme = createTheme({
+    palette: {
+      type: "dark",
+    },
+  });
   const [data, setData] = useState([]);
   const columns = [
     { title: "Seriennummer", field: "serialnumber" },
@@ -28,7 +35,8 @@ export default function Table() {
   console.log(setData.serialnumber);
   const deviceCount = data.length;
   return (
-    <div className="Table">
+     <ThemeProvider theme={darkTheme}> 
+     <div className="Table">
       <h1 align="center">Alle Geräte</h1>
       <h4 align="center">{deviceCount} Geräte</h4>
       <MaterialTable
@@ -36,6 +44,7 @@ export default function Table() {
         title="Geräte Daten"
         data={data}
         columns={columns}
+        /*
         options={{
           headerStyle: {
             backgroundColor: "#464646",
@@ -47,6 +56,7 @@ export default function Table() {
             color: "#fff",
           },
         }}
+        */
         //missing logic to save and edit
         actions={[
           {
@@ -65,5 +75,7 @@ export default function Table() {
         ]}
       />
     </div>
+    </ThemeProvider>
   );
+  
 }
