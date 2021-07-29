@@ -1,0 +1,11 @@
+body{
+    background: hsl(0,0%,18%);
+}
+.Table{
+    background: hsl(0,0%,18%);
+    color: white;
+}
+.TableRow{
+    background: hsl(0,0%,18%);
+    color: hsl(0,0%,100%)
+}
