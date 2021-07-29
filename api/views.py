@@ -44,7 +44,7 @@ def device_detail(request, pk):
     if request.method == 'GET':
         serializer = DeviceSerializer(device)
         return JsonResponse(serializer.data)
-
+    
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = DeviceSerializer(device, data=data)

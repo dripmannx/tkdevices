@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@material-ui/data-grid": "^4.0.0-alpha.34",
-    "@material-ui/icons": "^4.11.2"
+    "@material-ui/icons": "^4.11.2",
+    "material-table": "^1.69.3"
   }
 }
