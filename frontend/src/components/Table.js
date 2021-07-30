@@ -1,8 +1,9 @@
+//This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View 
 import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import { save } from "@material-ui/icons";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider, alpha } from "@material-ui/core/styles";
 
 import SaveIcon from "@material-ui/icons/Save";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -62,8 +63,10 @@ export default function Table() {
       title: "Seriennummer",
       field: "serialnumber",
       validate: (rowData) =>
-        rowData.serialnumber === undefined || rowData.serialnumber === ""
-          ? "Required"
+        rowData.serialnumber === undefined ||
+        rowData.serialnumber === "" ||
+        rowData.serialnumber.length != 12
+          ? "Eintragen"
           : true,
     },
     {
@@ -72,12 +75,35 @@ export default function Table() {
       validate: (rowData) =>
         rowData.model === undefined || rowData.model === "" ? "Required" : true,
     },
-    { title: "Batterie in %", field: "batterylife" },
-    { title: "Speicher in GB", field: "capacity" },
+    {
+      title: "Batterie in %",
+      field: "batterylife",
+      numeric:true,
+      validate: (rowData) =>
+        rowData.batterylife === undefined || rowData.batterylife === "" || rowData.batterylife < 0 || rowData.batterylife > 100
+          ? "Eintragen"
+          : true,
+     
+        
+          
+    },
+    {
+      title: "Speicher in GB",
+      field: "capacity",
+      validate: (rowData) =>
+        rowData.capacity === undefined || rowData.capacity === ""
+          ? "Required"
+          : true,
+    },
     {
       title: "Status",
       field: "status",
-     },
+
+      validate: (rowData) =>
+        rowData.status === undefined || rowData.status === ""
+          ? "Required"
+          : true,
+    },
   ];
   const getDevices = () => {
     fetch("/api/all")
@@ -106,16 +132,14 @@ export default function Table() {
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
-                //Backend POST
+                //Backend call
                 fetch(url, {
                   method: "POST",
                   headers: {
                     "Content-type": "application/json",
                   },
                   body: JSON.stringify(newData),
-                });
-                document
-                  .write(newData)
+                })
                   .then((resp) => resp.json())
                   .then((resp) => {
                     getDevices();
@@ -124,8 +148,8 @@ export default function Table() {
               }),
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
-                //Backend PUT
-                fetch(urledit + oldData.id, {
+                //Backend call
+                fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
                     "Content-type": "application/json",
@@ -138,10 +162,10 @@ export default function Table() {
                     resolve();
                   });
               }),
-            onRowDelete: (oldData) =>
+            onRowDelete: (newData) =>
               new Promise((resolve, reject) => {
-                //Backend DELETE
-                fetch(urledit + oldData.id, {
+                //Backend call
+                fetch(urledit + "/" + newData.id, {
                   method: "DELETE",
                   headers: {
                     "Content-type": "application/json",
@@ -155,7 +179,10 @@ export default function Table() {
               }),
           }}
           options={{
+            paging: false,
+            maxBodyHeight: 500,
             actionsColumnIndex: -1,
+            addRowPosition:"first",
           }}
         />
       </div>
