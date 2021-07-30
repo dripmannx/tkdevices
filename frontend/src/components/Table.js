@@ -62,9 +62,7 @@ export default function Table() {
       title: "Seriennummer",
       field: "serialnumber",
       validate: (rowData) =>
-        rowData.serialnumber === undefined || rowData.serialnumber === ""
-          ? "Required"
-          : true,
+        rowData.serialnumber === undefined || rowData.serialnumber === "" ? "Required": true,
     },
     {
       title: "Modell",
@@ -74,10 +72,8 @@ export default function Table() {
     },
     { title: "Batterie in %", field: "batterylife" },
     { title: "Speicher in GB", field: "capacity" },
-    {
-      title: "Status",
-      field: "status",
-     },
+    { title: "Status", field: "status",
+   },
   ];
   const getDevices = () => {
     fetch("/api/all")
@@ -153,9 +149,13 @@ export default function Table() {
                     resolve();
                   });
               }),
+            
           }}
-          options={{
+          
+            options={{
             actionsColumnIndex: -1,
+            paging: false,
+            maxBodyHeight: "600px",
           }}
         />
       </div>
