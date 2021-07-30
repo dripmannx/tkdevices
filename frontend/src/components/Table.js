@@ -62,18 +62,42 @@ export default function Table() {
       title: "Seriennummer",
       field: "serialnumber",
       validate: (rowData) =>
-        rowData.serialnumber === undefined || rowData.serialnumber === "" ? "Required": true,
+        rowData.serialnumber === undefined ||
+        rowData.serialnumber === "" ||
+        rowData.serialnumber.length != 12|| rowData.serialnumber != rowData.serialnumber.toUpperCase()
+          ? "Falsches Format oder Leer (Uppercase und 12 stellig)"
+          : true,
     },
     {
       title: "Modell",
       field: "model",
       validate: (rowData) =>
-        rowData.model === undefined || rowData.model === "" ? "Required" : true,
+        rowData.model === undefined || rowData.model === "" ? "benötigt" : true,
     },
-    { title: "Batterie in %", field: "batterylife" },
-    { title: "Speicher in GB", field: "capacity" },
-    { title: "Status", field: "status",
-   },
+    {
+      title: "Batterie in %",
+      field: "batterylife",
+      validate: (rowData) =>
+        rowData.model === undefined || rowData.model === "" ? "benötigt" : true,
+    },
+    {
+      title: "Speicher in GB",
+      field: "capacity",
+      validate: (rowData) =>
+        rowData.model === undefined || rowData.model === "" ? "benötigt" : true,
+    },
+    {
+      title: "Status",
+      field: "status",
+      lookup: {
+        lagernd: "lagernd",
+        raus: "raus",
+        validate: (rowData) =>
+          rowData.model === undefined || rowData.model === ""
+            ? "benötigt"
+            : true,
+      },
+    },
   ];
   const getDevices = () => {
     fetch("/api/all")
@@ -149,11 +173,30 @@ export default function Table() {
                     resolve();
                   });
               }),
-            
           }}
-          
-            options={{
+          /*
+          cellEditable={{
+            onCellEditApproved: (newData, oldData) =>
+              new Promise((resolve, reject) => {
+                //Backend PUT
+                fetch(urledit + oldData.id, {
+                  method: "PUT",
+                  headers: {
+                    "Content-type": "application/json",
+                  },
+                  body: JSON.stringify(newData),
+                })
+                  .then((resp) => resp.json())
+                  .then((resp) => {
+                    getDevices();
+                    resolve();
+                  });
+              }),
+            }}
+          */
+          options={{
             actionsColumnIndex: -1,
+            addRowPosition: "first",
             paging: false,
             maxBodyHeight: "600px",
           }}

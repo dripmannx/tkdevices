@@ -7,7 +7,7 @@ class Device(models.Model):
     model = models.CharField(max_length=12)
     batterylife = models.IntegerField()
     capacity = models.IntegerField()
-    status = models.CharField(max_length=7, default=STATE_CHOICES[0][1])
+    status = models.CharField(max_length=7, choices=STATE_CHOICES,default=STATE_CHOICES[0][1])
 
 
 
