@@ -4,5 +4,5 @@ from .views import DeviceView, devices, device_detail
 urlpatterns = [
     path('device', DeviceView.as_view()),
     path('all', devices),
-    path("detail/<pk>",device_detail)
+    path("device/<pk>",device_detail)
 ]
