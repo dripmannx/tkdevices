@@ -1,8 +1,9 @@
 from django.urls import path, include
-from .views import DeviceView, devices, device_detail
+from .views import DeviceView, devices, device_detail, device_countin
 
 urlpatterns = [
-    path('device', DeviceView.as_view()),
-    path('all', devices),
-    path("device/<pk>",device_detail)
+    path('devices', DeviceView.as_view()),
+    path('device', devices),
+    path("device/<pk>",device_detail),
+    path("device/in", device_countin),
 ]

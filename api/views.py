@@ -56,4 +56,6 @@ def device_detail(request, pk):
 
     elif request.method == 'DELETE':
         device.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return HttpResponse(status=204)
+def device_countin(request):
+   pass

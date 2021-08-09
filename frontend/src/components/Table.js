@@ -50,14 +50,15 @@ const tableIcons = {
 };
 
 export default function Table() {
-  const url = "/api/all";
-  const urledit = "/api/device";
+  const url = "/api/device";
+
   const darkTheme = createTheme({
     palette: {
       type: "dark",
     },
   });
   const [data, setData] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
   const columns = [
     {
       title: "Seriennummer",
@@ -80,7 +81,7 @@ export default function Table() {
         "11": "iPhone 11"
       },
       validate: (rowData) =>
-        rowData.model === undefined || rowData.model === "" ? "Required" : true,
+        rowData.model === undefined || rowData.model === "" ? "Model auswählen" : true,
     },
     {
       title: "Batterie in %",
@@ -91,7 +92,7 @@ export default function Table() {
         rowData.batterylife === "" ||
         rowData.batterylife < 0 ||
         rowData.batterylife > 100
-          ? "Eintragen"
+          ? "Wert zwischen 0 und 100 Eintragen"
           : true,
     },
     {
@@ -106,34 +107,42 @@ export default function Table() {
       },
       validate: (rowData) =>
         rowData.capacity === undefined || rowData.capacity === ""
-          ? "Required"
+          ? "Speicher auswählen"
           : true,
     },
     {
       title: "Status",
       field: "status",
       lookup: {"lagernd":"lagernd",
-                "rausgegeben":"raus",
+                "raus":"rausgegeben",
       },
+      defaultSort:"asc",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
-          ? "Required"
+          ? "Status auswählen"
           : true,
     },
   ];
   const getDevices = () => {
-    fetch("/api/all")
+    fetch(url)
       .then((resp) => resp.json())
       .then((resp) => {
         setData(resp);
       });
   };
+  
+  
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();
   }, []);
-
-  const deviceCount = data.length + " Geräte";
+const deviceCountIn = $.grep(data, function (n, i) {
+  return n.status === "lagernd";
+});
+  
+  
+  const deviceCount = data.length +  ' Geräte'+'\n'+'davon '+  deviceCountIn.length + ' lagernd';
+  console.log('${deviceCount}')
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
@@ -143,6 +152,7 @@ export default function Table() {
           icons={tableIcons}
           class="TableRow"
           title={deviceCount}
+          
           data={data}
           columns={columns}
           editable={{
@@ -165,7 +175,7 @@ export default function Table() {
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(urledit + "/" + oldData.id, {
+                fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
                     "Content-type": "application/json",
@@ -181,23 +191,30 @@ export default function Table() {
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(urledit + "/" + oldData.id, {
+                fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
                     "Content-type": "application/json",
                   },
-                })
-                  .then((resp) =>  {
-                    getDevices();
-                    resolve();
-                  });
+                }).then((resp) => {
+                  getDevices();
+                  resolve();
+                });
               }),
           }}
+          onRowClick={(evt, selectedRow) =>
+            setSelectedRow(selectedRow.tableData.id)
+          }
           options={{
+            
             paging: false,
             maxBodyHeight: 600,
             actionsColumnIndex: -1,
             addRowPosition: "first",
+            rowStyle: (rowData) => ({
+              backgroundColor:
+                selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
+            }),
           }}
         />
       </div>
