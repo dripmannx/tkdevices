@@ -28,7 +28,7 @@ def devices(request):
         serializer = DeviceSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=404)
+            return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
     
 @csrf_exempt
