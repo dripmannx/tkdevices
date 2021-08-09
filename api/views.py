@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import generics
+from rest_framework.response import Response
 from .serializers import DeviceSerializer, AddDeviceSerializer
 from .models import Device
 from django.http import HttpResponse, JsonResponse
@@ -55,4 +56,4 @@ def device_detail(request, pk):
 
     elif request.method == 'DELETE':
         device.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)

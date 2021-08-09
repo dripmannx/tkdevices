@@ -51,7 +51,7 @@ const tableIcons = {
 
 export default function Table() {
   const url = "/api/all";
-  const urledit = "/api/device/";
+  const urledit = "/api/device";
   const darkTheme = createTheme({
     palette: {
       type: "dark",
@@ -65,31 +65,45 @@ export default function Table() {
       validate: (rowData) =>
         rowData.serialnumber === undefined ||
         rowData.serialnumber === "" ||
-        rowData.serialnumber.length != 12
-          ? "Eintragen"
+        rowData.serialnumber.length != 12||rowData.serialnumber !== rowData.serialnumber.toUpperCase()
+          ? "S/N im richtigen Format angeben"
           : true,
     },
     {
       title: "Modell",
       field: "model",
+      lookup: {
+        "SE 2016": "iPhone SE 2016",
+        "SE 2020": "iPhone SE 2020",
+        "6s": "iPhone 6s",
+        "7":"iPhone 7",
+        "11": "iPhone 11"
+      },
       validate: (rowData) =>
         rowData.model === undefined || rowData.model === "" ? "Required" : true,
     },
     {
       title: "Batterie in %",
       field: "batterylife",
-      numeric:true,
+
       validate: (rowData) =>
-        rowData.batterylife === undefined || rowData.batterylife === "" || rowData.batterylife < 0 || rowData.batterylife > 100
+        rowData.batterylife === undefined ||
+        rowData.batterylife === "" ||
+        rowData.batterylife < 0 ||
+        rowData.batterylife > 100
           ? "Eintragen"
           : true,
-     
-        
-          
     },
     {
       title: "Speicher in GB",
       field: "capacity",
+
+      lookup: {
+        32: "32GB",
+        64: "64GB",
+        128: "128GB",
+        256: "256GB",
+      },
       validate: (rowData) =>
         rowData.capacity === undefined || rowData.capacity === ""
           ? "Required"
@@ -98,7 +112,9 @@ export default function Table() {
     {
       title: "Status",
       field: "status",
-
+      lookup: {"lagernd":"lagernd",
+                "rausgegeben":"raus",
+      },
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
           ? "Required"
@@ -149,7 +165,7 @@ export default function Table() {
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(url + "/" + oldData.id, {
+                fetch(urledit + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
                     "Content-type": "application/json",
@@ -162,17 +178,16 @@ export default function Table() {
                     resolve();
                   });
               }),
-            onRowDelete: (newData) =>
+            onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(urledit + "/" + newData.id, {
+                fetch(urledit + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
                     "Content-type": "application/json",
                   },
                 })
-                  .then((resp) => resp.json())
-                  .then((resp) => {
+                  .then((resp) =>  {
                     getDevices();
                     resolve();
                   });
@@ -180,9 +195,9 @@ export default function Table() {
           }}
           options={{
             paging: false,
-            maxBodyHeight: 500,
+            maxBodyHeight: 600,
             actionsColumnIndex: -1,
-            addRowPosition:"first",
+            addRowPosition: "first",
           }}
         />
       </div>
