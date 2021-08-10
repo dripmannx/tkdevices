@@ -3,11 +3,8 @@ import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import { save } from "@material-ui/icons";
-import { createTheme, createMuiTheme, ThemeProvider, alpha } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
-import SaveIcon from "@material-ui/icons/Save";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
 
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -58,6 +55,7 @@ export default function Table() {
       type:"dark"
     },
     overrides: {
+      
       MuiTableRow: {
         hover:{
         "&:hover": {
@@ -91,8 +89,7 @@ export default function Table() {
         "6s": "iPhone 6s",
         7: "iPhone 7",
         11: "iPhone 11",
-       
-      }, 
+      },
       validate: (rowData) =>
         rowData.model === undefined || rowData.model === ""
           ? "Model auswählen"
@@ -121,6 +118,7 @@ export default function Table() {
           ? "Wert zwischen 0 und 100 Eintragen"
           : true,
       filtering: false,
+      render: (rowData) => rowData.batterylife + "%",
     },
     {
       title: "Speicher in GB",
@@ -132,7 +130,7 @@ export default function Table() {
         128: "128GB",
         256: "256GB",
       },
-      
+
       validate: (rowData) =>
         rowData.capacity === undefined || rowData.capacity === ""
           ? "Speicher auswählen"
@@ -151,13 +149,14 @@ export default function Table() {
         }
       },
       */
-     //defaultFilter:true,
+
       lookup: { true: "lagernd", false: "rausgegeben" },
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
+      
     },
   ];
   const getDevices = () => {
@@ -271,6 +270,7 @@ const deviceCountIn = $.grep(data, function (n, i) {
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
+            
             rowStyle: (rowData) => ({
               backgroundColor:
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
