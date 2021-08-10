@@ -151,8 +151,8 @@ export default function Table() {
         }
       },
       */
-     defaultFilter:"lagernd",
-      lookup: { lagernd: "lagernd", raus: "rausgegeben" },
+     //defaultFilter:true,
+      lookup: { true: "lagernd", false: "rausgegeben" },
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
@@ -174,7 +174,7 @@ export default function Table() {
     getDevices();
   }, []);
 const deviceCountIn = $.grep(data, function (n, i) {
-  return n.status === "lagernd";
+  return n.status === true;
 });
   
   

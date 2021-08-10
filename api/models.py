@@ -6,7 +6,7 @@ class Device(models.Model):
     model = models.CharField(max_length=12)
     batterylife = models.IntegerField()
     capacity = models.IntegerField()
-    status = models.CharField(max_length=7, default='lagernd')
+    status = models.BooleanField(default=True)
 
 
 
