@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import { save } from "@material-ui/icons";
-import { createTheme, ThemeProvider, alpha } from "@material-ui/core/styles";
+import { createTheme, createMuiTheme, ThemeProvider, alpha } from "@material-ui/core/styles";
 
 import SaveIcon from "@material-ui/icons/Save";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -52,9 +52,26 @@ const tableIcons = {
 export default function Table() {
   const url = "/api/device";
 
-  const darkTheme = createTheme({
+  const darktheme = createTheme({
     palette: {
       type: "dark",
+    },
+    hover: {
+      backgroundColor: "green",
+    },
+  });
+  const darkTheme = createTheme({
+    palette: {
+      type:"dark"
+    },
+    overrides: {
+      MuiTableRow: {
+        hover:{
+        "&:hover": {
+          backgroundColor: "#2E2E2E !important",
+        },
+      },
+    },
     },
   });
   const [data, setData] = useState([]);
@@ -66,9 +83,11 @@ export default function Table() {
       validate: (rowData) =>
         rowData.serialnumber === undefined ||
         rowData.serialnumber === "" ||
-        rowData.serialnumber.length != 12||rowData.serialnumber !== rowData.serialnumber.toUpperCase()
+        rowData.serialnumber.length != 12 ||
+        rowData.serialnumber !== rowData.serialnumber.toUpperCase()
           ? "S/N im richtigen Format angeben"
           : true,
+      filterPlaceholder: "S/N eingeben",
     },
     {
       title: "Modell",
@@ -77,15 +96,28 @@ export default function Table() {
         "SE 2016": "iPhone SE 2016",
         "SE 2020": "iPhone SE 2020",
         "6s": "iPhone 6s",
-        "7":"iPhone 7",
-        "11": "iPhone 11"
+        7: "iPhone 7",
+        11: "iPhone 11",
       },
       validate: (rowData) =>
-        rowData.model === undefined || rowData.model === "" ? "Model auswählen" : true,
+        rowData.model === undefined || rowData.model === ""
+          ? "Model auswählen"
+          : true,
+      filterPlaceholder: "Modell auswählen",
     },
     {
       title: "Batterie in %",
       field: "batterylife",
+      defaultSort: "desc",
+      /*
+      cellStyle: (e, rowData) => {
+        if (rowData.batterylife >= 90) {
+          return { color: "green" };
+        } else {
+          return { color: "red" };
+        }
+      },
+      */
 
       validate: (rowData) =>
         rowData.batterylife === undefined ||
@@ -94,6 +126,7 @@ export default function Table() {
         rowData.batterylife > 100
           ? "Wert zwischen 0 und 100 Eintragen"
           : true,
+      filtering:false,
     },
     {
       title: "Speicher in GB",
@@ -109,14 +142,22 @@ export default function Table() {
         rowData.capacity === undefined || rowData.capacity === ""
           ? "Speicher auswählen"
           : true,
+      filterPlaceholder: "Speicher auswählen",
     },
     {
       title: "Status",
       field: "status",
-      lookup: {"lagernd":"lagernd",
-                "raus":"rausgegeben",
+      /*
+      cellStyle: (e, rowData) => {
+        if (rowData.status === "lagernd") {
+          return { color: "green" };
+        } else {
+          return { color: "red" };
+        }
       },
-      defaultSort:"asc",
+      */
+      lookup: { lagernd: "lagernd", raus: "rausgegeben" },
+      filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
@@ -141,18 +182,17 @@ const deviceCountIn = $.grep(data, function (n, i) {
 });
   
   
-  const deviceCount = data.length +  ' Geräte'+'\n'+'davon '+  deviceCountIn.length + ' lagernd';
-  console.log('${deviceCount}')
+  const deviceCount = data.length +  ' Geräte, '+  deviceCountIn.length + ' lagernd';
+  
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
         <h1 align="center">Alle Geräte</h1>
-        <h4 align="center"></h4>
+        <h2 align="center">{deviceCount}</h2>
         <MaterialTable
           icons={tableIcons}
           class="TableRow"
           title={deviceCount}
-          
           data={data}
           columns={columns}
           editable={{
@@ -206,15 +246,16 @@ const deviceCountIn = $.grep(data, function (n, i) {
             setSelectedRow(selectedRow.tableData.id)
           }
           options={{
-            
             paging: false,
-            maxBodyHeight: 600,
+            maxBodyHeight: 700,
             actionsColumnIndex: -1,
             addRowPosition: "first",
+            filtering: true,
             rowStyle: (rowData) => ({
               backgroundColor:
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
             }),
+            filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
         />
       </div>

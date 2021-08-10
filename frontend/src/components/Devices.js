@@ -13,7 +13,7 @@ export default class DevicesPage extends Component {
                     <Switch>
                         <Route path="/" component={DataTables}/>
 
-                        <Route path="/add" component={DataTables}/>
+                     
                 </Switch>
             </Router>
           
