@@ -52,14 +52,7 @@ const tableIcons = {
 export default function Table() {
   const url = "/api/device";
 
-  const darktheme = createTheme({
-    palette: {
-      type: "dark",
-    },
-    hover: {
-      backgroundColor: "green",
-    },
-  });
+
   const darkTheme = createTheme({
     palette: {
       type:"dark"
@@ -98,7 +91,8 @@ export default function Table() {
         "6s": "iPhone 6s",
         7: "iPhone 7",
         11: "iPhone 11",
-      },
+       
+      }, 
       validate: (rowData) =>
         rowData.model === undefined || rowData.model === ""
           ? "Model auswählen"
@@ -126,7 +120,7 @@ export default function Table() {
         rowData.batterylife > 100
           ? "Wert zwischen 0 und 100 Eintragen"
           : true,
-      filtering:false,
+      filtering: false,
     },
     {
       title: "Speicher in GB",
@@ -138,6 +132,7 @@ export default function Table() {
         128: "128GB",
         256: "256GB",
       },
+      
       validate: (rowData) =>
         rowData.capacity === undefined || rowData.capacity === ""
           ? "Speicher auswählen"
@@ -156,6 +151,7 @@ export default function Table() {
         }
       },
       */
+     defaultFilter:"lagernd",
       lookup: { lagernd: "lagernd", raus: "rausgegeben" },
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
@@ -192,9 +188,31 @@ const deviceCountIn = $.grep(data, function (n, i) {
         <MaterialTable
           icons={tableIcons}
           class="TableRow"
-          title={deviceCount}
+          title={deviceCountIn.length + " Geräte derzeit lagernd"}
           data={data}
           columns={columns}
+          cellEditable={{
+            cellStyle: {},
+            onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
+              return new Promise((resolve, reject) => {
+                //Backend call
+                const clonedData = [...data];
+                clonedData[rowData.tableData.id][columnDef.field] = newValue;
+                setData(clonedData);
+                  fetch(url + "/" + rowData.id, {
+                    method: "PUT",
+                    headers: {
+                      "Content-type": "application/json",
+                    },
+
+                    body: JSON.stringify(rowData),
+                  })
+                  getDevices();
+                  resolve();
+                  
+              });
+            },
+          }}
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
@@ -212,6 +230,7 @@ const deviceCountIn = $.grep(data, function (n, i) {
                     resolve();
                   });
               }),
+            
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
@@ -222,6 +241,7 @@ const deviceCountIn = $.grep(data, function (n, i) {
                   },
                   body: JSON.stringify(newData),
                 })
+                  
                   .then((resp) => resp.json())
                   .then((resp) => {
                     getDevices();
