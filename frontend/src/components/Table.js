@@ -1,11 +1,9 @@
-//This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View 
+//This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
-import { save } from "@material-ui/icons";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-
-
+import { ToastsContainer, ToastsStore, ToastsContainerPosition } from "react-toasts";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -21,6 +19,8 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
+
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -45,26 +45,30 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
-
-export default function Table() {
-  const url = "/api/device";
-
-
-  const darkTheme = createTheme({
-    palette: {
-      type:"dark"
-    },
-    overrides: {
-      
-      MuiTableRow: {
-        hover:{
+var pwd = prompt("Passwort:");
+while (pwd != "ENERCON_01") {
+  pwd = prompt("Passwort:");
+}
+const darkTheme = createTheme({
+  palette: {
+    type: "dark",
+  },
+  overrides: {
+    MuiTableRow: {
+      hover: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
         },
       },
     },
-    },
-  });
+  },
+});
+
+export default function Table() {
+  const url = "/api/device";
+const notify = () =>
+  toast.success("Success Notification !")
+
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const columns = [
@@ -100,6 +104,18 @@ export default function Table() {
       title: "Batterie in %",
       field: "batterylife",
       defaultSort: "desc",
+
+      cellStyle: { textAlign: "center" },
+      validate: (rowData) =>
+        rowData.batterylife === undefined ||
+        rowData.batterylife === "" ||
+        rowData.batterylife < 0 ||
+        rowData.batterylife > 100
+          ? "Wert zwischen 0 und 100 Eintragen"
+          : true,
+      filtering: false,
+
+      render: (rowData) => rowData.batterylife + "%",
       /*
       cellStyle: (e, rowData) => {
         if (rowData.batterylife >= 90) {
@@ -109,16 +125,6 @@ export default function Table() {
         }
       },
       */
-
-      validate: (rowData) =>
-        rowData.batterylife === undefined ||
-        rowData.batterylife === "" ||
-        rowData.batterylife < 0 ||
-        rowData.batterylife > 100
-          ? "Wert zwischen 0 und 100 Eintragen"
-          : true,
-      filtering: false,
-      render: (rowData) => rowData.batterylife + "%",
     },
     {
       title: "Speicher in GB",
@@ -156,7 +162,7 @@ export default function Table() {
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
-      
+      //defaultFilter: filterStatus,
     },
   ];
   const getDevices = () => {
@@ -166,24 +172,26 @@ export default function Table() {
         setData(resp);
       });
   };
-  
-  
+
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();
   }, []);
-const deviceCountIn = $.grep(data, function (n, i) {
-  return n.status === true;
-});
-  
-  
-  const deviceCount = data.length +  ' Geräte, '+  deviceCountIn.length + ' lagernd';
-  
+  const deviceCountIn = $.grep(data, function (n, i) {
+    return n.status === true;
+  });
+
+  const deviceCount =
+    data.length + " Geräte, " + deviceCountIn.length + " lagernd";
+
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
         <h1 align="center">Alle Geräte</h1>
         <h2 align="center">{deviceCount}</h2>
+
+        <ToastsContainer store={ToastsStore}position={ToastsContainerPosition.TOP_RIGHT} />
+        
         <MaterialTable
           icons={tableIcons}
           class="TableRow"
@@ -195,20 +203,25 @@ const deviceCountIn = $.grep(data, function (n, i) {
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
               return new Promise((resolve, reject) => {
                 //Backend call
+
                 const clonedData = [...data];
                 clonedData[rowData.tableData.id][columnDef.field] = newValue;
                 setData(clonedData);
-                  fetch(url + "/" + rowData.id, {
-                    method: "PUT",
-                    headers: {
-                      "Content-type": "application/json",
-                    },
+                fetch(url + "/" + rowData.id, {
+                  method: "PUT",
+                  headers: {
+                    "Content-type": "application/json",
+                  },
 
-                    body: JSON.stringify(rowData),
-                  })
-                  getDevices();
-                  resolve();
-                  
+                  body: JSON.stringify(rowData),
+                })
+                  .then((resp) => resp.json())
+
+                  .then((resp) => {
+                    ToastsStore.success("Änderung gespeichert");
+                    getDevices();
+                    resolve();
+                  });
               });
             },
           }}
@@ -225,11 +238,12 @@ const deviceCountIn = $.grep(data, function (n, i) {
                 })
                   .then((resp) => resp.json())
                   .then((resp) => {
+                    ToastsStore.success("Neues Gerät gespeichert");
                     getDevices();
                     resolve();
                   });
               }),
-            
+
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
@@ -240,9 +254,9 @@ const deviceCountIn = $.grep(data, function (n, i) {
                   },
                   body: JSON.stringify(newData),
                 })
-                  
                   .then((resp) => resp.json())
                   .then((resp) => {
+                    ToastsStore.success("Gerätedaten gespeichert");
                     getDevices();
                     resolve();
                   });
@@ -256,21 +270,24 @@ const deviceCountIn = $.grep(data, function (n, i) {
                     "Content-type": "application/json",
                   },
                 }).then((resp) => {
+                  ToastsStore.success("Gerät Gelöscht");
                   getDevices();
                   resolve();
                 });
               }),
           }}
+          /*
           onRowClick={(evt, selectedRow) =>
             setSelectedRow(selectedRow.tableData.id)
           }
+          */
           options={{
             paging: false,
             maxBodyHeight: 700,
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
-            
+
             rowStyle: (rowData) => ({
               backgroundColor:
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
