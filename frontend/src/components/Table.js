@@ -172,12 +172,13 @@ export default function Table() {
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
+     
     },
     {
       title: "Defekt",
       field: "status_defect",
-      type:"boolean",
-      filering:false,
+      type: "boolean",
+      filering: false,
     },
   ];
   const getDevices = () => {

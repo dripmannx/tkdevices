@@ -1,6 +1,6 @@
 
 body{
-    background: hsl(0,0%,18%);
+    background-color: hsl(0,0%,18%);
 }
 .Table{
     background: hsl(0,0%,18%);
@@ -9,4 +9,34 @@ body{
 .TableRow{
     background: hsl(0,0%,18%);
     color: hsl(0,0%,100%)
+}
+li {
+  display: inline;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+}
+.active {
+  background-color: #04AA6D;
 }

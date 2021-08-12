@@ -84,6 +84,7 @@ export default function DeleteTable() {
       field: "status_defect",
       filterPlaceholder: "Status auswählen",
       type: "boolean",
+     
       
     },
     {
