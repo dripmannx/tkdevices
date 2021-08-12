@@ -1,10 +1,13 @@
 import {ToastsContainer, ToastsStore} from 'react-toasts';
+import App from './App';
+import React, {Component} from 'react'
  
-export default function Fetch(){
-  render();
-    return <div>
-        <button onClick={() => ToastsStore.success("Hey, you just clicked!")}>Click me</button>
-        <ToastsContainer store={ToastsStore}/>
-    </div>
 
+export default class Fetch extends Component{
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return <Button>Hallo</Button>;
+  }
 }

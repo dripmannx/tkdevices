@@ -7,6 +7,10 @@ class Device(models.Model):
     batterylife = models.IntegerField()
     capacity = models.IntegerField()
     status = models.BooleanField(default=True)
+    removed_from_DEP = models.BooleanField(default=False)
+    status_defect = models.BooleanField(default=False)
+
+
 
 
 

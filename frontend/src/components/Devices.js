@@ -1,7 +1,8 @@
 import React, { Component} from 'react';
 import {render} from "react-dom";
 import Table from "./Table";
-import Fetch from "./fetch";
+
+import DeleteTable from "./DeleteTable";
 import { BrowserRouter as Router, Switch, Route, Link ,Redirect} from'react-router-dom';
 
 export default class DevicesPage extends Component {
@@ -13,8 +14,9 @@ export default class DevicesPage extends Component {
         return (
           <Router>
             <Switch>
-              <Route path="/" component={Table} />
-              <Route path="/fetch" component={Table} />
+              <Route path="/" exact component={Table} />
+              <Route path="/defect" component={DeleteTable} />
+              
             </Switch>
           </Router>
         );

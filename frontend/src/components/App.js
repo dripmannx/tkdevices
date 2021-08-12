@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import DevicesPage from "./Devices";
 import Fetch from "./fetch";
 import Table from "./Table";
+import DeleteTable from "./DeleteTable";
 export default class App extends Component {
   constructor(props) {
     super(props);

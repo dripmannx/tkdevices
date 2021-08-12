@@ -3,6 +3,7 @@ from .views import index
 
 urlpatterns = [
     path("", index),
-    path("delete", index)
+    path("defect", index),
+    path("fetch", index)
     
     ]

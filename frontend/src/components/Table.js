@@ -3,7 +3,11 @@ import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { ToastsContainer, ToastsStore, ToastsContainerPosition } from "react-toasts";
+import {
+  ToastsContainer,
+  ToastsStore,
+  ToastsContainerPosition,
+} from "react-toasts";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -19,9 +23,11 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-
+import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";import { FlightTakeoff } from "@material-ui/icons";
+;
 
 const tableIcons = {
+  
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -44,10 +50,12 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
+/*
 var pwd = prompt("Passwort:");
 while (pwd != "ENERCON_01") {
   pwd = prompt("Passwort:");
 }
+*/
 const darkTheme = createTheme({
   palette: {
     type: "dark",
@@ -65,7 +73,6 @@ const darkTheme = createTheme({
 
 export default function Table() {
   const url = "/api/device";
-
 
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -157,11 +164,7 @@ export default function Table() {
       */
 
       lookup: {
-        true: (
-          <div>
-            <img src="frontend\static\img\arrow_in.png" />
-          </div>
-        ),
+        true: "lagernd",
         false: "rausgegeben",
       },
       filterPlaceholder: "Status auswählen",
@@ -170,12 +173,19 @@ export default function Table() {
           ? "Status auswählen"
           : true,
     },
+    {
+      title: "Defekt",
+      field: "status_defect",
+      type:"boolean",
+      filering:false,
+    },
   ];
   const getDevices = () => {
     fetch(url)
       .then((resp) => resp.json())
       .then((resp) => {
         setData(resp);
+        console.log(resp);
       });
   };
 
@@ -196,8 +206,11 @@ export default function Table() {
         <h1 align="center">Alle Geräte</h1>
         <h2 align="center">{deviceCount}</h2>
 
-        <ToastsContainer store={ToastsStore}position={ToastsContainerPosition.TOP_RIGHT} />
-        
+        <ToastsContainer
+          store={ToastsStore}
+          position={ToastsContainerPosition.TOP_RIGHT}
+        />
+
         <MaterialTable
           icons={tableIcons}
           class="TableRow"
@@ -287,14 +300,13 @@ export default function Table() {
             setSelectedRow(selectedRow.tableData.id)
           }
           */
+          
           options={{
             paging: false,
             maxBodyHeight: 700,
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
-            
-            
 
             rowStyle: (rowData) => ({
               backgroundColor:
