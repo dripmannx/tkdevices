@@ -21,7 +21,6 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 
 
-
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -145,6 +144,8 @@ const notify = () =>
     },
     {
       title: "Status",
+      //defaultFilter: true,
+      align: "center",
       field: "status",
       /*
       cellStyle: (e, rowData) => {
@@ -156,13 +157,19 @@ const notify = () =>
       },
       */
 
-      lookup: { true: "lagernd", false: "rausgegeben" },
+      lookup: {
+        true: (
+          <div>
+            <img src="frontend\static\img\arrow_in.png" />
+          </div>
+        ),
+        false: "rausgegeben",
+      },
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
-      //defaultFilter: filterStatus,
     },
   ];
   const getDevices = () => {
@@ -287,6 +294,8 @@ const notify = () =>
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
+            
+            
 
             rowStyle: (rowData) => ({
               backgroundColor:

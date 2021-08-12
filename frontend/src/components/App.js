@@ -8,7 +8,7 @@ export default class App extends Component {
     super(props);
   }
   render() {
-    return <Table/>;
+    return <DevicesPage/>;
   }
 }
 const appDiv = document.getElementById("app");
