@@ -10,9 +10,7 @@ body{
     background: hsl(0,0%,18%);
     color: hsl(0,0%,100%)
 }
-li {
-  display: inline;
-}
+
 ul {
   list-style-type: none;
   margin: 0;
