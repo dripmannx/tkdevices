@@ -65,8 +65,7 @@ const darkTheme = createTheme({
 
 export default function Table() {
   const url = "/api/device";
-const notify = () =>
-  toast.success("Success Notification !")
+
 
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
