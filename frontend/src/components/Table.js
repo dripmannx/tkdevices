@@ -199,7 +199,7 @@ export default function Table() {
   });
 
   const deviceCount =
-    data.length + " Geräte, " + deviceCountIn.length + " lagernd";
+    deviceCountIn.length +" Geräte lagernd";
 
   return (
     <ThemeProvider theme={darkTheme}>

@@ -7,5 +7,4 @@ urlpatterns = [
     path("device/<int:pk>",device_detail),
     path('device/defect', device_defect),
     path('device/defect/<int:pk>', defect_device_detail),
-    
 ]

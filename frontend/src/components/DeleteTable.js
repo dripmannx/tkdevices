@@ -85,16 +85,18 @@ export default function DeleteTable() {
         rowData.serialnumber !== rowData.serialnumber.toUpperCase()
           ? "S/N im richtigen Format angeben"
           : true,
-      tooltip: "Seriennummer sortieren"
+      tooltip: "Seriennummer sortieren",
     },
     {
       title: "Status defekt",
       field: "status_defect",
       filterPlaceholder: "Status auswählen",
       type: "boolean",
-      
-      validate:(rowData)=>rowData.status_defect===false||rowData.status_defect===undefined?"Status als defekt melden":true,
-      tooltip: "Sortieren"
+      validate: (rowData) =>
+        rowData.status_defect === false || rowData.status_defect === undefined
+          ? "Status als defekt melden"
+          : true,
+      tooltip: "Sortieren",
     },
     {
       title: "DEP entfernt",
@@ -102,7 +104,7 @@ export default function DeleteTable() {
       filterPlaceholder: "Entfernt aus DEP",
       type: "boolean",
       defaultSort: "asc",
-      tooltip:"Nach DEP Status sortieren"
+      tooltip: "Nach DEP Status sortieren",
     },
   ];
   const getDevices = () => {
@@ -164,7 +166,6 @@ export default function DeleteTable() {
                   .then((resp) => resp.json())
 
                   .then((resp) => {
-                    
                     getDevices();
                     resolve();
                     ToastsStore.success("Änderung gespeichert");

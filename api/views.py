@@ -21,7 +21,7 @@ def devices(request):
     Get all non defect Devices and add a Device
     """
     if request.method == 'GET':
-        devices = Device.objects.filter(status_defect=False)
+        devices = Device.objects.filter(status_defect=False, status=True)
         serializer = DeviceSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False)
 
