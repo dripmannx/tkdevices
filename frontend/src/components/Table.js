@@ -23,11 +23,9 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";import { FlightTakeoff } from "@material-ui/icons";
-;
-
+import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
+import { FlightTakeoff } from "@material-ui/icons";
 const tableIcons = {
-  
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -57,6 +55,9 @@ while (pwd != "ENERCON_01") {
 }
 */
 const darkTheme = createTheme({
+  header:{
+    zIndex:0
+  },
   palette: {
     type: "dark",
   },
@@ -172,7 +173,6 @@ export default function Table() {
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
-     
     },
     {
       title: "Defekt",
@@ -197,8 +197,7 @@ export default function Table() {
     return n.status === true;
   });
 
-  const deviceCount =
-    deviceCountIn.length +" Geräte lagernd";
+  const deviceCount = deviceCountIn.length + " Geräte lagernd";
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -218,7 +217,7 @@ export default function Table() {
         <MaterialTable
           icons={tableIcons}
           class="TableRow"
-          title={deviceCountIn.length + " Geräte derzeit lagernd"}
+          title={""}
           data={data}
           columns={columns}
           cellEditable={{
@@ -311,6 +310,9 @@ export default function Table() {
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
+            headerStyle: {
+                    zIndex: 1
+                  },
 
             rowStyle: (rowData) => ({
               backgroundColor:
@@ -318,6 +320,7 @@ export default function Table() {
             }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
+          
         />
       </div>
     </ThemeProvider>
