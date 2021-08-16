@@ -186,7 +186,6 @@ export default function Table() {
       .then((resp) => resp.json())
       .then((resp) => {
         setData(resp);
-        console.log(resp);
       });
   };
 
@@ -204,8 +203,12 @@ export default function Table() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
-        <h1 align="center">Alle Geräte</h1>
-        <h2 align="center">{deviceCount}</h2>
+        <h1 class="first-title" align="center fa fa-fw fa-mobile">
+          Alle Geräte
+        </h1>
+        <h2 class="second-title" align="center">
+          {deviceCount}
+        </h2>
 
         <ToastsContainer
           store={ToastsStore}
@@ -301,7 +304,7 @@ export default function Table() {
             setSelectedRow(selectedRow.tableData.id)
           }
           */
-          
+
           options={{
             paging: false,
             maxBodyHeight: 700,

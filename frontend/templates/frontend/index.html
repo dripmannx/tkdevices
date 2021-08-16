@@ -10,16 +10,18 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
     <link rel="icon" type="image/x-icon" href="{% static '/img/server.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     
 </head>
 
 <body>
-    <ul>
-        <li><a href="/">Geräte</a></li>
-        <li><a href="/defect">Defekte Geräte</a></li>
-        <li><a href="/handout">Rausgeben</a></li>
-        <li><a href="/admin">Admin</a></li>
-    </ul>
+
+    <div class="navbar">
+        <a class="active" href="/"><i class="fa fa-fw fa-mobile"></i> Lager</a>
+        <a href="/defect"><i class="fa fa-fw fa-exclamation"></i> Defekte Geräte</a>
+        <a href="handout"><i class="fa fa-fw fa-arrow-left"></i> Offene Aufträge</a>
+        <a href="/admin"><i class="fa fa-fw fa-user"></i> Admin</a>
+    </div>
     <div id="main">
         <div id="app"></div>
     </div>

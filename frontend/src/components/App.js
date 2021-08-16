@@ -9,6 +9,12 @@ export default class App extends Component {
     super(props);
   }
   render() {
+    /*
+    var pwd = prompt("Passwort:");
+    while (pwd != "ENERCON_01") {
+      pwd = prompt("Passwort:");
+    }
+    */
     return <DevicesPage/>;
   }
 }
