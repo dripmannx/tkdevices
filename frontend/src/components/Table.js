@@ -69,7 +69,7 @@ const darkTheme = createTheme({
 
 export default function Table() {
   const url = "/api/device";
-
+  const API_TOKEN ="Token 8c183ffd95228fe49e4dcaaa1d42aced2261cb0f"
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const columns = [
@@ -198,10 +198,10 @@ export default function Table() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
-        <h1 className="first-title" align="center fa fa-fw fa-mobile">
+        <h1 class="first-title" align="center ">
           Alle Geräte
         </h1>
-        <h2 className="second-title" align="center">
+        <h2 class="second-title" align="center">
           {deviceCount}
         </h2>
 
@@ -228,7 +228,7 @@ export default function Table() {
                 fetch(url + "/" + rowData.id, {
                   method: "PUT",
                   headers: {
-                    "Authorization": "Token 8c183ffd95228fe49e4dcaaa1d42aced2261cb0f",
+                    Authorization: API_TOKEN,
                   },
 
                   body: JSON.stringify(rowData),
@@ -251,7 +251,7 @@ export default function Table() {
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    "Content-type": "application/json",
+                    Authorization: API_TOKEN,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -269,7 +269,7 @@ export default function Table() {
                 fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
-                    "Content-type": "application/json",
+                    Authorization: API_TOKEN,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -286,7 +286,7 @@ export default function Table() {
                 fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
-                    "Content-type": "application/json",
+                    Authorization: API_TOKEN,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
@@ -295,12 +295,9 @@ export default function Table() {
                 });
               }),
           }}
-          /*
           onRowClick={(evt, selectedRow) =>
             setSelectedRow(selectedRow.tableData.id)
           }
-          */
-
           options={{
             paging: false,
             maxBodyHeight: 700,
@@ -308,8 +305,8 @@ export default function Table() {
             addRowPosition: "first",
             filtering: true,
             headerStyle: {
-                    zIndex: 1
-                  },
+              zIndex: 1,
+            },
 
             rowStyle: (rowData) => ({
               backgroundColor:
@@ -317,7 +314,6 @@ export default function Table() {
             }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
-          
         />
       </div>
     </ThemeProvider>
