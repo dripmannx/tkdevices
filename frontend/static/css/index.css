@@ -58,10 +58,10 @@ body{
   .table .title{
     display: none;
   }
-  .first-title {
+  .table .first-title {
     display:none;
   }
-  .second-title {
+  .table .second-title {
     font-size: 16px;
   }
   

@@ -48,12 +48,7 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
-/*
-var pwd = prompt("Passwort:");
-while (pwd != "ENERCON_01") {
-  pwd = prompt("Passwort:");
-}
-*/
+
 const darkTheme = createTheme({
   header:{
     zIndex:0
@@ -117,7 +112,7 @@ export default function Table() {
         rowData.batterylife === "" ||
         rowData.batterylife < 0 ||
         rowData.batterylife > 100
-          ? "Wert zwischen 0 und 100 Eintragen"
+          ? "Wert zwischen 0 und 100"
           : true,
       filtering: false,
 
@@ -173,6 +168,7 @@ export default function Table() {
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
+    
     },
     {
       title: "Defekt",
@@ -202,10 +198,10 @@ export default function Table() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
-        <h1 class="first-title" align="center fa fa-fw fa-mobile">
+        <h1 className="first-title" align="center fa fa-fw fa-mobile">
           Alle Geräte
         </h1>
-        <h2 class="second-title" align="center">
+        <h2 className="second-title" align="center">
           {deviceCount}
         </h2>
 

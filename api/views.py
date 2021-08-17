@@ -67,8 +67,16 @@ def device_detail(request, pk):
 def device_defect(request):
     if request.method == 'GET':
         devices = Device.objects.filter(status_defect=True, removed_from_DEP=False)
-        serializer = DeviceSerializer(devices, many=True)
+        serializer = DeleteDeviceSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = DeleteDeviceSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 @csrf_exempt
 def defect_device_detail(request, pk):
     #Retrieve, update or delete a device.

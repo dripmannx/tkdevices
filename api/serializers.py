@@ -21,4 +21,5 @@ class DeleteDeviceSerializer(serializers.ModelSerializer):
         fields = ("id",
                   "serialnumber",
                   "removed_from_DEP",
-                  "status_defect")
+                  "status_defect",
+                  "model")

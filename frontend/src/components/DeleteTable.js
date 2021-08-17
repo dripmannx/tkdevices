@@ -47,12 +47,7 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
-/*
-var pwd = prompt("Passwort:");
-while (pwd != "ENERCON_01") {
-  pwd = prompt("Passwort:");
-}
-*/
+
 const darkTheme = createTheme({
   palette: {
     type: "dark",
@@ -97,6 +92,7 @@ export default function DeleteTable() {
           ? "Status als defekt melden"
           : true,
       tooltip: "Sortieren",
+      editable:"onUpdate",
     },
     {
       title: "DEP entfernt",
@@ -111,6 +107,7 @@ export default function DeleteTable() {
     fetch(url)
       .then((resp) => resp.json())
       .then((resp) => {
+        
         setData(resp);
       });
   };
@@ -146,12 +143,14 @@ export default function DeleteTable() {
           title={deviceCountNotRemoved.length + " Geräte nicht entfernt"}
           data={data}
           columns={columns}
+          /*
           cellEditable={{
+            isCellEditable: (rowData) => rowData.model === "",
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
               return new Promise((resolve, reject) => {
                 //Backend call
-
+                
                 const clonedData = [...data];
                 clonedData[rowData.tableData.id][columnDef.field] = newValue;
                 setData(clonedData);
@@ -170,10 +169,15 @@ export default function DeleteTable() {
                     resolve();
                     ToastsStore.success("Änderung gespeichert");
                   });
+
+
               });
+            
             },
           }}
+          */
           editable={{
+            isEditHidden: (rowData) => rowData.model === "",
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
                 //Backend call
