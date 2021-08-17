@@ -4,6 +4,6 @@ from .views import index
 urlpatterns = [
     path("", index),
     path("defect", index),
-    path("fetch", index)
+    path("handout", index)
     
     ]

@@ -228,7 +228,7 @@ export default function Table() {
                 fetch(url + "/" + rowData.id, {
                   method: "PUT",
                   headers: {
-                    "Content-type": "application/json",
+                    "Authorization": "Token 8c183ffd95228fe49e4dcaaa1d42aced2261cb0f",
                   },
 
                   body: JSON.stringify(rowData),
@@ -239,7 +239,8 @@ export default function Table() {
                     ToastsStore.success("Änderung gespeichert");
                     getDevices();
                     resolve();
-                  });
+                  })
+                  .catch((err) => console.log(err));
               });
             },
           }}

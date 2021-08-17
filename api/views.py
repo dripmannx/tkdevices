@@ -6,16 +6,15 @@ from .models import Device
 from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
-
-
+from rest_framework.decorators import api_view
+from rest_framework import status
 # Create your views here.
 class DeviceView(generics.CreateAPIView):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
 
 
-
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def devices(request):
     """
     Get all non defect Devices and add a Device
@@ -23,7 +22,7 @@ def devices(request):
     if request.method == 'GET':
         devices = Device.objects.filter(status_defect=False, status=True)
         serializer = DeviceSerializer(devices, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return JsonResponse(serializer.data, safe=False,status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
@@ -32,8 +31,7 @@ def devices(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
-
-@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 def device_detail(request, pk):
     
     #Retrieve, update or delete a device.
@@ -62,8 +60,7 @@ def device_detail(request, pk):
 
 
 
-
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def device_defect(request):
     if request.method == 'GET':
         devices = Device.objects.filter(status_defect=True, removed_from_DEP=False)
@@ -77,7 +74,7 @@ def device_defect(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
-@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 def defect_device_detail(request, pk):
     #Retrieve, update or delete a device.
     try:

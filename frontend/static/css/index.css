@@ -45,8 +45,9 @@ body{
 .active {
   background-color: hsl(158, 80%, 34%);
 }
-.title-first{
+.table .title-first{
  text-align: center;
+ justify-content: center;
 }
 /* Add responsiveness - will automatically display the navbar vertically instead of horizontally on screens less than 500 pixels */
 @media screen and (max-width: 500px) {
