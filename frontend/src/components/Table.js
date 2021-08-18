@@ -179,7 +179,7 @@ export default function Table() {
   ];
   const url = "/api/device";
   const API_TOKEN =
-    "8c183ffd95228fe49e4dcaaa1d42aced2261cb0f";
+    "Token 8c183ffd95228fe49e4dcaaa1d42aced2261cb0f";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const usertoken = "";
@@ -195,13 +195,16 @@ export default function Table() {
       });
   };
 const getToken = () => {
+  
+  
+ 
   //Backend call
   fetch("/api/api-token-auth/", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify({ username: "LD", password: "ENERCON_01" }),
+    body: JSON.stringify({ username:"ECTK" , password:"ENERCON_01" }),
   })
     .then((resp) => resp.json())
     .then((resp) => {
