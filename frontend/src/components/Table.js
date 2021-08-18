@@ -183,7 +183,9 @@ export default function Table() {
     },
   ];
   const getDevices = () => {
-    fetch(url)
+    fetch(url, {
+      headers: { Authorization: API_TOKEN },
+    })
       .then((resp) => resp.json())
       .then((resp) => {
         setData(resp);

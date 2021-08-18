@@ -93,7 +93,6 @@ export default function DeleteTable() {
           ? "Status als defekt melden"
           : true,
       tooltip: "Sortieren",
-      
     },
     {
       title: "DEP entfernt",
@@ -105,10 +104,11 @@ export default function DeleteTable() {
     },
   ];
   const getDevices = () => {
-    fetch(url)
+    fetch(url, {
+      headers: { Authorization: API_TOKEN },
+    })
       .then((resp) => resp.json())
       .then((resp) => {
-        
         setData(resp);
       });
   };
@@ -130,8 +130,12 @@ export default function DeleteTable() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
-        <h1 className="first-title" align="center">Alle Geräte</h1>
-        <h2 className="first-title" align="center">{deviceCount}</h2>
+        <h1 className="first-title" align="center">
+          Alle Geräte
+        </h1>
+        <h2 className="first-title" align="center">
+          {deviceCount}
+        </h2>
 
         <ToastsContainer
           store={ToastsStore}
@@ -185,7 +189,7 @@ export default function DeleteTable() {
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    "Authorization": API_TOKEN,
+                    Authorization: API_TOKEN,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -203,7 +207,7 @@ export default function DeleteTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
-                   "Authorization": API_TOKEN
+                    Authorization: API_TOKEN,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -220,7 +224,7 @@ export default function DeleteTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
-                    "Authorization": API_TOKEN,
+                    Authorization: API_TOKEN,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
@@ -229,11 +233,9 @@ export default function DeleteTable() {
                 });
               }),
           }}
-          
           onRowClick={(evt, selectedRow) =>
             setSelectedRow(selectedRow.tableData.id)
           }
-          
           options={{
             paging: false,
             maxBodyHeight: 700,

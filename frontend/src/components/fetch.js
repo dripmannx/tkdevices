@@ -6,19 +6,16 @@ import React, {Component} from 'react';
 export default function Fetch() {
   
                 //Backend call
-                fetch("/api/device", {
-                  method: "GET",
+                fetch("/api/api-token-auth/", {
+                  method: "POST",
                   headers: {
                     "Content-type": "application/json",
-                    /*
-                    "X-Auth-Token": "8c183ffd95228fe49e4dcaaa1d42aced2261cb0f",
-                    */
                   },
-                  
+                  body: JSON.stringify({"username":"ECTK","password":"ENERCON_01"}),
                 })
                   .then((resp) => resp.json())
                   .then((resp) => {
-                    console.log(resp);
-                    resolve();
+                    console.log(resp)
+                   
                   });
 }
