@@ -68,10 +68,6 @@ const darkTheme = createTheme({
 });
 
 export default function Table() {
-  const url = "/api/device";
-  const API_TOKEN ="Token 8c183ffd95228fe49e4dcaaa1d42aced2261cb0f"
-  const [data, setData] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null);
   const columns = [
     {
       title: "Seriennummer",
@@ -117,7 +113,7 @@ export default function Table() {
       filtering: false,
 
       render: (rowData) => rowData.batterylife + "%",
-      
+
       /*
       cellStyle: (e, rowData) => {
         if (rowData.batterylife >= 90) {
@@ -173,7 +169,6 @@ export default function Table() {
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
-    
     },
     {
       title: "Defekt",
@@ -182,16 +177,38 @@ export default function Table() {
       filering: false,
     },
   ];
+  const url = "/api/device";
+  const API_TOKEN =
+    "8c183ffd95228fe49e4dcaaa1d42aced2261cb0f";
+  const [data, setData] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const usertoken = "";
+  
   const getDevices = () => {
     fetch(url, {
       headers: { Authorization: API_TOKEN },
     })
       .then((resp) => resp.json())
       .then((resp) => {
+        console.log(resp);
         setData(resp);
       });
   };
-
+const getToken = () => {
+  //Backend call
+  fetch("/api/api-token-auth/", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ username: "LD", password: "ENERCON_01" }),
+  })
+    .then((resp) => resp.json())
+    .then((resp) => {
+      console.log(resp);
+    }).catch((err)=>console.error(err));
+}
+getToken();
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();
@@ -206,9 +223,9 @@ export default function Table() {
     <ThemeProvider theme={darkTheme}>
       <div className="Table">
         <h1 class="first-title" align="center ">
-          Alle Geräte
+          Lagernde Geräte
         </h1>
-        <h2 class="second-title" align="center">
+        <h2 className="second-title" align="center">
           {deviceCount}
         </h2>
 
