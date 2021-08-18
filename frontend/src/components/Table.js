@@ -117,15 +117,9 @@ export default function Table() {
       filtering: false,
 
       render: (rowData) => rowData.batterylife + "%",
-      /*
-      cellStyle: (e, rowData) => {
-        if (rowData.batterylife >= 90) {
-          return { color: "green" };
-        } else {
-          return { color: "red" };
-        }
-      },
-      */
+      
+      
+      
     },
     {
       title: "Speicher in GB",
