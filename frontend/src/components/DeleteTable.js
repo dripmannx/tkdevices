@@ -105,7 +105,7 @@ export default function DeleteTable() {
   ];
   const getDevices = () => {
     fetch(url, {
-      headers: { Authorization: API_TOKEN },
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
     })
       .then((resp) => resp.json())
       .then((resp) => {
@@ -189,7 +189,7 @@ export default function DeleteTable() {
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    Authorization: API_TOKEN,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -207,7 +207,7 @@ export default function DeleteTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
-                    Authorization: API_TOKEN,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -224,7 +224,7 @@ export default function DeleteTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
-                    Authorization: API_TOKEN,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");

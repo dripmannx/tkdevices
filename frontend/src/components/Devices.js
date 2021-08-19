@@ -1,10 +1,11 @@
 import React, { Component} from 'react';
 import {render} from "react-dom";
 import Table from "./Table";
-import Fetch from "./fetch";
+
 import DeleteTable from "./DeleteTable";
 import { BrowserRouter as Router, Switch, Route, Link ,Redirect} from'react-router-dom';
-
+import Login from "./Login";
+import Logout from "./Logout";
 export default class DevicesPage extends Component {
     constructor(props){
         super(props);
@@ -14,9 +15,10 @@ export default class DevicesPage extends Component {
         return (
           <Router>
             <Switch>
-              <Route path="/" exact component={Table} />
+              <Route path="/" exact component={Login} />
               <Route path="/defect" component={DeleteTable} />
-              <Route path="/handout" component={Fetch}></Route>
+              <Route path="/devices" component={Table}/>
+              <Route path="/logout" component={Logout}/>
             </Switch>
           </Router>
         );

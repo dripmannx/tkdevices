@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.fields import NullBooleanField
-
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 # Create your models here.
 class Device(models.Model):
     serialnumber = models.CharField(max_length=12, unique=True, blank=False)
@@ -10,8 +11,6 @@ class Device(models.Model):
     status = models.BooleanField(default=True, blank=True)
     removed_from_DEP = models.BooleanField(default=False)
     status_defect = models.BooleanField(default=False)
-
-
 
 
 

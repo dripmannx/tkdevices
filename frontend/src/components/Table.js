@@ -178,15 +178,13 @@ export default function Table() {
     },
   ];
   const url = "/api/device";
-  const API_TOKEN =
-    "Token 8c183ffd95228fe49e4dcaaa1d42aced2261cb0f";
+  const API_TOKEN = localStorage.getItem("token");
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  const usertoken = "";
   
   const getDevices = () => {
     fetch(url, {
-      headers: { Authorization: API_TOKEN },
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
     })
       .then((resp) => resp.json())
       .then((resp) => {
@@ -194,24 +192,6 @@ export default function Table() {
         setData(resp);
       });
   };
-const getToken = () => {
-  
-  
- 
-  //Backend call
-  fetch("/api/api-token-auth/", {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({ username:"ECTK" , password:"ENERCON_01" }),
-  })
-    .then((resp) => resp.json())
-    .then((resp) => {
-      console.log(resp);
-    }).catch((err)=>console.error(err));
-}
-getToken();
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();
@@ -255,7 +235,7 @@ getToken();
                 fetch(url + "/" + rowData.id, {
                   method: "PUT",
                   headers: {
-                    Authorization: API_TOKEN,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
 
                   body: JSON.stringify(rowData),
@@ -278,7 +258,7 @@ getToken();
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    Authorization: API_TOKEN,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -296,7 +276,7 @@ getToken();
                 fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
-                    Authorization: API_TOKEN,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -313,7 +293,7 @@ getToken();
                 fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
-                    Authorization: API_TOKEN,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
