@@ -19,16 +19,7 @@ const Logout = () => {
   };
 
   return (
-    /*
-    <div>
-      {loading === false && (
-        <Fragment>
-          <h1>Are you sure you want to logout?</h1>
-          <input type="submit" value="Logout" onClick={handleLogout} />
-        </Fragment>
-      )}
-    </div>
-    */
+    
    <div>
    <h1>Bist du sicher, dass du dich Ausloggen willst?</h1>
    {loading === false && (
