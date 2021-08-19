@@ -94,9 +94,9 @@ h1{
   justify-content: center;
   color: white;
   text-align: center;
-  text-transform: uppercase;
+  
   padding-top: 10;
-  font-weight: 500;
+  
 
 }
 
@@ -127,7 +127,9 @@ h1{
   transition: 0.25s;
 
 }
-
+.box .error{
+  color:red;
+}
 .box input[type = "text"]:focus,.box input[type = "password"]:focus{
 
   width: 280px;

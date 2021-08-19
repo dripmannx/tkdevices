@@ -68,13 +68,10 @@ const darkTheme = createTheme({
 });
 
 export default function Table() {
-useEffect(() => {
+
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");
-  } else {
-    setLoading(false);
-  }
-}, []);
+  } 
   const columns = [
     {
       title: "Seriennummer",
@@ -194,7 +191,6 @@ useEffect(() => {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        console.log(resp);
         setData(resp);
       });
   };

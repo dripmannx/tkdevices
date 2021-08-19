@@ -64,13 +64,11 @@ const darkTheme = createTheme({
 });
 
 export default function DeleteTable() {
-  useEffect(() => {
+  
     if (localStorage.getItem("token") == null) {
       window.location.replace("http://localhost:8000");
-    } else {
-      setLoading(false);
-    }
-  }, []);
+    } 
+    
   const url = "/api/device/defect";
  
   const [data, setData] = useState([]);
@@ -95,7 +93,7 @@ export default function DeleteTable() {
       filterPlaceholder: "Status auswählen",
       type: "boolean",
       validate: (rowData) =>
-        rowData.status_defect === false || rowData.status_defect === undefined
+        rowData.status_defect === undefined || rowData.model ===""
           ? "Status als defekt melden"
           : true,
       tooltip: "Sortieren",

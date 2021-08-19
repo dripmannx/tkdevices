@@ -37,8 +37,6 @@ const Login = () => {
         if (data["token"]) {
           localStorage.clear();
           localStorage.setItem("token", data["token"]);
-          console.log(localStorage.getItem("token")); 
-          console.log(data)
           window.location.replace("http://localhost:8000/devices");
         } else {
           setUsername("");
@@ -52,9 +50,10 @@ const Login = () => {
   return (
     <div>
       {loading === false && <h1>Login</h1>}
-      {errors === true && <h2>Cannot log in with provided credentials</h2>}
+
       {loading === false && (
         <form className="box" onSubmit={onSubmit}>
+          {errors === true && <h2 className="error">Username oder passwort falsch</h2>}
           <label className="inputTitle" htmlFor="username">
             Username:
           </label>{" "}
