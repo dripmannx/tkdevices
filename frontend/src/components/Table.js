@@ -68,6 +68,13 @@ const darkTheme = createTheme({
 });
 
 export default function Table() {
+useEffect(() => {
+  if (localStorage.getItem("token") == null) {
+    window.location.replace("http://localhost:8000");
+  } else {
+    setLoading(false);
+  }
+}, []);
   const columns = [
     {
       title: "Seriennummer",
@@ -178,7 +185,6 @@ export default function Table() {
     },
   ];
   const url = "/api/device";
-  const API_TOKEN = localStorage.getItem("token");
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   

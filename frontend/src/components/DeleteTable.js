@@ -64,9 +64,15 @@ const darkTheme = createTheme({
 });
 
 export default function DeleteTable() {
+  useEffect(() => {
+    if (localStorage.getItem("token") == null) {
+      window.location.replace("http://localhost:8000");
+    } else {
+      setLoading(false);
+    }
+  }, []);
   const url = "/api/device/defect";
-  const API_TOKEN = "Token 8c183ffd95228fe49e4dcaaa1d42aced2261cb0f";
-
+ 
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const columns = [
@@ -182,7 +188,7 @@ export default function DeleteTable() {
           }}
           */
           editable={{
-            isEditHidden: (rowData) => rowData.model === "",
+           
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
                 //Backend call
