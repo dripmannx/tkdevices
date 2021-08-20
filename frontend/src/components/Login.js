@@ -49,6 +49,7 @@ const Login = () => {
 
   return (
     <div>
+      <title>Bitte Einloggen</title>
       {loading === false && <h1>Login</h1>}
 
       {loading === false && (

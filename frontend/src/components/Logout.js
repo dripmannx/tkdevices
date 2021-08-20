@@ -21,6 +21,7 @@ const Logout = () => {
   return (
     
    <div>
+       <title>Logout</title>
    <h1>Bist du sicher, dass du dich Ausloggen willst?</h1>
    {loading === false && (
      <form className="box" onSubmit={handleLogout}> 
