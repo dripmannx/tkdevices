@@ -206,6 +206,8 @@ export default function Table() {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <title>{deviceCount}</title>
+
       <div className="Table">
         <h1 class="first-title" align="center ">
           Lagernde Geräte
@@ -225,6 +227,7 @@ export default function Table() {
           title={""}
           data={data}
           columns={columns}
+          /*
           cellEditable={{
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
@@ -253,6 +256,7 @@ export default function Table() {
               });
             },
           }}
+          */
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {

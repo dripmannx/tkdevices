@@ -131,8 +131,9 @@ export default function DeleteTable() {
   const deviceCount =
     deviceCountDefect.length + " Geräte defekt und nicht aus dem DEP entfernt";
 
-  return (
+  return (  
     <ThemeProvider theme={darkTheme}>
+      <title>{deviceCountDefect.length} Defekte Geräte</title>
       <div className="Table">
         <h1 className="first-title" align="center">
           Alle Geräte
