@@ -209,12 +209,10 @@ export default function Table() {
       <title>{deviceCount}</title>
 
       <div className="Table">
-        <h1 class="first-title" align="center ">
-          Lagernde Geräte
-        </h1>
-        <h2 className="second-title" align="center">
+        
+        <h1 className="second-title" align="center">
           {deviceCount}
-        </h2>
+        </h1>
 
         <ToastsContainer
           store={ToastsStore}
@@ -258,7 +256,7 @@ export default function Table() {
           }}
           */
           editable={{
-            onRowAdd: (newData) =>
+            onRowAdd: (newData,tableData) =>
               new Promise((resolve, reject) => {
                 //Backend call
                 fetch(url, {
@@ -274,6 +272,7 @@ export default function Table() {
                     getDevices();
                     resolve();
                   });
+                
               }),
 
             onRowUpdate: (newData, oldData) =>
@@ -306,7 +305,9 @@ export default function Table() {
                   getDevices();
                   resolve();
                 });
+                
               }),
+              
           }}
           onRowClick={(evt, selectedRow) =>
             setSelectedRow(selectedRow.tableData.id)

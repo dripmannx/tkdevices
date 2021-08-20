@@ -135,12 +135,10 @@ export default function DeleteTable() {
     <ThemeProvider theme={darkTheme}>
       <title>{deviceCountDefect.length} Defekte Geräte</title>
       <div className="Table">
+       
         <h1 className="first-title" align="center">
-          Alle Geräte
-        </h1>
-        <h2 className="first-title" align="center">
           {deviceCount}
-        </h2>
+        </h1>
 
         <ToastsContainer
           store={ToastsStore}

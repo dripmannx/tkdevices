@@ -125,17 +125,16 @@ h1{
   border-radius: 24px;
 
   transition: 0.25s;
-
+  
 }
 .box .error{
   color:red;
 }
 .box input[type = "text"]:focus,.box input[type = "password"]:focus{
 
-  
 
   border-color: #2ecc71;
-
+  
 }
 
 .box input[type = "submit"] {
