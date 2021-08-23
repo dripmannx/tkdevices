@@ -97,7 +97,6 @@ export default function HandoutTable() {
           ? "Status als defekt melden"
           : true,
       tooltip: "Sortieren",
-      type:"boolean",
       lookup:{true:"versendet",false:"nicht versendet"}
 
     },
