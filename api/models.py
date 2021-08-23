@@ -14,5 +14,6 @@ class Device(models.Model):
     status_defect = models.BooleanField(default=False)
 
 class Handout(models.Model):
-    link = URLField()
+    link = models.URLField()
+    is_shipped = models.BooleanField(default=False)
 
