@@ -84,20 +84,22 @@ export default function HandoutTable() {
       validate: (rowData) =>
         rowData.link === undefined ||
         rowData.link === ""
-          ? "S/N im richtigen Format angeben"
+          ? "Link eingeben"
           : true,
       tooltip: "Seriennummer sortieren",
     },
     {
       title: "Versendet",
       field: "is_shipped",
-      type:'boolean',
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.is_shipped === undefined 
           ? "Status als defekt melden"
           : true,
       tooltip: "Sortieren",
+      type:"boolean",
+      lookup:{true:"versendet",false:"nicht versendet"}
+
     },
    ];
   const getDevices = () => {
