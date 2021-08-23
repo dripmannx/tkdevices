@@ -191,6 +191,7 @@ export default function Table() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
+        console.table(resp);
         setData(resp);
       });
   };
