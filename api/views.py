@@ -17,7 +17,7 @@ def handout(request):
     Get all non defect Devices and add a Device
     """
     if request.method == 'GET':
-        devices = Handout.objects.filter(status_defect=False, status=True)
+        devices = Handout.objects.all()
         serializer = HandoutSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False,status=status.HTTP_200_OK)
 
