@@ -97,8 +97,8 @@ export default function HandoutTable() {
           ? "Status als defekt melden"
           : true,
       tooltip: "Sortieren",
-      lookup:{true:"versendet",false:"nicht versendet"}
-
+      lookup:{true:"versendet",false:"nicht versendet"},
+      defaultSort: "asc"
     },
    ];
   const getDevices = () => {
