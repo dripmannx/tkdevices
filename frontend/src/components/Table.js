@@ -106,7 +106,6 @@ export default function Table() {
       field: "batterylife",
       defaultSort: "desc",
 
-      cellStyle: { textAlign: "center" },
       validate: (rowData) =>
         rowData.batterylife === undefined ||
         rowData.batterylife === "" ||
@@ -152,7 +151,6 @@ export default function Table() {
     {
       title: "Status",
       //defaultFilter: true,
-      align: "center",
       field: "status",
       /*
       cellStyle: (e, rowData) => {
