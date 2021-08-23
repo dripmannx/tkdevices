@@ -13,4 +13,3 @@ class Device(models.Model):
     status_defect = models.BooleanField(default=False)
 
 
-

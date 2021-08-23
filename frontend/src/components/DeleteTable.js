@@ -185,7 +185,6 @@ export default function DeleteTable() {
           }}
           */
           editable={{
-           
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
                 //Backend call
