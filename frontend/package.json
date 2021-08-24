@@ -30,7 +30,6 @@
     "@material-ui/data-grid": "^4.0.0-alpha.34",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/x-grid": "^4.0.0-alpha.34",
-<<<<<<< HEAD
     "material-table": "^1.69.3",
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
@@ -38,10 +37,5 @@
     "react-toasts": "^3.0.6",
     "siiimple-toast": "^3.1.7",
     "tata-js": "^0.1.5"
-=======
-    "material-table": "^1.63.0",
-    "react-router-dom": "^5.2.0",
-    "react-toastify": "^7.0.4"
->>>>>>> origin/master
   }
 }
