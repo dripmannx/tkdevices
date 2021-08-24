@@ -8,6 +8,7 @@ class HandoutSerializer(serializers.ModelSerializer):
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
+<<<<<<< HEAD
         fields = ("id",
                   "serialnumber",
                   "model",
@@ -19,6 +20,15 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 
 class DeleteDeviceSerializer(serializers.ModelSerializer):
+=======
+        fields = ("id","serialnumber",
+                 "model",
+                 "batterylife",
+                 "capacity",
+                
+                 "status",)
+class AddDeviceSerializer(serializers.ModelSerializer):
+>>>>>>> origin/master
     class Meta:
         model = Device
         fields = ("id",

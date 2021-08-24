@@ -6,6 +6,7 @@ from rest_framework.fields import URLField
 from datetime import datetime
 
 class Device(models.Model):
+<<<<<<< HEAD
     serialnumber = models.CharField(max_length=12, unique=True, blank=False)
     model = models.CharField(max_length=12, blank=True)
     batterylife = models.IntegerField( blank=True, null=True)
@@ -13,6 +14,16 @@ class Device(models.Model):
     status = models.BooleanField(default=True, blank=True)
     removed_from_DEP = models.BooleanField(default=False)
     status_defect = models.BooleanField(default=False)
+=======
+    STATE_CHOICES=[("lagernd","einlagern"), ("raus","ausgeben")]
+    serialnumber = models.CharField(max_length=12, unique=True)
+    model = models.CharField(max_length=12)
+    batterylife = models.IntegerField()
+    capacity = models.IntegerField()
+    status = models.CharField(max_length=7, choices=STATE_CHOICES,default=STATE_CHOICES[0][1])
+
+
+>>>>>>> origin/master
 
 class Handout(models.Model):
     link = models.URLField()

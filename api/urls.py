@@ -5,6 +5,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     path('devices', DeviceView.as_view()),
     path('device', devices),
+<<<<<<< HEAD
     path("device/<int:pk>",device_detail),
     path('device/defect', device_defect),
     path('device/defect/<int:pk>', defect_device_detail),
@@ -14,3 +15,7 @@ urlpatterns = [
     path('handouts',handout)
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
+=======
+    path("device/<pk>",device_detail)
+]
+>>>>>>> origin/master
