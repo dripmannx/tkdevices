@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from datetime import datetime
 from rest_framework import generics
 from rest_framework.response import Response
 from .serializers import DeviceSerializer, DeleteDeviceSerializer, HandoutSerializer
@@ -8,13 +9,39 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework.authentication import  BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.decorators import authentication_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 # Create your views here.
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def example_view(request, format=None):
+    content = {
+        'user': str(request.user),  # `django.contrib.auth.User` instance.
+       
+    }
+    return Response(content)
 @api_view(['GET', 'POST'])
 def handout(request):
     """
-    Get all non defect Devices and add a Device
+    Get all Handouts
     """
     if request.method == 'GET':
         devices = Handout.objects.all()
@@ -24,7 +51,9 @@ def handout(request):
     elif request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = HandoutSerializer(data=data)
+        
         if serializer.is_valid():
+            
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)

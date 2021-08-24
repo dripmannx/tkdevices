@@ -4,7 +4,7 @@ from .models import Device, Handout
 class HandoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Handout
-        fields = ('id','link', 'is_shipped')
+        fields = ('id','link', 'is_shipped','owner','timestamp')
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device

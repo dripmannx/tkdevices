@@ -193,6 +193,17 @@ export default function Table() {
         setData(resp);
       });
   };
+  const getCurrentUser = () => {
+    fetch("/api/current_user", {
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        console.table(resp);
+        
+      });
+  };
+  getCurrentUser();
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();

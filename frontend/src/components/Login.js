@@ -33,16 +33,18 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-       
+      console.log(data);
         if (data["token"]) {
           localStorage.clear();
           localStorage.setItem("token", data["token"]);
+          username;
           window.location.replace("http://localhost:8000/devices");
         } else {
           setUsername("");
           setPassword("");
           localStorage.clear();
           setErrors(true);
+
         }
       });
   };
@@ -51,7 +53,6 @@ const Login = () => {
     <div>
       <title>Bitte Einloggen</title>
       {loading === false && <h1>Login</h1>}
-
       {loading === false && (
         <form className="box" onSubmit={onSubmit}>
           {errors === true && <h2 className="error">Username oder passwort falsch</h2>}

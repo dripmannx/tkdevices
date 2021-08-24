@@ -23,7 +23,7 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import LinkIcon from '@material-ui/icons/Link';
+import LinkIcon from "@material-ui/icons/Link";
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -47,7 +47,6 @@ const tableIcons = {
   ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
   OpenLink: forwardRef((props, ref) => <LinkIcon {...props} ref={ref} />),
-
 };
 
 const darkTheme = createTheme({
@@ -71,37 +70,50 @@ export default function HandoutTable() {
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");
   }
+  
 
   const url = "/api/handouts";
-
+  const [username, setUsername] = useState([])
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
+  const getCurrentUser = () => {
+    fetch("/api/current_user", {
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        setUsername(resp)
+      });
+  };
+ useEffect(() => {
+   getCurrentUser();
+ }, []); 
+ console.log(username)
   const columns = [
     {
       title: "link",
       field: "link",
       filterPlaceholder: "nach Link suchen",
       validate: (rowData) =>
-        rowData.link === undefined ||
-        rowData.link === ""
+        rowData.link === undefined || rowData.link === ""
           ? "Link eingeben"
           : true,
-      tooltip: "Seriennummer sortieren",
+      sorting: false,
     },
     {
-      title: "Versendet",
+      title: "Status",
       field: "is_shipped",
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
-        rowData.is_shipped === undefined 
-          ? "Status als defekt melden"
-          : true,
+        rowData.is_shipped === undefined ? "Status als defekt melden" : true,
       tooltip: "Sortieren",
-      lookup:{true:"versendet",false:"nicht versendet"},
-      defaultSort: "asc"
+      lookup: { true: "versendet", false: "nicht versendet" },
+      defaultSort: "asc",
+      initialEditValue:false
     },
-   ];
-  const getDevices = () => {
+    { title: "Besitzer", field: "owner" ,initialEditValue:username["user"], editable:"never"},
+  ];
+  const getHandouts = () => {
     fetch(url, {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
     })
@@ -113,17 +125,16 @@ export default function HandoutTable() {
 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
-    getDevices();
+    getHandouts();
   }, []);
   const handouts_not_shipped = $.grep(data, function (n, i) {
-    return n.is_shipped=== false;
+    return n.is_shipped === false;
   });
   const handouts = $.grep(data, function (n, i) {
-    return n.is_shipped=== true||n.is_shipped===false;
+    return n.is_shipped === true || n.is_shipped === false;
   });
 
-  const deviceCount =
-    handouts.length + " Aufträge vorhanden";
+  const deviceCount = handouts.length + " Aufträge vorhanden";
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -144,6 +155,25 @@ export default function HandoutTable() {
           title={handouts_not_shipped.length + " Geräte nicht entfernt"}
           data={data}
           columns={columns}
+          detailPanel={[
+            {
+              tooltip: "Show Name",
+              render: (rowData) => {
+                return (
+                  <div
+                    style={{
+                      fontSize: 100,
+                      textAlign: "center",
+                      color: "white",
+                      backgroundColor: "#43A047",
+                    }}
+                  >
+                    {rowData.link}
+                  </div>
+                );
+              },
+            },
+          ]}
           /*
           cellEditable={{
             isCellEditable: (rowData) => rowData.model === "",
@@ -176,7 +206,7 @@ export default function HandoutTable() {
             
             },
           }}
-          */
+        */
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
@@ -191,7 +221,7 @@ export default function HandoutTable() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
-                    getDevices();
+                    getHandouts();
                     resolve();
                   });
               }),
@@ -209,7 +239,7 @@ export default function HandoutTable() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Gerätedaten gespeichert");
-                    getDevices();
+                    getHandouts();
                     resolve();
                   });
               }),
@@ -223,7 +253,7 @@ export default function HandoutTable() {
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
-                  getDevices();
+                  getHandouts();
                   resolve();
                 });
               }),
