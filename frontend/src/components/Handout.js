@@ -88,11 +88,11 @@ export default function HandoutTable() {
  useEffect(() => {
    getCurrentUser();
  }, []); 
- console.log(username)
   const columns = [
     {
-      title: "link",
+      title: "Link",
       field: "link",
+      tooltip: "Nach Link suchen",
       filterPlaceholder: "nach Link suchen",
       validate: (rowData) =>
         rowData.link === undefined || rowData.link === ""
@@ -103,15 +103,23 @@ export default function HandoutTable() {
     {
       title: "Status",
       field: "is_shipped",
+      tooltip: "Nach Status filtern",
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.is_shipped === undefined ? "Status als defekt melden" : true,
       tooltip: "Sortieren",
       lookup: { true: "versendet", false: "nicht versendet" },
       defaultSort: "asc",
-      initialEditValue:false
+      initialEditValue: false,
     },
-    { title: "Besitzer", field: "owner" ,initialEditValue:username["user"], editable:"never"},
+    {
+      title: "Ersteller",
+      field: "owner",
+      tooltip: "Nach Erstellern filtern",
+
+      initialEditValue: username["user"],
+      editable: "never",
+    },
   ];
   const getHandouts = () => {
     fetch(url, {
@@ -162,21 +170,22 @@ export default function HandoutTable() {
                 return (
                   <div
                     style={{
-                      fontSize: 100,
-                      textAlign: "center",
+                      fontSize: 20,
+                      textAlign: "left",
                       color: "white",
-                      backgroundColor: "#43A047",
+                      
+                     
                     }}
                   >
-                    {rowData.link}
+                    Ersteller: {rowData.owner}
                   </div>
                 );
               },
             },
           ]}
-          /*
+          
           cellEditable={{
-            isCellEditable: (rowData) => rowData.model === "",
+            
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
               return new Promise((resolve, reject) => {
@@ -188,7 +197,7 @@ export default function HandoutTable() {
                 fetch(url + "/" + rowData.id, {
                   method: "PUT",
                   headers: {
-                    "Content-type": "application/json",
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
 
                   body: JSON.stringify(rowData),
@@ -196,7 +205,7 @@ export default function HandoutTable() {
                   .then((resp) => resp.json())
 
                   .then((resp) => {
-                    getDevices();
+                    getHandouts();
                     resolve();
                     ToastsStore.success("Änderung gespeichert");
                   });
@@ -206,7 +215,7 @@ export default function HandoutTable() {
             
             },
           }}
-        */
+        
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
