@@ -18,7 +18,8 @@ body{
     color: hsl(0,0%,100%);
     z-index:-2;
    
-}@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+}
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
 
 .header {
     display: block;
@@ -26,7 +27,7 @@ body{
     width: 100%;
     max-width: 100%;
     box-shadow: none;
-    background-color: #FC466B;
+    background-color: hsl(158, 67%, 45%);
     position: fixed;
     height: 60px!important;
     overflow: hidden;
@@ -63,9 +64,7 @@ body{
     transition: transform 250ms ease-in-out;
     background: #434343;
 }
-.sidebarMenuInner li:hover {
-  background-color: hsl(0,0%,20%);
-}
+
 .sidebarMenuInner{
     margin:0;
     padding:0;
@@ -79,6 +78,9 @@ body{
     padding: 20px;
     cursor: pointer;
     border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+.sidebarMenuInner li:hover {
+  background-color: hsl(0,0%,20%);
 }
 .sidebarMenuInner li span{
     display: block;
@@ -94,6 +96,7 @@ body{
 }
 input[type="checkbox"]:checked ~ #sidebarMenu {
     transform: translateX(0);
+    
 }
 
 input[type=checkbox] {
