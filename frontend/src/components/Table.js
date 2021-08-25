@@ -209,8 +209,7 @@ export default function Table() {
         
       });
   };
-  getCurrentUser();
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();
   }, []);
