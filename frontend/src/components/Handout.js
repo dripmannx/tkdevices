@@ -50,11 +50,15 @@ const tableIcons = {
 };
 
 const darkTheme = createTheme({
+  header: {
+    zIndex: 0,
+  },
   palette: {
     type: "dark",
   },
   overrides: {
     MuiTableRow: {
+      zIndex:0,
       hover: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
@@ -159,7 +163,7 @@ export default function HandoutTable() {
 
         <MaterialTable
           icons={tableIcons}
-          class="TableRow"
+          className="TableRow"
           title={handouts_not_shipped.length + " Geräte nicht entfernt"}
           data={data}
           columns={columns}
@@ -276,6 +280,7 @@ export default function HandoutTable() {
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
+            headerStyle:{zIndex:1},
 
             rowStyle: (rowData) => ({
               backgroundColor:

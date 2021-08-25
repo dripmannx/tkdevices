@@ -6,5 +6,6 @@ urlpatterns = [
     path("devices",index),
     path("defect", index),
     path("handout", index),
-    path("logout", index)
+    path("logout", index),
+    path("statics", index)
     ]

@@ -49,11 +49,17 @@ const tableIcons = {
 };
 
 const darkTheme = createTheme({
+  header: {
+    zIndex: 0,
+  },
   palette: {
     type: "dark",
   },
   overrides: {
     MuiTableRow: {
+      
+        zIndex: 0,
+      
       hover: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
@@ -147,7 +153,7 @@ export default function DeleteTable() {
 
         <MaterialTable
           icons={tableIcons}
-          class="TableRow"
+          className="TableRow"
           title={deviceCountNotRemoved.length + " Geräte nicht entfernt"}
           data={data}
           columns={columns}
@@ -244,7 +250,7 @@ export default function DeleteTable() {
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
-
+            headerStyle:{zIndex: 0},
             rowStyle: (rowData) => ({
               backgroundColor:
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",

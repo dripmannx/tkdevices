@@ -25,6 +25,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import { FlightTakeoff } from "@material-ui/icons";
+import Statics from "./Statics"
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -58,6 +59,7 @@ const darkTheme = createTheme({
   },
   overrides: {
     MuiTableRow: {
+      zIndex: 0,
       hover: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
@@ -100,6 +102,7 @@ export default function Table() {
           ? "Model auswählen"
           : true,
       filterPlaceholder: "Modell auswählen",
+      initialEditValue: "SE 2016",
     },
     {
       title: "Batterie in %",
@@ -147,6 +150,7 @@ export default function Table() {
           ? "Speicher auswählen"
           : true,
       filterPlaceholder: "Speicher auswählen",
+      initialEditValue: 32,
     },
     {
       title: "Status",
@@ -171,12 +175,14 @@ export default function Table() {
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
+      initialEditValue: true,
     },
     {
       title: "Defekt",
       field: "status_defect",
       type: "boolean",
       filering: false,
+      initialEditValue: false,
     },
   ];
   const url = "/api/device";
@@ -216,10 +222,10 @@ export default function Table() {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      
       <title>{deviceCount}</title>
 
       <div className="Table">
-        
         <h1 className="second-title" align="center">
           {deviceCount}
         </h1>
@@ -231,7 +237,7 @@ export default function Table() {
 
         <MaterialTable
           icons={tableIcons}
-          class="TableRow"
+          className="TableRow"
           title={""}
           data={data}
           columns={columns}
@@ -266,7 +272,7 @@ export default function Table() {
           }}
           */
           editable={{
-            onRowAdd: (newData,tableData) =>
+            onRowAdd: (newData, tableData) =>
               new Promise((resolve, reject) => {
                 //Backend call
                 fetch(url, {
@@ -282,7 +288,6 @@ export default function Table() {
                     getDevices();
                     resolve();
                   });
-                
               }),
 
             onRowUpdate: (newData, oldData) =>
@@ -315,9 +320,7 @@ export default function Table() {
                   getDevices();
                   resolve();
                 });
-                
               }),
-              
           }}
           onRowClick={(evt, selectedRow) =>
             setSelectedRow(selectedRow.tableData.id)
@@ -329,7 +332,7 @@ export default function Table() {
             addRowPosition: "first",
             filtering: true,
             headerStyle: {
-              zIndex: 1,
+              zIndex: 0,
             },
 
             rowStyle: (rowData) => ({

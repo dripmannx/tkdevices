@@ -33,8 +33,10 @@
     "material-table": "^1.69.3",
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
+    "react-simple-sidenav": "^2.0.0",
     "react-toastify": "^7.0.4",
     "react-toasts": "^3.0.6",
+    "rsuite": "^4.10.2",
     "siiimple-toast": "^3.1.7",
     "tata-js": "^0.1.5"
   }
