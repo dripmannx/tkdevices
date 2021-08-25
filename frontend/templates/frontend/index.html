@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" />
-    <link rel="icon" type="image/x-icon" href="{% static '/img/server.png' %}">
+    <link rel="icon" type="image/x-icon" href="{% static '/img/icon.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     
@@ -26,11 +26,11 @@
 <div id="sidebarMenu">
     <ul class="sidebarMenuInner">
         <li>DeviceSystem<span>Navigation</span></li>
-        <li><a href="/devices" >Geräte</a></li>
-        <li><a href="/defect" >Defekte Geräte</a></li>
-        <li><a href="/handout" >Auträge</a></li>
-        <li><a href="/admin" >Admin</a></li>
-        <li><a href="/logout">Logout</a></li>
+        <li><i class="fa fa-fw fa-mobile"></i><a href="/devices" >Geräte </a></li>
+        <li><i class="fa fa-fw fa-exclamation-triangle"></i><a href="/defect"  >Defekte Geräte </a></li>
+        <li><i class="fa fa-fw fa-arrow-left"></i><a href="/handout" >Auträge </a></li>
+        <li><i class="fa fa-fw fa-user"></i><a href="/admin"   >Admin </a></li>
+        <li><i class="fa fa-fw fa-sign-out"></i><a href="/logout"  >Logout </a></li>
     </ul>
 </div>
 <div id='center' class="main center">
