@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 from django.db.models.fields import NullBooleanField
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -6,7 +7,7 @@ from rest_framework.fields import URLField
 from datetime import datetime
 
 class Device(models.Model):
-    serialnumber = models.CharField(max_length=12, unique=True, blank=False)
+    serialnumber = models.CharField(validators=[RegexValidator(regex='^.{12}$', message='Length has to be 4', code='nomatch')],max_length=12, unique=True, blank=False)
     model = models.CharField(max_length=12, blank=True)
     batterylife = models.IntegerField( blank=True, null=True)
     capacity = models.IntegerField( blank=True, null=True)
