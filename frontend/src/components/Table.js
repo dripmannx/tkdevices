@@ -66,7 +66,7 @@ export default function Table() {
     {
       title: "Batterie in %",
       field: "batterylife",
-      defaultSort: "desc",
+      //defaultSort: "desc",
 
       validate: (rowData) =>
         rowData.batterylife === undefined ||
@@ -129,6 +129,7 @@ export default function Table() {
         true: "lagernd",
         false: "rausgegeben",
       },
+     
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""

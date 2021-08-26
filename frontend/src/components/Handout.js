@@ -120,7 +120,7 @@ export default function HandoutTable() {
 
         <ToastsContainer
           store={ToastsStore}
-          position={ToastsContainerPosition.TOP_RIGHT}
+          position={ToastsContainerPosition.BOTTOM_CENTER}
         />
 
         <MaterialTable
@@ -155,7 +155,6 @@ export default function HandoutTable() {
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
               return new Promise((resolve, reject) => {
                 //Backend call
-                
                 const clonedData = [...data];
                 clonedData[rowData.tableData.id][columnDef.field] = newValue;
                 setData(clonedData);

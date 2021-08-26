@@ -100,7 +100,7 @@ def devices(request):
     Get all non defect Devices and add a Device
     """
     if request.method == 'GET':
-        devices = Device.objects.filter(status_defect=False, status=True)
+        devices = Device.objects.filter(status_defect=False).order_by('-batterylife','-status')
         serializer = DeviceSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False,status=status.HTTP_200_OK)
 
