@@ -9,7 +9,6 @@ import Logout from "./Logout";
 export default class DevicesPage extends Component {
     constructor(props){
         super(props);
-
     }
     render(){
         return (

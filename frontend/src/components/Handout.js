@@ -21,7 +21,6 @@ const darkTheme = createTheme({
   },
   overrides: {
     MuiTableRow: {
-      zIndex:0,
       hover: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
