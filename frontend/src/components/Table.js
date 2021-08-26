@@ -59,6 +59,7 @@ const darkTheme = createTheme({
   },
   overrides: {
     MuiTableRow: {
+      fontSize:15,
       zIndex: 0,
       hover: {
         "&:hover": {
@@ -209,6 +210,13 @@ export default function Table() {
         
       });
   };
+  
+function status(res) {
+    if (!res.ok) {
+        throw new Error(res.statusText);
+    }
+    return res;
+}
    //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();
@@ -240,7 +248,7 @@ export default function Table() {
           title={""}
           data={data}
           columns={columns}
-          /*
+          
           cellEditable={{
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
@@ -257,7 +265,7 @@ export default function Table() {
                   },
 
                   body: JSON.stringify(rowData),
-                })
+                }).then(status)
                   .then((resp) => resp.json())
 
                   .then((resp) => {
@@ -269,7 +277,7 @@ export default function Table() {
               });
             },
           }}
-          */
+          
           editable={{
             onRowAdd: (newData, tableData) =>
               new Promise((resolve, reject) => {

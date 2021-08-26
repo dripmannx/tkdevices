@@ -1,7 +1,6 @@
 // With default styles
 import React, { useState } from "react";
 import SideNav, { MenuIcon } from "react-simple-sidenav";
-import { Button } from "rsuite";
 const Statics = (props) => {
 const [showNav, setShowNav] = useState();
 const navItems = [

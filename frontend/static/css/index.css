@@ -17,6 +17,7 @@ body{
     background: hsl(0,0%,30%);
     color: hsl(0,0%,100%);
     z-index:-2;
+    font-size: 15em
    
 }
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
@@ -96,7 +97,7 @@ body{
 }
 input[type="checkbox"]:checked ~ #sidebarMenu {
     transform: translateX(0);
-    
+
 }
 
 input[type=checkbox] {
