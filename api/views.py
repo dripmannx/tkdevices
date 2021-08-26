@@ -44,7 +44,7 @@ def handout(request):
     Get all Handouts
     """
     if request.method == 'GET':
-        devices = Handout.objects.all()
+        devices = Handout.objects.all().order_by('is_shipped')
         serializer = HandoutSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False,status=status.HTTP_200_OK)
 

@@ -75,7 +75,6 @@ export default function HandoutTable() {
         rowData.is_shipped === undefined ? "Status als defekt melden" : true,
       tooltip: "Sortieren",
       lookup: { true: "versendet", false: "nicht versendet" },
-      defaultSort: "asc",
       initialEditValue: false,
     },
     {
