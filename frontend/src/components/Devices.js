@@ -6,7 +6,6 @@ import DeleteTable from "./DeleteTable";
 import { BrowserRouter as Router, Switch, Route, Link ,Redirect} from'react-router-dom';
 import Login from "./Login";
 import Logout from "./Logout";
-import Statics from "./Statics"
 export default class DevicesPage extends Component {
     constructor(props){
         super(props);
@@ -21,7 +20,6 @@ export default class DevicesPage extends Component {
               <Route path="/devices" component={Table}/>
               <Route path="/logout" component={Logout}/>
               <Route path="/handout" component={HandoutTable} />
-              <Route path="/statics" component={Statics} />
             </Switch>
           </Router>
         );

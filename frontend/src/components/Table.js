@@ -8,59 +8,18 @@ import {
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-import AddBox from "@material-ui/icons/AddBox";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import Check from "@material-ui/icons/Check";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import Clear from "@material-ui/icons/Clear";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
-import Edit from "@material-ui/icons/Edit";
-import FilterList from "@material-ui/icons/FilterList";
-import FirstPage from "@material-ui/icons/FirstPage";
-import LastPage from "@material-ui/icons/LastPage";
-import Remove from "@material-ui/icons/Remove";
-import SaveAlt from "@material-ui/icons/SaveAlt";
-import Search from "@material-ui/icons/Search";
-import ViewColumn from "@material-ui/icons/ViewColumn";
-import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
-import { FlightTakeoff } from "@material-ui/icons";
-import Statics from "./Statics"
-const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
-  )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
-  )),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-};
 
 const darkTheme = createTheme({
-  header:{
-    zIndex:0
+  header: {
+    zIndex: 0,
   },
   palette: {
     type: "dark",
   },
   overrides: {
     MuiTableRow: {
-      fontSize:15,
-      zIndex: 0,
+      
+
       hover: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
@@ -71,10 +30,9 @@ const darkTheme = createTheme({
 });
 
 export default function Table() {
-
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");
-  } 
+  }
   const columns = [
     {
       title: "Seriennummer",
@@ -189,7 +147,7 @@ export default function Table() {
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  
+
   const getDevices = () => {
     fetch(url, {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
@@ -197,7 +155,8 @@ export default function Table() {
       .then((resp) => resp.json())
       .then((resp) => {
         console.table(resp);
-        setData(resp);
+        setData(resp)
+        
       });
   };
   const getCurrentUser = () => {
@@ -207,17 +166,11 @@ export default function Table() {
       .then((resp) => resp.json())
       .then((resp) => {
         console.table(resp);
-        
       });
   };
+
   
-function status(res) {
-    if (!res.ok) {
-        throw new Error(res.statusText);
-    }
-    return res;
-}
-   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
     getDevices();
   }, []);
@@ -229,26 +182,23 @@ function status(res) {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      
       <title>{deviceCount}</title>
 
       <div className="Table">
         <h1 className="second-title" align="center">
           {deviceCount}
         </h1>
-
         <ToastsContainer
           store={ToastsStore}
-          position={ToastsContainerPosition.TOP_RIGHT}
+          position={ToastsContainerPosition.BOTTOM_CENTER}
         />
 
         <MaterialTable
-          icons={tableIcons}
+          //icons={tableIcons}
           className="TableRow"
           title={""}
           data={data}
           columns={columns}
-          
           cellEditable={{
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
@@ -265,7 +215,7 @@ function status(res) {
                   },
 
                   body: JSON.stringify(rowData),
-                }).then(status)
+                })
                   .then((resp) => resp.json())
 
                   .then((resp) => {
@@ -277,7 +227,6 @@ function status(res) {
               });
             },
           }}
-          
           editable={{
             onRowAdd: (newData, tableData) =>
               new Promise((resolve, reject) => {
