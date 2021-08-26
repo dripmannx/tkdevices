@@ -7,5 +7,6 @@ urlpatterns = [
     path("defect", index),
     path("handout", index),
     path("logout", index),
-    path("statics", index)
+    path("statics", index),
+    path("device/detail/<int:pk>", index),
     ]

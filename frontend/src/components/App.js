@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import DevicesPage from "./Devices";
+import DevicesPage from "./Routing";
 
 import Table from "./Table";
 import DeleteTable from "./DeleteTable";

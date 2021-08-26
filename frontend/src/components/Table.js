@@ -279,9 +279,11 @@ export default function Table() {
                 });
               }),
           }}
-          onRowClick={(evt, selectedRow) =>
-            setSelectedRow(selectedRow.tableData.id)
+          onRowClick={(event, rowData) =>
+           window.location.replace("http://localhost:8000/devicedetail/"+rowData.id)
+            
           }
+        
           options={{
             paging: false,
             maxBodyHeight: 700,
