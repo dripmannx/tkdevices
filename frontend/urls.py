@@ -8,5 +8,5 @@ urlpatterns = [
     path("handout", index),
     path("logout", index),
     path("statics", index),
-    path("device/detail/<int:pk>", index),
+    path("devices/<int:pk>", index),
     ]

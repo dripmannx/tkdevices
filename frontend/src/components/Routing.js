@@ -16,10 +16,10 @@ export default class DevicesPage extends Component {
             <Switch>
               <Route path="/" exact component={Login} />
               <Route path="/defect" component={DeleteTable} />
-              <Route path="/devices" component={Table}/>
+              <Route path="/devices" exact component={Table}/>
               <Route path="/logout" component={Logout}/>
               <Route path="/handout" component={HandoutTable} />
-              <Route path="/device/detail/" component={DeviceInDetail}/>
+              <Route path="/devices/" component={DeviceInDetail}/>
             </Switch>
           </Router>
         );
