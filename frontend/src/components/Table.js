@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import arrow_green_in from "./../../static/img/arrow_green_in.png";
+import arrow_red_out from "./../../static/img/arrow_red_out.png";
+import "./../../static/css/table.css";
 import {
   ToastsContainer,
   ToastsStore,
@@ -33,6 +36,37 @@ export default function Table() {
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");
   }
+  const url = "/api/device";
+  const [data, setData] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const getDevices = () => {
+    fetch(url, {
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        console.table(resp);
+        setData(resp);
+      });
+  };
+  /*
+  const getCurrentUser = () => {
+    fetch("/api/current_user", {
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        console.table(resp);
+      });
+  };
+
+  */
+
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+  useEffect(() => {
+    getDevices();
+  }, []);
   const columns = [
     {
       title: "Seriennummer",
@@ -76,7 +110,7 @@ export default function Table() {
           ? "Wert zwischen 0 und 100"
           : true,
       filtering: false,
-
+      defaultSort:"desc",
       render: (rowData) => rowData.batterylife + "%",
 
       /*
@@ -127,9 +161,9 @@ export default function Table() {
 
       lookup: {
         true: "lagernd",
-        false: "rausgegeben",
+        false: "rausgegeben"
       },
-     
+
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
@@ -142,39 +176,9 @@ export default function Table() {
       field: "status_defect",
       type: "boolean",
       filering: false,
-      initialEditValue: false,
     },
   ];
-  const url = "/api/device";
-  const [data, setData] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  const getDevices = () => {
-    fetch(url, {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        console.table(resp);
-        setData(resp)
-        
-      });
-  };
-  const getCurrentUser = () => {
-    fetch("/api/current_user", {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        console.table(resp);
-      });
-  };
-
   
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
-  useEffect(() => {
-    getDevices();
-  }, []);
   const deviceCountIn = $.grep(data, function (n, i) {
     return n.status === true;
   });
@@ -279,10 +283,8 @@ export default function Table() {
                 });
               }),
           }}
-          onRowClick={(event, rowData) =>
-           window.location.replace("http://localhost:8000/devicedetail/"+rowData.id)
-            
-          }
+          
+         
         
           options={{
             paging: false,

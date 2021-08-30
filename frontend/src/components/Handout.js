@@ -38,8 +38,8 @@ export default function HandoutTable() {
   }
   
 
-  const url = "/api/handouts";
-  const [username, setUsername] = useState([])
+  const url = `/api/handouts`;
+  const [username, setUsername] = useState([]);
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const getCurrentUser = () => {
@@ -230,9 +230,7 @@ export default function HandoutTable() {
                 });
               }),
           }}
-          onRowClick={(evt, selectedRow) =>
-            setSelectedRow(selectedRow.tableData.id)
-          }
+         
           options={{
             paging: false,
             maxBodyHeight: 700,
