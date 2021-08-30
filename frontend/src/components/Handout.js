@@ -2,6 +2,8 @@
 import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
+import "./../../static/css/table.css";
+
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
   ToastsContainer,
