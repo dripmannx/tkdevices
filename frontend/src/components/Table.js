@@ -48,7 +48,6 @@ export default function Table() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        
         console.table(resp);
         setData(resp);
        
@@ -188,7 +187,32 @@ export default function Table() {
   });
 
   const deviceCount = deviceCountIn.length + " Geräte lagernd";
+  const qrdiv = (id,model,serialnumber,batterylife) => {
+    <div id="qrcodediv">
+      <QRCode
+        className="qrcode"
+        bgColor="#FFFFFF"
+        fgColor="#000000"
+        level="Q"
+        style={{ width: 80 }}
+        //TODO change prod URL Redirect
+        value={"http://localhost:8000/devices/" + id}
+      />
+      <p className="model">Model: {model}</p>
+      <p className="serialnumber">S/N: {serialnumber}</p>
+      <p className="batterie">Batterie: {batterylife}%</p>
+    </div>;
+    window.print();
+  };
+const printDiv = (divName) =>  {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
 
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+}
   return (
     <ThemeProvider theme={darkTheme}>
       <title>{deviceCount}</title>
@@ -306,14 +330,28 @@ export default function Table() {
           detailPanel={(rowData) => {
             return (
               <div>
-              <QRCode
-                bgColor="#FFFFFF"
-                fgColor="#000000"
-                level="Q"
-                style={{ width: 80 }}
-                //TODO change prod URL Redirect
-                value={"http://localhost:8000/devices/" + rowData.id}
-              />
+                <div id="qrcodediv">
+                  <QRCode
+                    className="qrcode"
+                    bgColor="#FFFFFF"
+                    fgColor="#000000"
+                    level="Q"
+                    style={{ width: 80 }}
+                    //TODO change prod URL Redirect
+                    value={"http://localhost:8000/devices/" + rowData.id}
+                  />
+                  
+                </div>
+                <button
+                  id="print-div"
+                  className="print-button"
+                  onClick={() => {
+                    window.open(`/devices/${rowData.id}`, "_blank").focus();
+
+                   
+                    
+                  }}
+                ></button>
               </div>
             );
           }}

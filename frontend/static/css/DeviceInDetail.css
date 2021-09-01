@@ -1,14 +1,44 @@
+@media print {
+    .footer,
+    .non-printable, .title {
+        display: none !important;
+    }
+    .root {
+      max-width: 260px;
+      max-height: 130px;
+    }
+    .root .content {
+      float: right;
+      padding-right: 40px;
+    }
+    .root .item1{
+      float:top;
+     
+      
+    }
+     .root .item2{
+      float:top;
+     
+      
+      
+    }
+     .root .item3{
+      float:top;
+      
+    }
+     .root .item4{
+      float:top;
+      
+    }
+
+}
 .root {
 
-    min-width: 200;
-    max-width: 250;
-
+  
+    max-width: 350px;
+  
   }
- .bullet {
-    display: 'inline-block';
-    margin: 0 2px;
-    transform: 'scale(0.8)';
-  }
+ 
 .root .title {
     font-size: 14;
   }
