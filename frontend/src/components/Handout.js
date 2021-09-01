@@ -4,6 +4,7 @@ import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import "./../../static/css/table.css";
 
+import { QRCode } from "react-qr-svg";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
   ToastsContainer,
@@ -139,8 +140,6 @@ export default function HandoutTable() {
                       fontSize: 20,
                       textAlign: "left",
                       color: "white",
-                      
-                     
                     }}
                   >
                     Ersteller: {rowData.owner}
@@ -149,9 +148,7 @@ export default function HandoutTable() {
               },
             },
           ]}
-          
           cellEditable={{
-            
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
               return new Promise((resolve, reject) => {
@@ -174,13 +171,9 @@ export default function HandoutTable() {
                     resolve();
                     ToastsStore.success("Änderung gespeichert");
                   });
-
-
               });
-            
             },
           }}
-        
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
@@ -232,14 +225,13 @@ export default function HandoutTable() {
                 });
               }),
           }}
-         
           options={{
             paging: false,
             maxBodyHeight: 700,
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
-            headerStyle:{zIndex:1},
+            headerStyle: { zIndex: 1 },
 
             rowStyle: (rowData) => ({
               backgroundColor:
@@ -256,6 +248,7 @@ export default function HandoutTable() {
               },
             },
           ]}
+          
         />
       </div>
     </ThemeProvider>

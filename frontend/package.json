@@ -34,6 +34,7 @@
     "@material-ui/x-grid": "^4.0.0-alpha.34",
     "material-table": "^1.69.3",
     "react-icons": "^4.2.0",
+    "react-qr-svg": "^2.4.0",
     "react-router-dom": "^5.2.0",
     "react-simple-sidenav": "^2.0.0",
     "react-toastify": "^7.0.4",

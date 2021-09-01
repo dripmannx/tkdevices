@@ -6,6 +6,8 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import arrow_green_in from "./../../static/img/arrow_green_in.png";
 import arrow_red_out from "./../../static/img/arrow_red_out.png";
 import "./../../static/css/table.css";
+import { QRCode } from "react-qr-svg";
+
 import {
   ToastsContainer,
   ToastsStore,
@@ -46,8 +48,10 @@ export default function Table() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
+        
         console.table(resp);
         setData(resp);
+       
       });
   };
   /*
@@ -283,9 +287,6 @@ export default function Table() {
                 });
               }),
           }}
-          
-         
-        
           options={{
             paging: false,
             maxBodyHeight: 700,
@@ -301,6 +302,20 @@ export default function Table() {
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
             }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
+          }}
+          detailPanel={(rowData) => {
+            return (
+              <div>
+              <QRCode
+                bgColor="#FFFFFF"
+                fgColor="#000000"
+                level="Q"
+                style={{ width: 80 }}
+                //TODO change prod URL Redirect
+                value={"http://localhost:8000/devices/" + rowData.id}
+              />
+              </div>
+            );
           }}
         />
       </div>
