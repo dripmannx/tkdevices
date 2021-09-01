@@ -14,25 +14,20 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import authentication_classes
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
-
+from django.shortcuts import render
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
 # Create your views here.
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
 
-from rest_framework.authentication import TokenAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
+
+
 
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-def example_view(request, format=None):
+def user(request, format=None):
     content = {
         'user': str(request.user),  # `django.contrib.auth.User` instance.
        
