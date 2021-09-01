@@ -50,7 +50,7 @@ body{
     margin-top: 60px;
     transform: translateX(-250px);
     transition: transform 250ms ease-in-out;
-    background: #434343;
+    background: hsl(0, 0%, 26%);
 }
 
 .sidebarMenuInner{
@@ -70,6 +70,9 @@ body{
 .sidebarMenuInner li:hover {
   background-color: hsl(0,0%,20%);
 }
+.sidebarMenuInner .input-detail:hover {
+  background-color: hsl(0,0%,26%);
+}
 .sidebarMenuInner li span{
     display: block;
     font-size: 14px;
@@ -81,6 +84,15 @@ body{
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
+}
+.sidebarMenuInner .input-detail{
+    outline:none;
+    background-color: hsl(0,0%,26%);
+    width:150px;
+    color:white;
+    border:none;
+    padding-top: 5px;
+
 }
 input[type="checkbox"]:checked ~ #sidebarMenu {
     transform: translateX(0);

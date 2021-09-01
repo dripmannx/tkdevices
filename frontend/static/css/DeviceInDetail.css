@@ -1,0 +1,26 @@
+.root {
+
+    min-width: 200;
+    max-width: 250;
+
+  }
+ .bullet {
+    display: 'inline-block';
+    margin: 0 2px;
+    transform: 'scale(0.8)';
+  }
+.root .title {
+    font-size: 14;
+  }
+.root .green {
+    margin-bottom: 12;
+    color:"red";
+  }
+.root .red {
+    margin-bottom: 12;
+    color:"red";
+  }
+.root .pos {
+    margin-bottom: 12,
+  }
+a { text-decoration: none; }
