@@ -5,15 +5,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from rest_framework.fields import URLField
 from datetime import datetime
-import qrcode
-import qrcode.image.svg
-from io import BytesIO
 
 
 import base64
 
-from qrcode import make as qr_code_make
-from qrcode.image.svg import SvgPathFillImage
 
 
 from django.urls import reverse

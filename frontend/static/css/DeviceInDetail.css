@@ -1,19 +1,35 @@
 @media print {
+  @page {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    body {
+        padding-top: 72px;
+        padding-bottom: 72px ;
+    }
     .footer,
     .non-printable, .title {
         display: none !important;
     }
     .root {
-      max-width: 260px;
-      max-height: 130px;
+     margin-top: 10em;
+    margin-left: 10em; 
+    max-width: 260px;
+    max-height: 130px;
+    }
+    .root .card{
+      padding-left: 0px;
     }
     .root .content {
       float: right;
       padding-right: 40px;
     }
+    
+     
+    
     .root .item1{
       float:top;
-     
+     font-weight: bold;
       
     }
      .root .item2{
@@ -32,10 +48,33 @@
     }
 
 }
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 2  ) {
+  .root {
+    background-color:black;
+margin-top: 10em;
+margin-left: 10em;
+  }
+}
+
+
+
+
+
 .root {
 
-  
-    max-width: 350px;
+
+
+
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  max-width: 350px;
+  }
+ .root:hover {
+
+   box-shadow: 0 16px 70px -12.125px rgba(0,0,0,0.3)
+   
   
   }
  

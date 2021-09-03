@@ -9,19 +9,14 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework import status
-from rest_framework.authentication import  BasicAuthentication, TokenAuthentication
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import authentication_classes
 from rest_framework.decorators import permission_classes
-from django.shortcuts import render
-import qrcode
-import qrcode.image.svg
-from io import BytesIO
+
 # Create your views here.
-
-
 
 
 @api_view(['GET'])
@@ -30,9 +25,11 @@ from io import BytesIO
 def user(request, format=None):
     content = {
         'user': str(request.user),  # `django.contrib.auth.User` instance.
-       
+
     }
     return Response(content)
+
+
 @api_view(['GET', 'POST'])
 def handout(request):
     """
@@ -41,22 +38,24 @@ def handout(request):
     if request.method == 'GET':
         devices = Handout.objects.all().order_by('is_shipped')
         serializer = HandoutSerializer(devices, many=True)
-        return JsonResponse(serializer.data, safe=False,status=status.HTTP_200_OK)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
         serializer = HandoutSerializer(data=data)
-        
+
         if serializer.is_valid():
-            
+
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def handout_details(request, pk):
-    
-    #Retrieve, update or delete a device.
-    
+
+    # Retrieve, update or delete a device.
+
     try:
         handout = Handout.objects.get(pk=pk)
 
@@ -66,7 +65,7 @@ def handout_details(request, pk):
     if request.method == 'GET':
         serializer = HandoutSerializer(handout)
         return JsonResponse(serializer.data)
-    
+
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = HandoutSerializer(handout, data=data)
@@ -80,10 +79,6 @@ def handout_details(request, pk):
         return HttpResponse(status=204)
 
 
-
-
-
-
 class DeviceView(generics.CreateAPIView):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
@@ -95,9 +90,10 @@ def devices(request):
     Get all non defect Devices and add a Device
     """
     if request.method == 'GET':
-        devices = Device.objects.filter(status_defect=False, status=True).order_by('-batterylife','-status')
+        devices = Device.objects.filter(
+            status_defect=False, status=True).order_by('-batterylife', '-status')
         serializer = DeviceSerializer(devices, many=True)
-        return JsonResponse(serializer.data, safe=False,status=status.HTTP_200_OK)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
@@ -106,11 +102,11 @@ def devices(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def device_detail(request, pk):
-    
-    #Retrieve, update or delete a device.
-    
+    # Retrieve, update or delete a device.
     try:
         device = Device.objects.get(pk=pk)
 
@@ -120,7 +116,7 @@ def device_detail(request, pk):
     if request.method == 'GET':
         serializer = DeviceSerializer(device)
         return JsonResponse(serializer.data)
-    
+
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = DeviceSerializer(device, data=data)
@@ -134,11 +130,11 @@ def device_detail(request, pk):
         return HttpResponse(status=204)
 
 
-
 @api_view(['GET', 'POST'])
 def device_defect(request):
     if request.method == 'GET':
-        devices = Device.objects.filter(status_defect=True, removed_from_DEP=False)
+        devices = Device.objects.filter(
+            status_defect=True, removed_from_DEP=False)
         serializer = DeleteDeviceSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False)
 
@@ -149,9 +145,11 @@ def device_defect(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def defect_device_detail(request, pk):
-    #Retrieve, update or delete a device.
+    # Retrieve, update or delete a device.
     try:
         device = Device.objects.get(pk=pk)
 
@@ -161,7 +159,7 @@ def defect_device_detail(request, pk):
     if request.method == 'GET':
         serializer = DeleteDeviceSerializer(device)
         return JsonResponse(serializer.data)
-#TODO impliment a way to handle removed devices
+# TODO impliment a way to handle removed devices
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         serializer = DeleteDeviceSerializer(device, data=data)

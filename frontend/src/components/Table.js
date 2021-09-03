@@ -101,7 +101,7 @@ export default function Table() {
       initialEditValue: "SE 2016",
     },
     {
-      title: "Batterie in %",
+      title: "Batterie",
       field: "batterylife",
       //defaultSort: "desc",
 
@@ -131,7 +131,7 @@ export default function Table() {
       }, */
     },
     {
-      title: "Speicher in GB",
+      title: "Speicher",
       field: "capacity",
 
       lookup: {
@@ -187,32 +187,10 @@ export default function Table() {
   });
 
   const deviceCount = deviceCountIn.length + " Geräte lagernd";
-  const qrdiv = (id,model,serialnumber,batterylife) => {
-    <div id="qrcodediv">
-      <QRCode
-        className="qrcode"
-        bgColor="#FFFFFF"
-        fgColor="#000000"
-        level="Q"
-        style={{ width: 80 }}
-        //TODO change prod URL Redirect
-        value={"http://localhost:8000/devices/" + id}
-      />
-      <p className="model">Model: {model}</p>
-      <p className="serialnumber">S/N: {serialnumber}</p>
-      <p className="batterie">Batterie: {batterylife}%</p>
-    </div>;
-    window.print();
-  };
-const printDiv = (divName) =>  {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
+  
 
-     document.body.innerHTML = printContents;
 
-     window.print();
 
-}
   return (
     <ThemeProvider theme={darkTheme}>
       <title>{deviceCount}</title>
@@ -275,6 +253,7 @@ const printDiv = (divName) =>  {
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
                     getDevices();
+                    
                     resolve();
                   });
               }),
@@ -339,19 +318,11 @@ const printDiv = (divName) =>  {
                     style={{ width: 80 }}
                     //TODO change prod URL Redirect
                     value={"http://localhost:8000/devices/" + rowData.id}
+                    onClick={() => {
+                      window.open(`/devices/${rowData.id}`, "_blank").focus();
+                    }}
                   />
-                  
                 </div>
-                <button
-                  id="print-div"
-                  className="print-button"
-                  onClick={() => {
-                    window.open(`/devices/${rowData.id}`, "_blank").focus();
-
-                   
-                    
-                  }}
-                ></button>
               </div>
             );
           }}
