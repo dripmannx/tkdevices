@@ -23,8 +23,6 @@ const darkTheme = createTheme({
   },
   overrides: {
     MuiTableRow: {
-      
-
       hover: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
@@ -50,7 +48,6 @@ export default function Table() {
       .then((resp) => {
         console.table(resp);
         setData(resp);
-       
       });
   };
   /*
@@ -113,7 +110,7 @@ export default function Table() {
           ? "Wert zwischen 0 und 100"
           : true,
       filtering: false,
-      defaultSort:"desc",
+      defaultSort: "desc",
       render: (rowData) => rowData.batterylife + "%",
 
       /*
@@ -164,9 +161,8 @@ export default function Table() {
 
       lookup: {
         true: "lagernd",
-        false: "rausgegeben"
+        false: "rausgegeben",
       },
-
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
@@ -181,15 +177,12 @@ export default function Table() {
       filering: false,
     },
   ];
-  
+
   const deviceCountIn = $.grep(data, function (n, i) {
     return n.status === true;
   });
 
   const deviceCount = deviceCountIn.length + " Geräte lagernd";
-  
-
-
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -203,7 +196,6 @@ export default function Table() {
           store={ToastsStore}
           position={ToastsContainerPosition.BOTTOM_CENTER}
         />
-
         <MaterialTable
           //icons={tableIcons}
           className="TableRow"
@@ -224,11 +216,9 @@ export default function Table() {
                   headers: {
                     Authorization: `Token ${localStorage.getItem("token")}`,
                   },
-
                   body: JSON.stringify(rowData),
                 })
                   .then((resp) => resp.json())
-
                   .then((resp) => {
                     ToastsStore.success("Änderung gespeichert");
                     getDevices();
@@ -253,7 +243,7 @@ export default function Table() {
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
                     getDevices();
-                    
+
                     resolve();
                   });
               }),

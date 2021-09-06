@@ -25,18 +25,14 @@
       padding-right: 40px;
     }
     
-     
-    
-    .root .item1{
+     /*
+     .root .item1{
       float:top;
      font-weight: bold;
       
     }
      .root .item2{
       float:top;
-     
-      
-      
     }
      .root .item3{
       float:top;
@@ -44,9 +40,8 @@
     }
      .root .item4{
       float:top;
-      
     }
-
+     */
 }
 @media only screen 
   and (min-device-width: 768px) 
