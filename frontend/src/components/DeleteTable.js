@@ -25,7 +25,7 @@ const darkTheme = createTheme({
       
       hover: {
         "&:hover": {
-          backgroundColor: "#2E2E2E !important",
+          backgroundColor: "#fff !important",
         },
       },
     },
@@ -76,15 +76,16 @@ export default function DeleteTable() {
       tooltip: "Nach DEP Status sortieren",
     },
   ];
-  const getDevices = () => {
-    fetch(url, {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        setData(resp);
-      });
-  };
+ async function getDevices() {
+   const response = await fetch(url, {
+     headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+   });
+   console.log(response);
+   if (response.ok) {
+     const data = await response.json();
+     return setData(data);
+   }
+ }
 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function DeleteTable() {
         />
 
         <MaterialTable
-           className="TableRow"
+          className="TableRow"
           title={deviceCountNotRemoved.length + " Geräte nicht entfernt"}
           data={data}
           columns={columns}
@@ -203,9 +204,7 @@ export default function DeleteTable() {
                 });
               }),
           }}
-          onRowClick={(evt, selectedRow) =>
-            setSelectedRow(selectedRow.tableData.id)
-          }
+         
           options={{
             paging: false,
             maxBodyHeight: 700,
