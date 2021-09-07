@@ -39,24 +39,40 @@ export default function HandoutTable() {
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");
   }
-  
 
   const url = `/api/handouts`;
   const [username, setUsername] = useState([]);
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  const getCurrentUser = () => {
-    fetch("/api/current_user", {
+
+  async function getCurrentUser() {
+    const response = await fetch("/api/current_user", {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        setUsername(resp)
-      });
-  };
- useEffect(() => {
-   getCurrentUser();
- }, []); 
+    });
+    console.log(response);
+    if (response.ok) {
+      const data = await response.json();
+      return setUsername(data);
+    }
+  }
+  async function getHandouts() {
+    const response = await fetch(url, {
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+    });
+    console.log(response);
+    if (response.ok) {
+      const data = await response.json();
+      return setData(data);
+    }
+  }
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    getHandouts();
+  }, []);
   const columns = [
     {
       title: "Link",
@@ -89,20 +105,7 @@ export default function HandoutTable() {
       editable: "never",
     },
   ];
-  const getHandouts = () => {
-    fetch(url, {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        setData(resp);
-      });
-  };
 
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
-  useEffect(() => {
-    getHandouts();
-  }, []);
   const handouts_not_shipped = $.grep(data, function (n, i) {
     return n.is_shipped === false;
   });
@@ -248,7 +251,6 @@ export default function HandoutTable() {
               },
             },
           ]}
-          
         />
       </div>
     </ThemeProvider>

@@ -40,28 +40,20 @@ export default function Table() {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const getDevices = () => {
-    fetch(url, {
+  async function getDevices(){
+    
+  const response = await fetch(url, {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        console.table(resp);
-        setData(resp);
-      });
-  };
-  /*
-  const getCurrentUser = () => {
-    fetch("/api/current_user", {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        console.table(resp);
-      });
-  };
+    });
+  console.log(response);
+  if (response.ok){
+    const data = await response.json();
+    return setData(data);
+  }}
+  
 
-  */
+  
+  
 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
@@ -149,15 +141,8 @@ export default function Table() {
       title: "Status",
       //defaultFilter: true,
       field: "status",
-      /*
-      cellStyle: (e, rowData) => {
-        if (rowData.status === "lagernd") {
-          return { color: "green" };
-        } else {
-          return { color: "red" };
-        }
-      },
-      */
+      
+      
 
       lookup: {
         true: "lagernd",
@@ -175,6 +160,7 @@ export default function Table() {
       field: "status_defect",
       type: "boolean",
       filering: false,
+    
     },
   ];
 
@@ -205,7 +191,7 @@ export default function Table() {
           cellEditable={{
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-              return new Promise((resolve, reject) => {
+              return Promise((resolve, reject) => {
                 //Backend call
 
                 const clonedData = [...data];
