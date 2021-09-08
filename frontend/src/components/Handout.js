@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import "./../../static/css/table.css";
-
+import openInNewTab from "./openInNewTab";
 import { QRCode } from "react-qr-svg";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
@@ -32,9 +32,7 @@ const darkTheme = createTheme({
     },
   },
 });
-var openInNewTab = (url) => {
-  window.open(url, "_blank").focus();
-};
+
 export default function HandoutTable() {
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");

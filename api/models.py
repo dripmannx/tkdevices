@@ -7,8 +7,6 @@ from rest_framework.fields import URLField
 from datetime import datetime
 
 
-import base64
-
 
 
 from django.urls import reverse

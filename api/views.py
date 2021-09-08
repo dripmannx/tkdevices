@@ -12,7 +12,6 @@ from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.decorators import authentication_classes
 from rest_framework.decorators import permission_classes
 
@@ -91,7 +90,7 @@ def devices(request):
     """
     if request.method == 'GET':
         devices = Device.objects.filter(
-            status_defect=False, status=True).order_by('-batterylife', '-status')
+            status_defect=False).order_by('-batterylife', '-status')
         serializer = DeviceSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
@@ -104,12 +103,15 @@ def devices(request):
         return JsonResponse(serializer.errors, status=400)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def device_detail(request, pk):
-    # Retrieve, update or delete a device.
-    try:
-        device = Device.objects.get(pk=pk)
 
+@api_view(['GET', 'PUT', 'DELETE'])
+def device_detail(request, serialnumber):
+    # Retrieve, update or delete a device.
+   
+    try:
+       
+            device = Device.objects.get(serialnumber=serialnumber)
+       
     except Device.DoesNotExist:
         return HttpResponse(status=404)
 

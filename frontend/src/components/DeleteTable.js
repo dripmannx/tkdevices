@@ -175,7 +175,7 @@ export default function DeleteTable() {
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(url + "/" + oldData.id, {
+                fetch(url + "/" + oldData.serialnumber, {
                   method: "PUT",
                   headers: {
                     Authorization: `Token ${localStorage.getItem("token")}`,
@@ -192,7 +192,7 @@ export default function DeleteTable() {
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(url + "/" + oldData.id, {
+                fetch(url + "/" + oldData.serialnumber, {
                   method: "DELETE",
                   headers: {
                     Authorization: `Token ${localStorage.getItem("token")}`,

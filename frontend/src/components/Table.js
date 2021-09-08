@@ -1,12 +1,10 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
-import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import arrow_green_in from "./../../static/img/arrow_green_in.png";
-import arrow_red_out from "./../../static/img/arrow_red_out.png";
 import "./../../static/css/table.css";
 import { QRCode } from "react-qr-svg";
+import openInNewTab from "./openInNewTab";
 
 import {
   ToastsContainer,
@@ -154,6 +152,7 @@ export default function Table() {
           ? "Status auswählen"
           : true,
       initialEditValue: true,
+      defaultFilter:["true"]
     },
     {
       title: "Defekt",
@@ -195,9 +194,9 @@ export default function Table() {
                 //Backend call
 
                 const clonedData = [...data];
-                clonedData[rowData.tableData.id][columnDef.field] = newValue;
+                clonedData[rowData.tableData.serialnumber][columnDef.field] = newValue;
                 setData(clonedData);
-                fetch(url + "/" + rowData.id, {
+                fetch(url + "/" + rowData.serialnumber, {
                   method: "PUT",
                   headers: {
                     Authorization: `Token ${localStorage.getItem("token")}`,
@@ -227,9 +226,10 @@ export default function Table() {
                 })
                   .then((resp) => resp.json())
                   .then((resp) => {
+                    
                     ToastsStore.success("Neues Gerät gespeichert");
                     getDevices();
-
+                    openInNewTab(`/devices/${newData.serialnumber}`);
                     resolve();
                   });
               }),
@@ -237,7 +237,7 @@ export default function Table() {
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(url + "/" + oldData.id, {
+                fetch(url + "/" + oldData.serialnumber, {
                   method: "PUT",
                   headers: {
                     Authorization: `Token ${localStorage.getItem("token")}`,
@@ -254,7 +254,7 @@ export default function Table() {
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(url + "/" + oldData.id, {
+                fetch(url + "/" + oldData.serialnumber, {
                   method: "DELETE",
                   headers: {
                     Authorization: `Token ${localStorage.getItem("token")}`,
@@ -283,6 +283,8 @@ export default function Table() {
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
           detailPanel={(rowData) => {
+            const qrcodeurl =
+              "http://localhost:8000/devices/" + rowData.serialnumber; 
             return (
               <div>
                 <div id="qrcodediv">
@@ -293,9 +295,9 @@ export default function Table() {
                     level="Q"
                     style={{ width: 80 }}
                     //TODO change prod URL Redirect
-                    value={"http://localhost:8000/devices/" + rowData.id}
+                    value={qrcodeurl}
                     onClick={() => {
-                      window.open(`/devices/${rowData.id}`, "_blank").focus();
+                      window.open(qrcodeurl, "_blank").focus();
                     }}
                   />
                 </div>

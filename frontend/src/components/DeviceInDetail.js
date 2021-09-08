@@ -19,25 +19,32 @@ export default function DeviceInDetail() {
     window.location.replace("http://localhost:8000");
   }
   const windowurl = window.location.href;
-  var id = windowurl.split("/").pop();
+  const identifier = windowurl.split("/").pop();
+  console.log(windowurl, identifier);
+  const url = "/api/device/"+identifier
+  
   const [data, setData] = useState([]);
-  const url = "/api/device/";
+  const [error, setError] = useState(false);
 
-  const getDevice = () => {
-    fetch(url + id, {
+  async function getDevice() {
+    setError(false)
+    const response = await fetch(url, {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        console.log(resp);
-        setData(resp);
-      });
-  };
+    });
+    console.log(response);
+    if (response.ok) {
+      const data = await response.json();
+      return setData(data);
+    }else{
+      return setError(true)
+    }
+  }
+  
 
   useEffect(() => {
     getDevice();
   }, []);
-
+if (error===false){
   return (
     <Card className="root">
       <CardContent>
@@ -48,7 +55,7 @@ export default function DeviceInDetail() {
           level="Q"
           style={{ width: 100 }}
           //TODO change prod URL Redirect
-          value={"http://localhost:8000/devices/" + data["id"]}
+          value={"http://localhost:8000/devices/" + data["identifier"]}
         />
         <div className="content">
           <div className="pos printable item1" variant="h5" component="h2">
@@ -82,4 +89,6 @@ export default function DeviceInDetail() {
       </CardActions>
     </Card>
   );
-}
+}else{
+  return <h1>Device not Found</h1>
+}}
