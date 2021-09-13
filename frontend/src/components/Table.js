@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "./../../static/css/table.css";
 import { QRCode } from "react-qr-svg";
 import openInNewTab from "./openInNewTab";
-
+import SmartphoneIcon from "@material-ui/icons/Smartphone";
 import {
   ToastsContainer,
   ToastsStore,
@@ -46,6 +46,7 @@ export default function Table() {
   console.log(response);
   if (response.ok){
     const data = await response.json();
+    console.log(data);
     return setData(data);
   }}
   
@@ -187,6 +188,7 @@ export default function Table() {
           title={""}
           data={data}
           columns={columns}
+          /*
           cellEditable={{
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
@@ -194,8 +196,9 @@ export default function Table() {
                 //Backend call
 
                 const clonedData = [...data];
-                clonedData[rowData.tableData.serialnumber][columnDef.field] = newValue;
+                clonedData[rowData.tableData.id][columnDef.field] = newValue;
                 setData(clonedData);
+                console.log(clonedData);
                 fetch(url + "/" + rowData.serialnumber, {
                   method: "PUT",
                   headers: {
@@ -204,7 +207,7 @@ export default function Table() {
                   body: JSON.stringify(rowData),
                 })
                   .then((resp) => resp.json())
-                  .then((resp) => {
+                  .then(() => {
                     ToastsStore.success("Änderung gespeichert");
                     getDevices();
                     resolve();
@@ -213,6 +216,7 @@ export default function Table() {
               });
             },
           }}
+          */
           editable={{
             onRowAdd: (newData, tableData) =>
               new Promise((resolve, reject) => {
@@ -226,7 +230,6 @@ export default function Table() {
                 })
                   .then((resp) => resp.json())
                   .then((resp) => {
-                    
                     ToastsStore.success("Neues Gerät gespeichert");
                     getDevices();
                     openInNewTab(`/devices/${newData.serialnumber}`);
@@ -282,28 +285,18 @@ export default function Table() {
             }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
-          detailPanel={(rowData) => {
-            const qrcodeurl =
-              "http://localhost:8000/devices/" + rowData.serialnumber; 
-            return (
-              <div>
-                <div id="qrcodediv">
-                  <QRCode
-                    className="qrcode"
-                    bgColor="#FFFFFF"
-                    fgColor="#000000"
-                    level="Q"
-                    style={{ width: 80 }}
-                    //TODO change prod URL Redirect
-                    value={qrcodeurl}
-                    onClick={() => {
-                      window.open(qrcodeurl, "_blank").focus();
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          }}
+          actions={[
+            {
+              icon:SmartphoneIcon ,
+              tooltip: "Link öffnen",
+              onClick: (event, rowData) => {
+                openInNewTab(
+                  "http://localhost:8000/devices/" + rowData.serialnumber
+                );
+              },
+            },
+          ]}
+         
         />
       </div>
     </ThemeProvider>

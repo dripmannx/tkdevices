@@ -120,7 +120,7 @@ export default function DeleteTable() {
           title={deviceCountNotRemoved.length + " Geräte nicht entfernt"}
           data={data}
           columns={columns}
-          /*
+      
           cellEditable={{
             isCellEditable: (rowData) => rowData.model === "",
             cellStyle: {},
@@ -152,7 +152,6 @@ export default function DeleteTable() {
             
             },
           }}
-          */
           editable={{
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {

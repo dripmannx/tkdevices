@@ -19,6 +19,7 @@ export default function DeviceInDetail() {
     window.location.replace("http://localhost:8000");
   }
   const windowurl = window.location.href;
+  
   const identifier = windowurl.split("/").pop();
   console.log(windowurl, identifier);
   const url = "/api/device/"+identifier
@@ -55,7 +56,7 @@ if (error===false){
           level="Q"
           style={{ width: 100 }}
           //TODO change prod URL Redirect
-          value={"http://localhost:8000/devices/" + data["identifier"]}
+          value={"http://localhost:8000/devices/" + identifier}
         />
         <div className="content">
           <div className="pos printable item1" variant="h5" component="h2">
