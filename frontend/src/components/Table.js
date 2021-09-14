@@ -103,7 +103,9 @@ export default function Table() {
       filtering: false,
       defaultSort: "desc",
       render: (rowData) => rowData.batterylife + "%",
-
+      cellStyle: (data, rowData) => ({
+        color: data >90 ? "green" : "red",
+      }),
       /*
       cellStyle: (e, rowData) => {
         if (rowData.batterylife >= 90) {
@@ -140,27 +142,28 @@ export default function Table() {
       title: "Status",
       //defaultFilter: true,
       field: "status",
-      
-      
 
       lookup: {
         true: "lagernd",
         false: "rausgegeben",
       },
+      cellStyle: (data, rowData) => ({
+       
+        color: data === "lagernd" ? "green" : "red",
+      }),
       filterPlaceholder: "Status auswählen",
       validate: (rowData) =>
         rowData.status === undefined || rowData.status === ""
           ? "Status auswählen"
           : true,
       initialEditValue: true,
-      defaultFilter:["true"]
+      defaultFilter: ["true"],
     },
     {
       title: "Defekt",
       field: "status_defect",
       type: "boolean",
       filering: false,
-    
     },
   ];
 
@@ -278,7 +281,7 @@ export default function Table() {
             headerStyle: {
               zIndex: 0,
             },
-
+            
             rowStyle: (rowData) => ({
               backgroundColor:
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
@@ -287,8 +290,8 @@ export default function Table() {
           }}
           actions={[
             {
-              icon:SmartphoneIcon ,
-              tooltip: "Link öffnen",
+              icon: SmartphoneIcon,
+              tooltip: "Gerät öffnen",
               onClick: (event, rowData) => {
                 openInNewTab(
                   "http://localhost:8000/devices/" + rowData.serialnumber
@@ -296,7 +299,6 @@ export default function Table() {
               },
             },
           ]}
-         
         />
       </div>
     </ThemeProvider>

@@ -121,6 +121,7 @@ def device_detail(request, serialnumber):
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
+        print(data)
         serializer = DeviceSerializer(device, data=data)
         if serializer.is_valid():
             serializer.save()

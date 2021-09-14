@@ -19,16 +19,16 @@ export default function DeviceInDetail() {
     window.location.replace("http://localhost:8000");
   }
   const windowurl = window.location.href;
-  
+
   const identifier = windowurl.split("/").pop();
   console.log(windowurl, identifier);
-  const url = "/api/device/"+identifier
-  
+  const url = "/api/device/" + identifier; 
+
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
 
   async function getDevice() {
-    setError(false)
+    setError(false);
     const response = await fetch(url, {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
     });
@@ -36,60 +36,92 @@ export default function DeviceInDetail() {
     if (response.ok) {
       const data = await response.json();
       return setData(data);
-    }else{
-      return setError(true)
+    } else {
+      return setError(true);
     }
   }
   
-
   useEffect(() => {
     getDevice();
   }, []);
-if (error===false){
-  return (
-    <Card className="root">
-      <CardContent>
-        <QRCode
-          className="qrcode "
-          bgColor="#FFFFFF"
-          fgColor="#000000"
-          level="Q"
-          style={{ width: 100 }}
-          //TODO change prod URL Redirect
-          value={"http://localhost:8000/devices/" + identifier}
-        />
-        <div className="content">
-          <div className="pos printable item1" variant="h5" component="h2">
-            iPhone {data["model"]}
+  
+  console.log(data);
+  function updateDevice(data) {
+    console.log(data, "Hi")
+    const clonedData = [data];
+    clonedData["status"] = false;
+    console.log(clonedData["status"]);
+    setData(clonedData, "cloned");
+
+    console.log(data, "data");
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((resp) => resp.json())
+      .then(() => {
+       getDevice();
+       
+        
+      })
+      .catch((err) => console.log(err));
+  };
+
+  if (error === false) {
+    return (
+      <Card className="root">
+        <CardContent>
+          <QRCode
+            className="qrcode "
+            bgColor="#FFFFFF"
+            fgColor="#000000"
+            level="Q"
+            style={{ width: 100 }}
+            //TODO change prod URL Redirect
+            value={"http://localhost:8000/devices/" + identifier}
+          />
+          <div className="content">
+            <div className="pos printable item1" variant="h5" component="h2">
+              iPhone {data["model"]}
+            </div>
+            <div className="pos printable item2">
+              S/N: {data["serialnumber"]}
+            </div>
+            <div className="pos non-printable">
+              Status: {status(data["status"])}
+            </div>
+            <div className="pos printable item3">
+              Batterie: {data["batterylife"]}%
+            </div>
+            <div className="pos printable item4">
+              Speicher: {data["capacity"]}GB
+            </div>
           </div>
-          <div className="pos printable item2">S/N: {data["serialnumber"]}</div>
-          <div className="pos non-printable">
-            Status: {status(data["status"])}
-          </div>
-          <div className="pos printable item3">
-            Batterie: {data["batterylife"]}%
-          </div>
-          <div className="pos printable item4">
-            Speicher: {data["capacity"]}GB
-          </div>
-        </div>
-      </CardContent>
-      <CardActions>
-        <Button size="small" className="non-printable">
-          <a href="/devices">Zurück</a>
-        </Button>
-        <Button
-          size="small"
-          className="non-printable"
-          onClick={() => {
-            window.print();
-          }}
-        >
-          Drucken
-        </Button>
-      </CardActions>
-    </Card>
-  );
-}else{
-  return <h1>Device not Found</h1>
-}}
+        </CardContent>
+        <CardActions>
+          <Button
+            onClick={() => updateDevice(data)}
+            size="small"
+            className="non-printable"
+          >
+            Status ändern
+          </Button>
+          <Button
+            size="small"
+            className="non-printable"
+            onClick={() => {
+              window.print();
+            }}
+          >
+            Drucken
+          </Button>
+        </CardActions>
+      </Card>
+    );
+  } else {
+    return <h1>Device not Found</h1>;
+  }
+}
