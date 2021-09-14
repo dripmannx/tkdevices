@@ -51,8 +51,9 @@ export default function DeviceInDetail() {
     const clonedData = [data];
     clonedData["status"] = false;
     console.log(clonedData["status"]);
-    setData(clonedData, "cloned");
-
+    console.log(clonedData);
+    setData(clonedData);
+    
     console.log(data, "data");
     fetch(url, {
       method: "PUT",
