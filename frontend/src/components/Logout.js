@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment } from "react";
 const Logout = () => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState([]);
+   document.title = `Logout`;
 
 
   const getCurrentUser = () => {

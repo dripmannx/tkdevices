@@ -37,7 +37,6 @@ export default function Table() {
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  let tableRef = useRef();
   async function getDevices() {
    
     const response = await fetch(url, {
@@ -63,7 +62,8 @@ export default function Table() {
         rowData.serialnumber === undefined ||
         rowData.serialnumber === "" ||
         rowData.serialnumber.length != 12 ||
-        rowData.serialnumber !== rowData.serialnumber.toUpperCase()
+        rowData.serialnumber !== rowData.serialnumber.toUpperCase() ||
+        rowData.serialnumber.indexOf(" ") >= 0
           ? "S/N im richtigen Format angeben"
           : true,
       filterPlaceholder: "S/N eingeben",
@@ -160,6 +160,9 @@ export default function Table() {
       field: "status_defect",
       type: "boolean",
       filering: false,
+      cellStyle: {
+        justifyContent: "center",
+      },
     },
   ];
 
@@ -298,7 +301,6 @@ export default function Table() {
           ]}
         />
       </div>
-      <button className="buttonrefresh" onClick={() => getDevices()}>ok</button>
     </ThemeProvider>
   );
 }

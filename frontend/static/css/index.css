@@ -6,7 +6,12 @@ body{
     padding: 0;
     margin: 0;
 }
-
+.credit{
+    color: #fff;
+    padding-top: 30%;
+    padding-left: 45%;
+    font-size: 14px;
+}
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
 
 .header {

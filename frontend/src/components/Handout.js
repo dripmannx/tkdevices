@@ -14,7 +14,6 @@ import {
 
 import LinkIcon from "@material-ui/icons/Link";
 
-
 const darkTheme = createTheme({
   header: {
     zIndex: 0,
@@ -34,7 +33,7 @@ const darkTheme = createTheme({
 });
 
 export default function HandoutTable() {
-   document.title = `Offene Aufträge`;
+  document.title = `Offene Aufträge`;
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");
   }
@@ -62,6 +61,8 @@ export default function HandoutTable() {
     if (response.ok) {
       const data = await response.json();
       return setData(data);
+    } else if (response.statusText === "Unauthorized") {
+      window.location.replace("http://localhost:8000");
     }
   }
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
@@ -129,7 +130,7 @@ export default function HandoutTable() {
 
         <MaterialTable
           className="TableRow"
-          title={handouts_not_shipped.length + " Geräte nicht entfernt"}
+          title={handouts_not_shipped.length + " Aufträge nicht bearbeitet"}
           data={data}
           columns={columns}
           detailPanel={[
@@ -187,6 +188,11 @@ export default function HandoutTable() {
                   },
                   body: JSON.stringify(newData),
                 })
+                  .then((resp) => {
+                    if (resp.statusText === "unauthorized") {
+                      window.location.replace("http://localhost:8000");
+                    }
+                  })
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
