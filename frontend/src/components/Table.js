@@ -1,6 +1,6 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef, useRef } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "./../../static/css/table.css";
 import { QRCode } from "react-qr-svg";
@@ -37,22 +37,19 @@ export default function Table() {
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-
-  async function getDevices(){
-    
-  const response = await fetch(url, {
+  let tableRef = useRef();
+  async function getDevices() {
+   
+    const response = await fetch(url, {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
     });
-  console.log(response);
-  if (response.ok){
-    const data = await response.json();
-    console.log(data);
-    return setData(data);
-  }}
-  
-
-  
-  
+    console.log(response);
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      return setData(data);
+    }
+  }
 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
@@ -104,7 +101,7 @@ export default function Table() {
       defaultSort: "desc",
       render: (rowData) => rowData.batterylife + "%",
       cellStyle: (data, rowData) => ({
-        color: data >90 ? "green" : "red",
+        color: data > 90 ? "green" : "red",
       }),
       /*
       cellStyle: (e, rowData) => {
@@ -148,7 +145,6 @@ export default function Table() {
         false: "rausgegeben",
       },
       cellStyle: (data, rowData) => ({
-       
         color: data === "lagernd" ? "green" : "red",
       }),
       filterPlaceholder: "Status auswählen",
@@ -191,6 +187,7 @@ export default function Table() {
           title={""}
           data={data}
           columns={columns}
+          tableRef={tableRef}
           /*
           cellEditable={{
             cellStyle: {},
@@ -281,7 +278,7 @@ export default function Table() {
             headerStyle: {
               zIndex: 0,
             },
-            
+
             rowStyle: (rowData) => ({
               backgroundColor:
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
@@ -301,6 +298,7 @@ export default function Table() {
           ]}
         />
       </div>
+      <button className="buttonrefresh" onClick={() => getDevices()}>ok</button>
     </ThemeProvider>
   );
 }

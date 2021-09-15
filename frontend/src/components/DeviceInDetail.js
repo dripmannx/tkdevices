@@ -21,6 +21,7 @@ export default function DeviceInDetail() {
   const windowurl = window.location.href;
 
   const identifier = windowurl.split("/").pop();
+   document.title = `iPhone ${identifier}`;
   console.log(windowurl, identifier);
   const url = "/api/device/" + identifier; 
 
@@ -70,6 +71,8 @@ export default function DeviceInDetail() {
       })
       .catch((err) => console.log(err));
   };
+
+  
 
   if (error === false) {
     return (
