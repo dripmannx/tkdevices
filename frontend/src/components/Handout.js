@@ -34,6 +34,7 @@ const darkTheme = createTheme({
 });
 
 export default function HandoutTable() {
+   document.title = `Offene Aufträge`;
   if (localStorage.getItem("token") == null) {
     window.location.replace("http://localhost:8000");
   }

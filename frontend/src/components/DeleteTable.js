@@ -33,7 +33,7 @@ const darkTheme = createTheme({
 });
 
 export default function DeleteTable() {
-  
+  document.title = `Defekte Geräte`; 
     if (localStorage.getItem("token") == null) {
       window.location.replace("http://localhost:8000");
     } 
