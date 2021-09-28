@@ -6,13 +6,15 @@ import { BrowserRouter as Router, Switch, Route, Link ,Redirect} from'react-rout
 import Login from "./Login";
 import Logout from "./Logout";
 import DeviceInDetail from "./DeviceInDetail";
-export default class DevicesPage extends Component {
+import Navbar from "./Navbar";
+export default class Routing extends Component {
     constructor(props){
         super(props);
     }
     render(){
         return (
           <Router>
+              <Navbar/>
             <Switch>
               <Route path="/" exact component={Login} />
               <Route path="/defect" component={DeleteTable} />

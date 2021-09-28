@@ -11,7 +11,7 @@ import {
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-
+import getData, {checkLogIn} from "./APIRequests"
 const darkTheme = createTheme({
   header: {
     zIndex: 0,
@@ -31,28 +31,14 @@ const darkTheme = createTheme({
 });
 
 export default function Table() {
-  if (localStorage.getItem("token") == null) {
-    window.location.replace("http://localhost:8000");
-  }
+  checkLogIn()
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  async function getDevices() {
-   
-    const response = await fetch(url, {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    });
-    console.log(response);
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      return setData(data);
-    }
-  }
-
+  
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
-    getDevices();
+    getData(data,setData,url);
   }, []);
   const columns = [
     {
@@ -103,19 +89,7 @@ export default function Table() {
       cellStyle: (data, rowData) => ({
         color: data > 90 ? "green" : "red",
       }),
-      /*
-      cellStyle: (e, rowData) => {
-        if (rowData.batterylife >= 90) {
-          return { color: "green" };
-        }else if (rowData.batterylife === undefined){
-          return { color: "white" };
-        
-        } else {
-          return { color: "red" };
-        }
-      
      
-      }, */
     },
     {
       title: "Speicher",
@@ -190,7 +164,6 @@ export default function Table() {
           title={""}
           data={data}
           columns={columns}
-          tableRef={tableRef}
           /*
           cellEditable={{
             cellStyle: {},
@@ -278,6 +251,7 @@ export default function Table() {
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
+            exportButton: true,
             headerStyle: {
               zIndex: 0,
             },
@@ -299,6 +273,53 @@ export default function Table() {
               },
             },
           ]}
+          localization={{
+            body: {
+              emptyDataSourceMessage: "Keine Einträge",
+              addTooltip: "Hinzufügen",
+              deleteTooltip: "Löschen",
+              editTooltip: "Bearbeiten",
+              filterRow: {
+                filterTooltip: "Filter",
+              },
+              editRow: {
+                deleteText: "Diese Zeile wirklich löschen?",
+                cancelTooltip: "Abbrechen",
+                saveTooltip: "Speichern",
+              },
+            },
+            grouping: {
+              placeholder: "Spalten ziehen ...",
+              groupedBy: "Gruppiert nach:",
+            },
+            header: {
+              actions: "Aktionen",
+            },
+            pagination: {
+              labelDisplayedRows: "{from}-{to} von {count}",
+              labelRowsSelect: "Zeilen",
+              labelRowsPerPage: "Zeilen pro Seite:",
+              firstAriaLabel: "Erste Seite",
+              firstTooltip: "Erste Seite",
+              previousAriaLabel: "Vorherige Seite",
+              previousTooltip: "Vorherige Seite",
+              nextAriaLabel: "Nächste Seite",
+              nextTooltip: "Nächste Seite",
+              lastAriaLabel: "Letzte Seite",
+              lastTooltip: "Letzte Seite",
+            },
+            toolbar: {
+              addRemoveColumns: "Spalten hinzufügen oder löschen",
+              nRowsSelected: "{0} Zeile(n) ausgewählt",
+              showColumnsTitle: "Zeige Spalten",
+              showColumnsAriaLabel: "Zeige Spalten",
+              exportTitle: "Export",
+              exportAriaLabel: "Export",
+              exportName: "Export als CSV",
+              searchTooltip: "Suche...",
+              searchPlaceholder: "Suche...",
+            },
+          }}
         />
       </div>
     </ThemeProvider>

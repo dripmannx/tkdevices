@@ -10,7 +10,7 @@ import {
   ToastsContainerPosition,
 } from "react-toasts";
 
-
+import getData, { checkLogIn } from "./APIRequests";
 const darkTheme = createTheme({
   header: {
     zIndex: 0,
@@ -34,10 +34,7 @@ const darkTheme = createTheme({
 
 export default function DeleteTable() {
   document.title = `Defekte Geräte`; 
-    if (localStorage.getItem("token") == null) {
-      window.location.replace("http://localhost:8000");
-    } 
-    
+  checkLogIn();
   const url = "/api/device/defect";
  
   const [data, setData] = useState([]);
@@ -76,20 +73,10 @@ export default function DeleteTable() {
       tooltip: "Nach DEP Status sortieren",
     },
   ];
- async function getDevices() {
-   const response = await fetch(url, {
-     headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-   });
-   console.log(response);
-   if (response.ok) {
-     const data = await response.json();
-     return setData(data);
-   }
- }
-
+ 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
-    getDevices();
+    getData(data,setData, url);
   }, []);
   const deviceCountNotRemoved = $.grep(data, function (n, i) {
     return n.removed_from_DEP === false;

@@ -11,7 +11,7 @@ import {
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-
+import getData,{checkLogIn} from "./APIRequests";
 import LinkIcon from "@material-ui/icons/Link";
 
 const darkTheme = createTheme({
@@ -34,44 +34,23 @@ const darkTheme = createTheme({
 
 export default function HandoutTable() {
   document.title = `Offene Aufträge`;
-  if (localStorage.getItem("token") == null) {
-    window.location.replace("http://localhost:8000");
-  }
+  checkLogIn();
 
   const url = `/api/handouts`;
+  const urlUser = `/api/current_user`;
   const [username, setUsername] = useState([]);
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  async function getCurrentUser() {
-    const response = await fetch("/api/current_user", {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    });
-    console.log(response);
-    if (response.ok) {
-      const data = await response.json();
-      return setUsername(data);
-    }
-  }
-  async function getHandouts() {
-    const response = await fetch(url, {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-    });
-    console.log(response);
-    if (response.ok) {
-      const data = await response.json();
-      return setData(data);
-    } else if (response.statusText === "Unauthorized") {
-      window.location.replace("http://localhost:8000");
-    }
-  }
+  
+  
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
-    getCurrentUser();
+    getData(username, setUsername, url, urlUser);
   }, []);
 
   useEffect(() => {
-    getHandouts();
+    getData(data, setData, url);
   }, []);
   const columns = [
     {

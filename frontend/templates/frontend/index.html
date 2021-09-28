@@ -18,41 +18,14 @@
 </head>
 
 <body>
-<div class="header"></div>
-<input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
-<label for="openSidebarMenu" class="sidebarIconToggle">
-    <div class="spinner diagonal part-1"></div>
-    <div class="spinner horizontal"></div>
-    <div class="spinner diagonal part-2"></div>
-</label>
-<script>
-    function search() {
-        let sn = prompt("Seriennummer eingeben");
-            console.log(sn);
-            if(sn.length===12){ window.open("http://localhost:8000/devices/" + sn, "_blank").focus();}
-           
-              
-        
-    }
-</script>
-<div id="sidebarMenu">
-    <ul class="sidebarMenuInner">
-        <li>DeviceSystem<span>Navigation</span></li>
-        <li><i class="fa fa-fw fa-mobile"></i><a href="/devices" >Geräte </a></li>
-        <li><i class="fa fa-fw fa-exclamation-triangle"></i><a href="/defect"  >Defekte Geräte </a></li>
-        <li><i class="fa fa-fw fa-arrow-left"></i><a href="/handout" >Auträge </a></li>
-        <li onclick="search()"><i class="fa fa-fw fa-info"></i><a href="/devices/">Detail </a></li>
-        <li><i class="fa fa-fw fa-user"></i><a href="/admin"   >Admin </a></li>
-        <li><i class="fa fa-fw fa-sign-out"></i><a href="/logout"  >Logout </a></li>
-    </ul>
-</div>
-<div id='center' class="main center">
-    
+
+
+    <div id='center' class="main center"></div>
     <div id="main">
         <div id="app"></div>
     </div>
 
     <script src="{% static 'frontend/main.js' %}"></script>
 </body>
-<div class="credit">created by Luca Düpmann</div>
+
 </html>

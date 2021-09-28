@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import DevicesPage from "./Routing";
+import Routing from "./Routing";
 
 import Table from "./Table";
 import DeleteTable from "./DeleteTable";
@@ -10,7 +10,7 @@ export default class App extends Component {
   }
   render() {
     
-    return <DevicesPage/>;
+    return <Routing/>;
   }
 }
 const appDiv = document.getElementById("app");

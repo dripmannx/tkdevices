@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import "./../../static/css/DeviceInDetail.css";
 import { QRCode } from "react-qr-svg";
+import getData, { checkLogIn } from "./APIRequests";
 function status(state) {
   if (state === true) {
     return "lagernd";
@@ -15,9 +16,7 @@ function status(state) {
 }
 
 export default function DeviceInDetail() {
-  if (localStorage.getItem("token") == null) {
-    window.location.replace("http://localhost:8000");
-  }
+  checkLogIn();
   const windowurl = window.location.href;
 
   const identifier = windowurl.split("/").pop();

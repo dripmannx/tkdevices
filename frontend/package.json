@@ -32,6 +32,7 @@
     "@material-ui/data-grid": "^4.0.0-alpha.34",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/x-grid": "^4.0.0-alpha.34",
+    "cdbreact": "^1.1.0",
     "material-table": "^1.69.3",
     "react-icons": "^4.2.0",
     "react-qr-svg": "^2.4.0",

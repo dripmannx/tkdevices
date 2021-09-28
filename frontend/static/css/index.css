@@ -1,178 +1,20 @@
 
-body{
-   background-color: hsl(0,0%,18%);
-    overflow-x: hidden;
-    height: 100%;
-    padding: 0;
-    margin: 0;
+body {
+  background-color: hsl(0, 0%, 18%);
+  overflow-x: hidden;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
-.credit{
-    color: #fff;
-    padding-top: 30%;
-    padding-left: 45%;
-    font-size: 14px;
+.credit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  color: #fff;
 }
-@import url('https://fonts.googleapis.com/css?family=Varela+Round');
-
-.header {
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 100%;
-    box-shadow: none;
-    background-color: hsl(158, 67%, 45%);
-    position: fixed;
-    height: 60px!important;
-    overflow: hidden;
-    
-}
-.main {
-    
-    margin: 0 auto;
-    display: block;
-    height: 100%;
-    margin-top: 60px;
-}
-.mainInner{
-    display: table;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-}
-.mainInner div{
-    display:table-cell;
-    vertical-align: middle;
-    font-size: 3em;
-    font-weight: bold;
-    letter-spacing: 1.25px;
-}
-#sidebarMenu {
-    z-index: 4;
-    height: 100%;
-    position: fixed;
-    left: 0;
-    width: 250px;
-    margin-top: 60px;
-    transform: translateX(-250px);
-    transition: transform 250ms ease-in-out;
-    background: hsl(0, 0%, 26%);
-}
-
-.sidebarMenuInner{
-    margin:0;
-    padding:0;
-    border-top: 1px solid rgba(255, 255, 255, 0.10);
-}
-.sidebarMenuInner li{
-    list-style: none;
-    color: #fff;
-    text-transform: uppercase;
-    font-weight: bold;
-    padding: 20px;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-}
-.sidebarMenuInner li:hover {
-  background-color: hsl(0,0%,20%);
-}
-.sidebarMenuInner .input-detail:hover {
-  background-color: hsl(0,0%,26%);
-}
-.sidebarMenuInner li span{
-    display: block;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.50);
-}
-.sidebarMenuInner li a{
-    color: #fff;
-    text-transform: uppercase;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-}
-.sidebarMenuInner .input-detail{
-    outline:none;
-    background-color: hsl(0,0%,26%);
-    width:150px;
-    color:white;
-    border:none;
-    padding-top: 5px;
-
-}
-.buttonrefresh{
-    padding-top: 50px;
-    background-color:hsl(0,100%,100%)
-}
-input[type="checkbox"]:checked ~ #sidebarMenu {
-    transform: translateX(0);
-
-}
-
-input[type=checkbox] {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    display: none;
-}
-.sidebarIconToggle {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    cursor: pointer;
-    position: absolute;
-    z-index: 99;
-    height: 100%;
-    width: 100%;
-    top: 22px;
-    left: 15px;
-    height: 22px;
-    width: 22px;
-}
-.spinner {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: absolute;
-    height: 3px;
-    width: 100%;
-    background-color: #fff;
-}
-.horizontal {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: relative;
-    float: left;
-    margin-top: 3px;
-}
-.diagonal.part-1 {
-    position: relative;
-    transition: all 0.3s;
-    box-sizing: border-box;
-    float: left;
-}
-.diagonal.part-2 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    position: relative;
-    float: left;
-    margin-top: 3px;
-}
-input[type=checkbox]:checked ~ .sidebarIconToggle > .horizontal {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    opacity: 0;
-}
-input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-1 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    transform: rotate(135deg);
-    margin-top: 8px;
-}
-input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
-    transition: all 0.3s;
-    box-sizing: border-box;
-    transform: rotate(-135deg);
-    margin-top: -9px;
-}
-.box{
-
+.box {
   width: 300px;
 
   padding: 40px;
@@ -183,29 +25,26 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
   left: 50%;
 
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 
   background: #191919;
 
   text-align: center;
-
 }
 .box .inputTitle {
-  color:white;
+  color: white;
 }
-h1{
+h1 {
   justify-content: center;
   color: white;
   text-align: center;
-  
-  padding-top: 10;
-  
 
+  padding-top: 50px;
 }
 
-.box input[type = "text"],.box input[type = "password"]{
-
-  border:0;
+.box input[type="text"],
+.box input[type="password"] {
+  border: 0;
 
   background: none;
 
@@ -228,21 +67,17 @@ h1{
   border-radius: 24px;
 
   transition: 0.25s;
-  
 }
-.box .error{
-  color:red;
+.box .error {
+  color: red;
 }
-.box input[type = "text"]:focus,.box input[type = "password"]:focus{
-
-
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
   border-color: #2ecc71;
-  
 }
 
-.box input[type = "submit"] {
-
-  border:0;
+.box input[type="submit"] {
+  border: 0;
 
   background: none;
 
@@ -265,10 +100,8 @@ h1{
   transition: 0.25s;
 
   cursor: pointer;
-
 }
 
-.box input[type = "submit"]:hover{
-
+.box input[type="submit"]:hover {
   background: #2ecc71;
 }
