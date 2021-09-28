@@ -17,11 +17,10 @@ export  function ForwardLogIn(){
     window.location.replace("http://localhost:8000");
   }
 }
-export function checkLogIn() {
+export function checkLogIn(loginState, setLoginState) {
   if (localStorage.getItem("token") == null) {
-    console.log("hi")
-    return false;
-  }else {return true; }
+    setLoginState(false);
+  }else { setLoginState(true); }
 }
 
 
