@@ -6,6 +6,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState(false);
   const [loading, setLoading] = useState(true);
+   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     if (
@@ -39,8 +40,10 @@ const Login = () => {
           localStorage.clear();
           localStorage.setItem("token", data["token"]);
           username;
+          setIsLoggedIn(true);
           window.location.replace("http://localhost:8000/devices");
         } else {
+          setIsLoggedIn(false);
           setUsername("");
           setPassword("");
           localStorage.clear();

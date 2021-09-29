@@ -11,7 +11,7 @@ import {
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-import getData, {checkLogIn} from "./APIRequests"
+import getData, {ForwardLogIn} from "./APIRequests"
 const darkTheme = createTheme({
   header: {
     zIndex: 0,
@@ -29,9 +29,7 @@ const darkTheme = createTheme({
     },
   },
 });
-
 export default function Table() {
-  checkLogIn()
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -207,7 +205,7 @@ export default function Table() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
-                    getDevices();
+                    getData(data, setData, url);;
                     openInNewTab(`/devices/${newData.serialnumber}`);
                     resolve();
                   });
@@ -226,7 +224,7 @@ export default function Table() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Gerätedaten gespeichert");
-                    getDevices();
+                     getData(data, setData, url);;
                     resolve();
                   });
               }),
@@ -240,7 +238,7 @@ export default function Table() {
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
-                  getDevices();
+                   getData(data, setData, url);;
                   resolve();
                 });
               }),

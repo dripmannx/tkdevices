@@ -7,14 +7,12 @@ import Login from "./Login";
 import Logout from "./Logout";
 import DeviceInDetail from "./DeviceInDetail";
 import Navbar from "./Navbar";
-export default class Routing extends Component {
-    constructor(props){
-        super(props);
-    }
-    render(){
+const Routing =()=> {
+    
+
         return (
           <Router>
-              <Navbar/>
+          
             <Switch>
               <Route path="/" exact component={Login} />
               <Route path="/defect" component={DeleteTable} />
@@ -25,5 +23,6 @@ export default class Routing extends Component {
             </Switch>
           </Router>
         );
-    }
+    
 }
+export default Routing

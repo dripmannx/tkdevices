@@ -10,7 +10,7 @@ import {
   ToastsContainerPosition,
 } from "react-toasts";
 
-import getData, { checkLogIn } from "./APIRequests";
+import getData, { ForwardLogIn } from "./APIRequests";
 const darkTheme = createTheme({
   header: {
     zIndex: 0,
@@ -34,7 +34,7 @@ const darkTheme = createTheme({
 
 export default function DeleteTable() {
   document.title = `Defekte Geräte`; 
-  checkLogIn();
+  ForwardLogIn();
   const url = "/api/device/defect";
  
   const [data, setData] = useState([]);

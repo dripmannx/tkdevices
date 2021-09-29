@@ -2,23 +2,33 @@
 
 import "./../../static/css/Navbar.css";
 import React, { useEffect, useState } from "react";
-import checkLogIn from "./APIRequests";
+import getCurrentUser from "./APIRequests";
 
 const Navbar = () => {
+ const [isActive, setActive] = useState(false);
+ const handleOnClick = () => {
+
+   setActive(!isActive);
+   console.log(isActive)
+ };
+  const url = "/api/current_user";
+  const [username,setUsername] = useState([])
   const [loginState, setLoginState] = useState(true);
-  useEffect(async () => {checkLogIn(loginState, setLoginState), []});
-   
-  console.log(loginState)
+  useEffect(() => { 
+    if (localStorage.getItem("token") == null) {
+    setLoginState(false);
+  }else { setLoginState(true); }}, []);
+
   return (
     <div>
       <nav className="navbar">
         <div className="brand-title">ENERCON</div>
-        <a href="#" className="toggle-button">
+        <a href="#" className="toggle-button" onClick={()=>handleOnClick()}>
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
         </a>
-        <div className="navbar-links">
+        <div className={isActive ? "navbar-links active" : "navbar-links"}>
           <ul>
             {loginState === true && (
               <>
@@ -31,10 +41,13 @@ const Navbar = () => {
                 <li>
                   <a href="/handout">Aufträge</a>
                 </li>
+                
               </>
             )}
             <li>
-              <a href="/logout">Logout</a>
+              <a href={loginState ? "/logout" : "/"}>
+                {loginState ? "Logout" : "Login"}
+              </a>
             </li>
           </ul>
         </div>
