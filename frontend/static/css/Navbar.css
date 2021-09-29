@@ -33,8 +33,11 @@ body {
 .navbar-links li {
   list-style: none;
 }
-
+.notClickable {
+  pointer-events: none;
+}
 .navbar-links li a {
+  
   display: block;
   text-decoration: none;
   color: white;

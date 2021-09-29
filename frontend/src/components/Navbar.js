@@ -14,6 +14,10 @@ const Navbar = () => {
   const url = "/api/current_user";
   const [username,setUsername] = useState([])
   const [loginState, setLoginState] = useState(true);
+  useEffect(() => {
+    
+    getCurrentUser(username, setUsername, url);
+  }, []);
   useEffect(() => { 
     if (localStorage.getItem("token") == null) {
     setLoginState(false);
@@ -23,7 +27,7 @@ const Navbar = () => {
     <div>
       <nav className="navbar">
         <div className="brand-title">ENERCON</div>
-        <a href="#" className="toggle-button" onClick={()=>handleOnClick()}>
+        <a href="#" className="toggle-button" onClick={() => handleOnClick()}>
           <span className="bar"></span>
           <span className="bar"></span>
           <span className="bar"></span>
@@ -41,7 +45,6 @@ const Navbar = () => {
                 <li>
                   <a href="/handout">Aufträge</a>
                 </li>
-                
               </>
             )}
             <li>
@@ -49,6 +52,12 @@ const Navbar = () => {
                 {loginState ? "Logout" : "Login"}
               </a>
             </li>
+
+            {loginState === true && (
+              <li className="notClickable">
+                <a href="/">{username["user"]}</a>
+              </li>
+            )}
           </ul>
         </div>
       </nav>

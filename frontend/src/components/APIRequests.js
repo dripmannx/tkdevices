@@ -21,14 +21,17 @@ export  function ForwardLogIn(){
 export function checkLogIn(loginState, setLoginState) {
   if (localStorage.getItem("token") == null) {
     setLoginState(false);
+    
   }else { setLoginState(true); }
+  return loginState;
 }
 */
 export function checkLogIn(){
   console.log("ceck")
 }
 
-export async function getCurrentUser(username,setUsername,url){
+export async function getCurrentUser(e,username,setUsername,url){
+  e.preventDefault();
    const response = await fetch(url, {
      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
    });
