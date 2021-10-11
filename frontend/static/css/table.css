@@ -4,7 +4,7 @@ body {
 }
 .Table {
   background-color: hsl(0, 0%, 18%);
-
+  font-size : 14px;
   color: white;
   z-index: -1;
 }

@@ -135,7 +135,9 @@ def device_detail(request, serialnumber):
 
 @api_view(['GET', 'POST'])
 def device_defect(request):
+    
     if request.method == 'GET':
+        
         devices = Device.objects.filter(
             status_defect=True, removed_from_DEP=False)
         serializer = DeleteDeviceSerializer(devices, many=True)
@@ -151,12 +153,14 @@ def device_defect(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def defect_device_detail(request, pk):
+def defect_device_detail(request, serialnumber):
     # Retrieve, update or delete a device.
     try:
-        device = Device.objects.get(pk=pk)
-
+        device = Device.objects.get(serialnumber=serialnumber)
+        print(device)
+ 
     except Device.DoesNotExist:
+        print("GOTIT") 
         return HttpResponse(status=404)
 
     if request.method == 'GET':

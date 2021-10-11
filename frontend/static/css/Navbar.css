@@ -1,3 +1,8 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+
+. {
+  
+}
 
 body {
   margin: 0;
@@ -6,6 +11,7 @@ body {
 }
 
 .navbar {
+  font-family: Raleway;
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -101,15 +107,6 @@ body {
 
 /* Background Styles Only */
 
-@import url("https://fonts.googleapis.com/css?family=Raleway");
-
-* {
-  font-family: Raleway;
-}
-
-html {
-  background-color: #dfdfdf;
-}
 
 .side-links {
   position: absolute;

@@ -14,10 +14,14 @@ const Navbar = () => {
   const url = "/api/current_user";
   const [username,setUsername] = useState([])
   const [loginState, setLoginState] = useState(true);
-  useEffect(() => {
+  if (window.location.href !== "http://localhost:8000/") {
     
-    getCurrentUser(username, setUsername, url);
-  }, []);
+    useEffect(() => {
+      getCurrentUser(username, setUsername, url);
+    }, []);
+  }else{console.log("login");}
+  
+  
   useEffect(() => { 
     if (localStorage.getItem("token") == null) {
     setLoginState(false);
@@ -56,6 +60,7 @@ const Navbar = () => {
             {loginState === true && (
               <li className="notClickable">
                 <a href="/">{username["user"]}</a>
+
               </li>
             )}
           </ul>

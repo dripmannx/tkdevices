@@ -6,9 +6,8 @@ urlpatterns = [
     path('devices', DeviceView.as_view()),
     path('device', devices),
     path("device/<str:serialnumber>",device_detail, name="device_detail"),
-
-    path('device/defect', device_defect),
-    path('device/defect/<int:pk>', defect_device_detail),
+    path('devices/defect', device_defect),
+    path('devices/defect/<int:serialnumber>', defect_device_detail),
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     path('current_user',user),
     path('handouts/<int:pk>',handout_details),

@@ -9,11 +9,16 @@ const Login = () => {
    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    
     if (
+            
+
       localStorage.getItem("token") !== null
     ) {
+     
       window.location.replace("http://localhost:8000/devices");
     } else {
+      
       setLoading(false);
     }
   }, []);
@@ -39,7 +44,6 @@ const Login = () => {
         if (data["token"]) {
           localStorage.clear();
           localStorage.setItem("token", data["token"]);
-          username;
           setIsLoggedIn(true);
           window.location.replace("http://localhost:8000/devices");
         } else {

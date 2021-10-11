@@ -35,8 +35,7 @@ const darkTheme = createTheme({
 export default function DeleteTable() {
   document.title = `Defekte Geräte`; 
   ForwardLogIn();
-  const url = "/api/device/defect";
- 
+  const url = "/api/devices/defect";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const columns = [
@@ -75,9 +74,21 @@ export default function DeleteTable() {
   ];
  
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+ async function getDevices() {
+   const response = await fetch(url, {
+     headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+   });
+   console.log(response);
+   if (response.ok) {
+     const data = await response.json();
+     return setData(data);
+   }
+ }
   useEffect(() => {
-    getData(data,setData, url);
+    //getData(data,setData, url);
+    getDevices();
   }, []);
+  
   const deviceCountNotRemoved = $.grep(data, function (n, i) {
     return n.removed_from_DEP === false;
   });
@@ -118,7 +129,7 @@ export default function DeleteTable() {
                 const clonedData = [...data];
                 clonedData[rowData.tableData.id][columnDef.field] = newValue;
                 setData(clonedData);
-                fetch(url + "/" + rowData.id, {
+                fetch(url + "/" + rowData.serialnumber, {
                   method: "PUT",
                   headers: {
                     "Content-type": "application/json",
@@ -129,7 +140,7 @@ export default function DeleteTable() {
                   .then((resp) => resp.json())
 
                   .then((resp) => {
-                    getDevices();
+                    getData(data, setData, url);
                     resolve();
                     ToastsStore.success("Änderung gespeichert");
                   });
@@ -153,7 +164,7 @@ export default function DeleteTable() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
-                    getDevices();
+                    getData(data, setData, url);
                     resolve();
                   });
               }),
@@ -171,7 +182,7 @@ export default function DeleteTable() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Gerätedaten gespeichert");
-                    getDevices();
+                    getData(data, setData, url);
                     resolve();
                   });
               }),
@@ -185,7 +196,7 @@ export default function DeleteTable() {
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
-                  getDevices();
+                  getData(data, setData, url);
                   resolve();
                 });
               }),

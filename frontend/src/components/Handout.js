@@ -42,11 +42,11 @@ export default function HandoutTable() {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  
+
   
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
   useEffect(() => {
-    getData(username, setUsername, url, urlUser);
+    getData(username, setUsername,urlUser);
   }, []);
 
   useEffect(() => {
@@ -112,6 +112,7 @@ export default function HandoutTable() {
           title={handouts_not_shipped.length + " Aufträge nicht bearbeitet"}
           data={data}
           columns={columns}
+          /*
           detailPanel={[
             {
               tooltip: "Show Name",
@@ -130,6 +131,7 @@ export default function HandoutTable() {
               },
             },
           ]}
+          */
           cellEditable={{
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
@@ -149,7 +151,7 @@ export default function HandoutTable() {
                   .then((resp) => resp.json())
 
                   .then((resp) => {
-                    getHandouts();
+                    getData(data, setData, url);
                     resolve();
                     ToastsStore.success("Änderung gespeichert");
                   });
@@ -175,7 +177,7 @@ export default function HandoutTable() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
-                    getHandouts();
+                    getData(data, setData, url);
                     resolve();
                   });
               }),
@@ -193,7 +195,7 @@ export default function HandoutTable() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Gerätedaten gespeichert");
-                    getHandouts();
+                    getData(data, setData, url);
                     resolve();
                   });
               }),
@@ -207,7 +209,7 @@ export default function HandoutTable() {
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
-                  getHandouts();
+                   getData(data, setData, url);
                   resolve();
                 });
               }),
