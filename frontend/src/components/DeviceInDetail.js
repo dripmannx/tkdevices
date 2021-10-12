@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import "./../../static/css/DeviceInDetail.css";
 import { QRCode } from "react-qr-svg";
 import getData, { ForwardLogIn } from "./APIRequests";
+import styled from "styled-components";
+
 function status(state) {
   if (state === true) {
     return "lagernd";
@@ -40,7 +42,59 @@ export default function DeviceInDetail() {
       return setError(true);
     }
   }
-  
+
+  const information = () => {
+   return (
+     <Card className="root">
+       <CardContent>
+         <QRCode
+           className="qrcode "
+           bgColor="#FFFFFF"
+           fgColor="#000000"
+           level="Q"
+           style={{ width: 100 }}
+           //TODO change prod URL Redirect
+           value={"http://localhost:8000/devices/" + identifier}
+         />
+         <div className="content">
+           <div className="pos printable item1" variant="h5" component="h2">
+             iPhone {data["model"]}
+           </div>
+           <div className="pos printable item2">
+             S/N: {data["serialnumber"]}
+           </div>
+           <div className="pos non-printable">
+             Status: {status(data["status"])}
+           </div>
+           <div className="pos printable item3">
+             Batterie: {data["batterylife"]}%
+           </div>
+           <div className="pos printable item4">
+             Speicher: {data["capacity"]}GB
+           </div>
+         </div>
+       </CardContent>
+       <CardActions>
+         <Button
+           onClick={() => updateDevice(data)}
+           size="small"
+           className="non-printable"
+         >
+           Status ändern
+         </Button>
+         <Button
+           size="small"
+           className="non-printable"
+           onClick={() => {
+             window.print();
+           }}
+         >
+           Drucken
+         </Button>
+       </CardActions>
+     </Card>
+   ); 
+  }
   useEffect(() => {
     getDevice();
   }, []);

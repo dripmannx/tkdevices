@@ -29,7 +29,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="navbar">
+      <nav className="navbar non-printable">
         <div className="brand-title">ENERCON</div>
         <a href="#" className="toggle-button" onClick={() => handleOnClick()}>
           <span className="bar"></span>

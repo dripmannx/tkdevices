@@ -41,6 +41,7 @@
     "react-toastify": "^7.0.4",
     "react-toasts": "^3.0.6",
     "siiimple-toast": "^3.1.7",
+    "styled-components": "^5.3.1",
     "tata-js": "^0.1.5"
   }
 }
