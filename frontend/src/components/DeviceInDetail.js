@@ -22,13 +22,50 @@ export default function DeviceInDetail() {
   const windowurl = window.location.href;
 
   const identifier = windowurl.split("/").pop();
-   document.title = `iPhone ${identifier}`;
+  document.title = `iPhone ${identifier}`;
   console.log(windowurl, identifier);
-  const url = "/api/device/" + identifier; 
+  const url = "/api/device/" + identifier;
 
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
+  const information = () => {
+    return (
+      <div className="root">
+        <div className="content">
+          <ul className="data">
+            <li className="pos printable item1">iPhone {data["model"]}</li>
+            <li className="pos printable item2">S/N: {data["serialnumber"]}</li>
+            <li className="pos non-printable">
+              Status: {status(data["status"])}
+            </li>
+            <li className="pos printable item3">
+              Batterie: {data["batterylife"]}%
+            </li>
+            <li className="pos printable item4">
+              Speicher: {data["capacity"]}GB
+            </li>
+          </ul>
+        </div>
 
+        <Button
+          onClick={() => updateDevice(data)}
+          size="small"
+          className="non-printable"
+        >
+          Status ändern
+        </Button>
+        <Button
+          size="small"
+          className="non-printable"
+          onClick={() => {
+            window.print();
+          }}
+        >
+          Drucken
+        </Button>
+      </div>
+    );
+  };
   async function getDevice() {
     setError(false);
     const response = await fetch(url, {
@@ -43,71 +80,19 @@ export default function DeviceInDetail() {
     }
   }
 
-  const information = () => {
-   return (
-     <Card className="root">
-       <CardContent>
-         <QRCode
-           className="qrcode "
-           bgColor="#FFFFFF"
-           fgColor="#000000"
-           level="Q"
-           style={{ width: 100 }}
-           //TODO change prod URL Redirect
-           value={"http://localhost:8000/devices/" + identifier}
-         />
-         <div className="content">
-           <div className="pos printable item1" variant="h5" component="h2">
-             iPhone {data["model"]}
-           </div>
-           <div className="pos printable item2">
-             S/N: {data["serialnumber"]}
-           </div>
-           <div className="pos non-printable">
-             Status: {status(data["status"])}
-           </div>
-           <div className="pos printable item3">
-             Batterie: {data["batterylife"]}%
-           </div>
-           <div className="pos printable item4">
-             Speicher: {data["capacity"]}GB
-           </div>
-         </div>
-       </CardContent>
-       <CardActions>
-         <Button
-           onClick={() => updateDevice(data)}
-           size="small"
-           className="non-printable"
-         >
-           Status ändern
-         </Button>
-         <Button
-           size="small"
-           className="non-printable"
-           onClick={() => {
-             window.print();
-           }}
-         >
-           Drucken
-         </Button>
-       </CardActions>
-     </Card>
-   ); 
-  }
   useEffect(() => {
     getDevice();
   }, []);
-  
+
   console.log(data);
   function updateDevice(data) {
-    console.log(data, "Hi")
+    console.log(data, "Hi");
     const clonedData = [data];
     clonedData["status"] = false;
     console.log(clonedData["status"]);
     console.log(clonedData);
     setData(clonedData);
-    
+
     console.log(data, "data");
     fetch(url, {
       method: "PUT",
@@ -118,28 +103,15 @@ export default function DeviceInDetail() {
     })
       .then((resp) => resp.json())
       .then(() => {
-       getDevice();
-       
-        
+        getDevice();
       })
       .catch((err) => console.log(err));
-  };
-
-  
+  }
 
   if (error === false) {
     return (
       <Card className="root">
         <CardContent>
-          <QRCode
-            className="qrcode "
-            bgColor="#FFFFFF"
-            fgColor="#000000"
-            level="Q"
-            style={{ width: 100 }}
-            //TODO change prod URL Redirect
-            value={"http://localhost:8000/devices/" + identifier}
-          />
           <div className="content">
             <div className="pos printable item1" variant="h5" component="h2">
               iPhone {data["model"]}

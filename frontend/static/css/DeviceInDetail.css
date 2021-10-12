@@ -3,28 +3,27 @@
         margin-top: 0;
         margin-bottom: 0;
     }
-    body {
-        padding-top: 72px;
-        padding-bottom: 72px ;
-    }
+    
     .footer,
     .non-printable, .title {
         display: none !important;
     }
-    .root {
-     margin-top: 10em;
-    margin-left: 10em; 
-    max-width: 260px;
-    max-height: 130px;
-    }
-    .root .card{
-      padding-left: 0px;
-    }
+    
+    
+    
     .root .content {
       float: right;
-      padding-right: 40px;
+      font-size:10px;
     }
-    
+    .root .content .data li {
+      list-style: none;
+    }
+    .root .qrcode {
+      max-width:40px;
+      align-items: left;
+      align-content: left !important;
+      
+    }
      /*
      .root .item1{
       float:top;

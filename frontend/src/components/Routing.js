@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import Table from "./Table";
+import Table from "./Table/Table";
 import HandoutTable from "./Handout";
 import DeleteTable from "./DeleteTable";
 import { BrowserRouter as Router, Switch, Route, Link ,Redirect} from'react-router-dom';

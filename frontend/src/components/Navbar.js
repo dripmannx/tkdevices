@@ -1,6 +1,5 @@
 //Beim component reload checken ob user eingeloggt
-
-import "./../../static/css/Navbar.css";
+import "../../static/css/Navbar.css"
 import React, { useEffect, useState } from "react";
 import getCurrentUser from "./APIRequests";
 
