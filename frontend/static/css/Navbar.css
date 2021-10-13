@@ -69,6 +69,9 @@ body {
 }
 
 @media (max-width: 600px) {
+  .notClickable{
+    display: none;
+  }
   .navbar {
     flex-direction: column;
     align-items: flex-start;

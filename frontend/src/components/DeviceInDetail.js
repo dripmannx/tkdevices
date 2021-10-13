@@ -26,7 +26,6 @@ export default function DeviceInDetail() {
 
   const identifier = location.pathname.split("/").pop();
   document.title = `iPhone ${identifier}`;
-  console.log(windowurl, identifier);
   const url = "/api/device/" + identifier;
 
   const [data, setData] = useState([]);
@@ -111,49 +110,55 @@ export default function DeviceInDetail() {
       .catch((err) => console.log(err));
   }
 
-  if (error === false) {
+ 
     return (
-      <Card className="root">
-        <CardContent>
-          <div className="content">
-            <div className="pos printable item1" variant="h5" component="h2">
-              iPhone {data["model"]}
-            </div>
-            <div className="pos printable item2">
-              S/N: {data["serialnumber"]}
-            </div>
-            <div className="pos non-printable">
-              Status: {status(data["status"])}
-            </div>
-            <div className="pos printable item3">
-              Batterie: {data["batterylife"]}%
-            </div>
-            <div className="pos printable item4">
-              Speicher: {data["capacity"]}GB
-            </div>
-          </div>
-        </CardContent>
-        <CardActions>
-          <Button
-            onClick={() => updateDevice(data)}
-            size="small"
-            className="non-printable"
-          >
-            Status ändern
-          </Button>
-          <Button
-            size="small"
-            className="non-printable"
-            onClick={() => {
-              window.print();
-            }}
-          >
-            Drucken
-          </Button>
-        </CardActions>
-      </Card>
+      <>
+        {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
+        {error === false && (
+          <Card className="root">
+            <CardContent>
+              <div className="content">
+                <div
+                  className="pos printable item1"
+                  variant="h5"
+                  component="h2"
+                >
+                  iPhone {data["model"]}
+                </div>
+                <div className="pos printable item2">
+                  S/N: {data["serialnumber"]}
+                </div>
+                <div className="pos non-printable">
+                  Status: {status(data["status"])}
+                </div>
+                <div className="pos printable item3">
+                  Batterie: {data["batterylife"]}%
+                </div>
+                <div className="pos printable item4">
+                  Speicher: {data["capacity"]}GB
+                </div>
+              </div>
+            </CardContent>
+            <CardActions>
+              <Button
+                onClick={() => updateDevice(data)}
+                size="small"
+                className="non-printable"
+              >
+                Status ändern
+              </Button>
+              <Button
+                size="small"
+                className="non-printable"
+                onClick={() => {
+                  window.print();
+                }}
+              >
+                Drucken
+              </Button>
+            </CardActions>
+          </Card>
+        )}
+      </>
     );
-  } else {
-    return <h1>Device not Found</h1>;
-  }
 }

@@ -5,9 +5,9 @@ const Logout = () => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState([]);
   document.title = `Logout`;
- 
+
   useEffect(() => {
-    getCurrentUser(username,setUsername,url); 
+    getCurrentUser(username, setUsername, url);
   }, []);
   useEffect(() => {
     if (localStorage.getItem("token") == null) {
@@ -17,13 +17,13 @@ const Logout = () => {
     }
   }, []);
 
-  const handleLogout = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     localStorage.removeItem("token");
     window.location.replace("http://localhost:8000");
   };
-
-  return (
+  /*
+return (
     <div>
       <title>Logout</title>
       <h1>
@@ -36,6 +36,21 @@ const Logout = () => {
         </form>
       )}
     </div>
+  );
+*/
+  return (
+    <>
+      <div className="wrapper">
+        <form className="login" onSubmit={onSubmit}>
+          <p className="title">Wirklich ausloggen?</p>
+          <button input type="submit" value="Login">
+            <i className="spinner"></i>
+            <span className="state">Log out</span>
+          </button>
+        </form>
+      
+      </div>
+    </>
   );
 };
 

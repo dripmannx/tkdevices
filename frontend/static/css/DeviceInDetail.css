@@ -18,12 +18,7 @@
     .root .content .data li {
       list-style: none;
     }
-    .root .qrcode {
-      max-width:40px;
-      align-items: left;
-      align-content: left !important;
-      
-    }
+    
      /*
      .root .item1{
       float:top;
@@ -52,7 +47,11 @@ margin-top: 10em;
 margin-left: 10em;
   }
 }
-
+@media (max-width: 600px) {
+  .root{
+    max-width: screen-width;
+  }
+  }
 
 
 
@@ -87,3 +86,8 @@ margin-left: 10em;
     margin-bottom: 12,
   }
 a { text-decoration: none; }
+.notFound {
+  color: hsl(255,0%,100%);
+ justify-content: center; 
+ text-align: center;
+}
