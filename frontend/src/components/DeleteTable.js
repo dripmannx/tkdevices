@@ -43,7 +43,7 @@ export default function DeleteTable() {
       title: "Seriennummer",
       field: "serialnumber",
       filterPlaceholder: "S/N eingeben",
-      validate: (rowData) =>
+      validate: (rowData) => 
         rowData.serialnumber === undefined ||
         rowData.serialnumber === "" ||
         rowData.serialnumber.length != 12 ||

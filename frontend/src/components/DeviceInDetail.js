@@ -9,7 +9,7 @@ import "./../../static/css/DeviceInDetail.css";
 import { QRCode } from "react-qr-svg";
 import getData, { ForwardLogIn } from "./APIRequests";
 import styled from "styled-components";
-
+import { Link, useLocation } from "react-router-dom";
 function status(state) {
   if (state === true) {
     return "lagernd";
@@ -18,10 +18,13 @@ function status(state) {
 }
 
 export default function DeviceInDetail() {
-  ForwardLogIn();
-  const windowurl = window.location.href;
 
-  const identifier = windowurl.split("/").pop();
+  ForwardLogIn();
+   const location = useLocation();
+
+   console.log(location.pathname);
+
+  const identifier = location.pathname.split("/").pop();
   document.title = `iPhone ${identifier}`;
   console.log(windowurl, identifier);
   const url = "/api/device/" + identifier;

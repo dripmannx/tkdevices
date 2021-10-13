@@ -1,5 +1,6 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
+import Props from "./props";
 import React, { useState, useEffect, forwardRef, useRef } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "../../../static/css/table.css";
@@ -29,12 +30,13 @@ const darkTheme = createTheme({
     },
   },
 });
-export default function Table() {
+export default function Table( ) {
+ document.title =" Lagernde Geräte";
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devices
   useEffect(() => {
     
     getData(data,setData,url);
@@ -147,6 +149,7 @@ export default function Table() {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <Props />
       <title>{deviceCount}</title>
 
       <div className="Table">
@@ -206,7 +209,7 @@ export default function Table() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
-                    getData(data, setData, url);;
+                    getData(data, setData, url);
                     openInNewTab(`/devices/${newData.serialnumber}`);
                     resolve();
                   });
@@ -225,7 +228,7 @@ export default function Table() {
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Gerätedaten gespeichert");
-                     getData(data, setData, url);;
+                    getData(data, setData, url);
                     resolve();
                   });
               }),
@@ -239,7 +242,7 @@ export default function Table() {
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
-                   getData(data, setData, url);;
+                  getData(data, setData, url);
                   resolve();
                 });
               }),
