@@ -14,6 +14,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import authentication_classes
 from rest_framework.decorators import permission_classes
+from django.contrib.auth.decorators import login_required, permission_required
+from rest_framework.permissions import DjangoObjectPermissions
+
 
 # Create your views here.
 
@@ -28,9 +31,9 @@ def user(request, format=None):
     }
     return Response(content)
 
-
 @api_view(['GET', 'POST'])
 def handout(request):
+    
     """
     Get all Handouts
     """
@@ -88,10 +91,11 @@ def devices(request):
     """
     Get all non defect Devices and add a Device
     """
+    permission_classes = [DjangoObjectPermissions]
     if request.method == 'GET':
-        devices = Device.objects.filter(
+        queryset = Device.objects.filter(
             status_defect=False).order_by('-batterylife', '-status')
-        serializer = DeviceSerializer(devices, many=True)
+        serializer = DeviceSerializer(queryset, many=True)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
@@ -107,29 +111,29 @@ def devices(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def device_detail(request, serialnumber):
     # Retrieve, update or delete a device.
-   
+    permission_classes = [DjangoObjectPermissions]
     try:
        
-            device = Device.objects.get(serialnumber=serialnumber)
+            queryset = Device.objects.get(serialnumber=serialnumber)
        
     except Device.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
-        serializer = DeviceSerializer(device)
+        serializer = DeviceSerializer(queryset)
         return JsonResponse(serializer.data)
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
         print(data)
-        serializer = DeviceSerializer(device, data=data)
+        serializer = DeviceSerializer(queryset, data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
-        device.delete()
+        queryset.delete()
         return HttpResponse(status=204)
 
 
