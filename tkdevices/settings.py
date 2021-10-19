@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'frontend.apps.FrontendConfig',
     'corsheaders',
-    'guardian',
     
 ]
 
@@ -120,7 +119,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
-
+LOGIN_REDIRECT_URL='/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -136,13 +135,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissions',
-      
-    ]
+    
+    #'DEFAULT_PERMISSION_CLASSES': [
+    #    'rest_framework.permissions.DjangoModelPermissions',
+    
+    #]
 }
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
-)
+
+
 ALLOWED_HOSTS = ['*']

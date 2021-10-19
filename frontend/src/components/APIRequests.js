@@ -1,5 +1,5 @@
 import React from "react";
-export default async function getData(data, setData, url) {
+export default async function getData(data, setData, url,forbidden=false) {
   if (url !== undefined) {
     const response = await fetch(url, {
       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
@@ -9,8 +9,10 @@ export default async function getData(data, setData, url) {
       const data = await response.json();
       console.log("j");
       return setData(data);
-    } else if (response.statusText === "Unauthorized") {
+    } else if (response.status === 401) {
       window.location.replace("http://localhost:8000");
+    } else if (response.status === 403) {
+      return(forbidden=true);
     }
   }
 }

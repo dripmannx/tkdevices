@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.http import HttpResponse
 from datetime import datetime
 from rest_framework import generics
@@ -18,7 +19,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework.permissions import DjangoObjectPermissions
 
 
-# Create your views here.
+
+
+
 
 
 @api_view(['GET'])
@@ -27,11 +30,13 @@ from rest_framework.permissions import DjangoObjectPermissions
 def user(request, format=None):
     content = {
         'user': str(request.user),  # `django.contrib.auth.User` instance.
-
+        'add':str(has_perms('api.add_device'))
     }
     return Response(content)
-
 @api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_required(['api.view_handout','api.add_handout'],raise_exception=True)
 def handout(request):
     
     """
@@ -54,6 +59,9 @@ def handout(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_required('api.change_handout','api.view_handout',raise_exception=True)
 def handout_details(request, pk):
 
     # Retrieve, update or delete a device.
@@ -85,13 +93,16 @@ class DeviceView(generics.CreateAPIView):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
 
-
 @api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_required(['api.view_device','api.add_device'],raise_exception=True)
 def devices(request):
     """
     Get all non defect Devices and add a Device
     """
-    permission_classes = [DjangoObjectPermissions]
+    user = request.user
+    print(user)
     if request.method == 'GET':
         queryset = Device.objects.filter(
             status_defect=False).order_by('-batterylife', '-status')
@@ -109,19 +120,25 @@ def devices(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_required(['api.change_device','api.view_device','api.delete_device'],raise_exception=True)
 def device_detail(request, serialnumber):
     # Retrieve, update or delete a device.
-    permission_classes = [DjangoObjectPermissions]
+    permission_classes = [ DjangoObjectPermissions]
     try:
-       
             queryset = Device.objects.get(serialnumber=serialnumber)
        
     except Device.DoesNotExist:
         return HttpResponse(status=404)
+    
+  
+    
 
     if request.method == 'GET':
         serializer = DeviceSerializer(queryset)
         return JsonResponse(serializer.data)
+        
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
@@ -137,7 +154,9 @@ def device_detail(request, serialnumber):
         return HttpResponse(status=204)
 
 
-@api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_required(['api.view_device','api.add_device'],raise_exception=True)
 def device_defect(request):
     
     if request.method == 'GET':
@@ -157,6 +176,9 @@ def device_defect(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_required('api.change_device','api.view_device',raise_exception=True)
 def defect_device_detail(request, serialnumber):
     # Retrieve, update or delete a device.
     try:
@@ -164,7 +186,6 @@ def defect_device_detail(request, serialnumber):
         print(device)
  
     except Device.DoesNotExist:
-        print("GOTIT") 
         return HttpResponse(status=404)
 
     if request.method == 'GET':

@@ -30,8 +30,9 @@ const darkTheme = createTheme({
     },
   },
 });
-export default function Table( ) {
- document.title =" Lagernde Geräte";
+export default function Table( ) { 
+  let forbidden = false;
+  document.title =" Lagernde Geräte";
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -40,7 +41,11 @@ export default function Table( ) {
   useEffect(() => {
     
     getData(data,setData,url);
-  }, []);
+    
+
+    
+    
+  }, []);console.log(forbidden);
   const columns = [
     {
       title: "Seriennummer",
