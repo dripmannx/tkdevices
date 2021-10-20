@@ -1,18 +1,19 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
-import Props from "./props";
+import Props,{localization} from "./props";
 import React, { useState, useEffect, forwardRef, useRef } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "../../../static/css/table.css";
 import { QRCode } from "react-qr-svg";
 import openInNewTab from "../openInNewTab";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
+
 import {
   ToastsContainer,
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-import getData, { ForwardLogIn } from "../APIRequests";
+import getData from "../APIRequests";
 const darkTheme = createTheme({
   header: {
     zIndex: 0,
@@ -275,53 +276,7 @@ export default function Table() {
               },
             },
           ]}
-          localization={{
-            body: {
-              emptyDataSourceMessage: "Keine Einträge",
-              addTooltip: "Hinzufügen",
-              deleteTooltip: "Löschen",
-              editTooltip: "Bearbeiten",
-              filterRow: {
-                filterTooltip: "Filter",
-              },
-              editRow: {
-                deleteText: "Diese Zeile wirklich löschen?",
-                cancelTooltip: "Abbrechen",
-                saveTooltip: "Speichern",
-              },
-            },
-            grouping: {
-              placeholder: "Spalten ziehen ...",
-              groupedBy: "Gruppiert nach:",
-            },
-            header: {
-              actions: "Aktionen",
-            },
-            pagination: {
-              labelDisplayedRows: "{from}-{to} von {count}",
-              labelRowsSelect: "Zeilen",
-              labelRowsPerPage: "Zeilen pro Seite:",
-              firstAriaLabel: "Erste Seite",
-              firstTooltip: "Erste Seite",
-              previousAriaLabel: "Vorherige Seite",
-              previousTooltip: "Vorherige Seite",
-              nextAriaLabel: "Nächste Seite",
-              nextTooltip: "Nächste Seite",
-              lastAriaLabel: "Letzte Seite",
-              lastTooltip: "Letzte Seite",
-            },
-            toolbar: {
-              addRemoveColumns: "Spalten hinzufügen oder löschen",
-              nRowsSelected: "{0} Zeile(n) ausgewählt",
-              showColumnsTitle: "Zeige Spalten",
-              showColumnsAriaLabel: "Zeige Spalten",
-              exportTitle: "Export",
-              exportAriaLabel: "Export",
-              exportName: "Export als CSV",
-              searchTooltip: "Suche...",
-              searchPlaceholder: "Suche...",
-            },
-          }}
+          localization={localization}
         />
       </div>
     </ThemeProvider>
