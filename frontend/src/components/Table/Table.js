@@ -12,7 +12,7 @@ import {
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-import getData, {ForwardLogIn} from "../APIRequests"
+import getData, { ForwardLogIn } from "../APIRequests";
 const darkTheme = createTheme({
   header: {
     zIndex: 0,
@@ -30,22 +30,18 @@ const darkTheme = createTheme({
     },
   },
 });
-export default function Table( ) { 
+export default function Table() {
   let forbidden = false;
-  document.title =" Lagernde Geräte";
+  document.title = " Lagernde Geräte";
   const url = "/api/device";
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  
+
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devices
   useEffect(() => {
-    
-    getData(data,setData,url);
-    
-
-    
-    
-  }, []);console.log(forbidden);
+    getData(data, setData, url);
+  }, []);
+  console.log(forbidden);
   const columns = [
     {
       title: "Seriennummer",
@@ -95,7 +91,6 @@ export default function Table( ) {
       cellStyle: (data, rowData) => ({
         color: data > 90 ? "green" : "red",
       }),
-     
     },
     {
       title: "Speicher",
