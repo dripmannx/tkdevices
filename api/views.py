@@ -23,14 +23,12 @@ from rest_framework.permissions import DjangoObjectPermissions
 
 
 
-
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def user(request, format=None):
     content = {
         'user': str(request.user),  # `django.contrib.auth.User` instance.
-        'add':str(has_perms('api.add_device'))
     }
     return Response(content)
 @api_view(['GET', 'POST'])
