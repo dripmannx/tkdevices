@@ -1,3 +1,4 @@
-export default function openInNewTab(url){
+ const useNewTab=(url)=>{
       window.open(url, "_blank").focus();
-}
+};
+export default useNewTab;

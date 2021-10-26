@@ -4,28 +4,29 @@ import React, { useEffect, useState } from "react";
 import getCurrentUser from "./APIRequests";
 
 const Navbar = () => {
- const [isActive, setActive] = useState(false);
- const handleOnClick = () => {
-
-   setActive(!isActive);
-   console.log(isActive)
- };
+  const [isActive, setActive] = useState(false);
+  const handleOnClick = () => {
+    setActive(!isActive);
+    console.log(isActive);
+  };
   const url = "/api/current_user";
-  const [username,setUsername] = useState([])
+  const [username, setUsername] = useState([]);
   const [loginState, setLoginState] = useState(true);
   if (window.location.href !== "http://localhost:8000/") {
-    
     useEffect(() => {
       getCurrentUser(username, setUsername, url);
     }, []);
-  }else{console.log("login");}
-  
-  
-  useEffect(() => { 
-    if (localStorage.getItem("token") == null) {
-    setLoginState(false);
-  }else { setLoginState(true); }}, []);
+  } else {
+    console.log("login");
+  }
 
+  useEffect(() => {
+    if (localStorage.getItem("token") == null) {
+      setLoginState(false);
+    } else {
+      setLoginState(true);
+    }
+  }, []);
   return (
     <div>
       <nav className="navbar non-printable">
@@ -48,6 +49,9 @@ const Navbar = () => {
                 <li>
                   <a href="/handout">Aufträge</a>
                 </li>
+                <li>
+                  <a href="/upload">upload</a>
+                </li>
               </>
             )}
             <li>
@@ -59,7 +63,6 @@ const Navbar = () => {
             {loginState === true && (
               <li className="notClickable">
                 <a href="/">{username["user"]}</a>
-
               </li>
             )}
           </ul>

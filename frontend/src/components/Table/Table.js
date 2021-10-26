@@ -1,13 +1,12 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
-import Props,{localization} from "./props";
+import Props, { localization } from "./props";
 import React, { useState, useEffect, forwardRef, useRef } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "../../../static/css/table.css";
 import { QRCode } from "react-qr-svg";
-import openInNewTab from "../openInNewTab";
+import useNewTab from "../openInNewTab";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
-
 import {
   ToastsContainer,
   ToastsStore,
@@ -16,14 +15,22 @@ import {
 import getData from "../APIRequests";
 const darkTheme = createTheme({
   header: {
-    zIndex: 0,
+    zIndex: -1,
   },
   palette: {
     type: "dark",
+    palette: {
+      primary: {
+        main: "#4caf50",
+      },
+      secondary: {
+        main: "#ff9100",
+      },
+    },
   },
   overrides: {
     MuiTableRow: {
-      hover: {
+      root: {
         "&:hover": {
           backgroundColor: "#2E2E2E !important",
         },
@@ -41,7 +48,9 @@ export default function Table() {
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devices
   useEffect(() => {
     getData(data, setData, url);
+    
   }, []);
+
   console.log(forbidden);
   const columns = [
     {
@@ -142,31 +151,27 @@ export default function Table() {
     },
   ];
 
-  const deviceCountIn = $.grep(data, function (n, i) {
-    return n.status === true;
-  });
+  
 
-  const deviceCount = deviceCountIn.length + " Geräte lagernd";
+  const deviceCount = data.length.toString()+ " Geräte lagernd";
 
   return (
     <ThemeProvider theme={darkTheme}>
       <Props />
-      <title>{deviceCount}</title>
+      <title className="">{deviceCount}</title>
 
       <div className="Table">
-        <h1 className="second-title" align="center">
-          {deviceCount}
-        </h1>
         <ToastsContainer
           store={ToastsStore}
           position={ToastsContainerPosition.BOTTOM_CENTER}
         />
         <MaterialTable
+         
           //icons={tableIcons}
-          className="TableRow"
-          title={""}
+          title={deviceCount}
           data={data}
           columns={columns}
+          
           /*
           cellEditable={{
             cellStyle: {},
@@ -195,6 +200,7 @@ export default function Table() {
               });
             },
           }}
+          
           */
           editable={{
             onRowAdd: (newData, tableData) =>
@@ -211,7 +217,7 @@ export default function Table() {
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
                     getData(data, setData, url);
-                    openInNewTab(`/devices/${newData.serialnumber}`);
+                    
                     resolve();
                   });
               }),
@@ -265,12 +271,12 @@ export default function Table() {
             }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
-          actions={[
+          actions={[ 
             {
               icon: SmartphoneIcon,
               tooltip: "Gerät öffnen",
               onClick: (event, rowData) => {
-                openInNewTab(
+                useNewTab(
                   "http://localhost:8000/devices/" + rowData.serialnumber
                 );
               },
@@ -279,6 +285,7 @@ export default function Table() {
           localization={localization}
         />
       </div>
+     
     </ThemeProvider>
   );
 }

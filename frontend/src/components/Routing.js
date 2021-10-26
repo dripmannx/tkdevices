@@ -7,6 +7,7 @@ import Login from "./Login";
 import Logout from "./Logout";
 import DeviceInDetail from "./DeviceInDetail";
 import Navbar from "./Navbar";
+import fileUpload from "./fileUpload";
 const Routing =()=> {
     
 
@@ -20,6 +21,7 @@ const Routing =()=> {
               <Route path="/logout" component={Logout}/>
               <Route path="/handout" component={HandoutTable} />
               <Route path="/devices/" component={DeviceInDetail}/>
+              <Route path="/upload"component={fileUpload}/>
             </Switch>
           </Router>
         );
