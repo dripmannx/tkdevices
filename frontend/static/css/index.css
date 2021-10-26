@@ -1,4 +1,12 @@
+@tailwind base;
+@tailwind components;
+@font-face {
+  font-family: 'Raleway';
+  src: url("https://fonts.googleapis.com/css?family=Raleway")format("woff");
+}
+@tailwind utilities;
 
+/*
 body {
   background-color: hsl(0, 0%, 18%);
   overflow-x: hidden;
@@ -14,6 +22,7 @@ body {
   min-height: 100vh;
   color: #fff;
 }
+*/
 /*
 .box {
   width: 300px;
