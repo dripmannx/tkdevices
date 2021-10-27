@@ -4,7 +4,7 @@ from datetime import datetime
 from rest_framework import generics
 from rest_framework.response import Response
 from .serializers import DeviceSerializer, DeleteDeviceSerializer, HandoutSerializer
-from .models import Device, Handout
+from .models import *
 from django.http import HttpResponse, JsonResponse
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +17,59 @@ from rest_framework.decorators import authentication_classes
 from rest_framework.decorators import permission_classes
 from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework.permissions import DjangoObjectPermissions
+from .serializers import DataSerializer
 
+
+
+
+@api_view(['GET','POST'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def file_provider(request, format=None):
+    if request.method == 'GET':
+        files = Data.objects.all().order_by('since_added')
+        serializer = DataSerializer(files, many=True)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = DataSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+ 
+
+@api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_required('api.change_data', 'api.view_data', raise_exception=True)
+def file_provider_view(request, pk):
+
+    # Retrieve, update or delete a device.
+
+    try:
+        file = Data.objects.get(pk=pk)
+
+    except Data.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = DataSerializer(file)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = DataSerializer(file, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        file.delete()
+        return HttpResponse(status=204)
 
 
 

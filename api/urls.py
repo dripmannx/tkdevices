@@ -12,6 +12,8 @@ urlpatterns = [
     path('current_user',user),
     path('handouts/<int:pk>',handout_details),
     path('handouts',handout),
+    path('files',file_provider),
+    path('file', file_provider_view),
     
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
