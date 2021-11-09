@@ -79,22 +79,15 @@ def file_provider_view(request, pk):
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def user(request, format=None):
+    logged_in_user = User.objects.get(username=request.user.username)
     content = {
-        'user': str(request.user),  # `django.contrib.auth.User` instance.
-        "perm":str(request.user_permissions), # `django.cont
+        'user': str(logged_in_user) ,#`django.contrib.auth.User` instance.
+        "permissions":logged_in_user.get_all_permissions(), #`django.models.User
     }
-    return Response(content)
-
-@api_view(['GET'])
-@authentication_classes([TokenAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def user(request, format=None):
-    content = {
-        'user': str(request.user),  # `django.contrib.auth.User` instance.
-        "perm":str(request.user_permissions), # `django.cont
-    }
+    
     print(content)
     return Response(content)
+
 
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
@@ -164,8 +157,6 @@ def devices(request):
     """
     Get all non defect Devices and add a Device
     """
-    user = request.user
-    print(user)
     if request.method == 'GET':
         queryset = Device.objects.filter(
             status_defect=False).order_by('-batterylife', '-status')

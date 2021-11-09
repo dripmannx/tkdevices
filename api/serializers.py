@@ -1,6 +1,9 @@
 from rest_framework import serializers
-from .models import Device, Handout,Data
-from rest_framework import serializers
+from .models import Device, Handout,Data,User
+class User(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields = ('username','user_permissions','email','groups','is_staff','is_active')
 
 class DataSerializer(serializers.ModelSerializer):
     size = serializers.SerializerMethodField()

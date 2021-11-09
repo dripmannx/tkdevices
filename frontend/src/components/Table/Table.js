@@ -200,7 +200,6 @@ export default function Table() {
               });
             },
           }}
-          
           */
           editable={{
             onRowAdd: (newData, tableData)  =>

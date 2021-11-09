@@ -1,18 +1,10 @@
 from django.db import models
+
 from django.core.validators import RegexValidator
 from django.db.models.fields import NullBooleanField
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
-from rest_framework.fields import URLField
 from datetime import datetime
-
-
-
-
-from django.urls import reverse
-from django.core.files.uploadedfile import InMemoryUploadedFile
-
-from django.db import models
 from django.utils import timezone
 class Data(models.Model):
     file_id = models.AutoField(primary_key=True)
