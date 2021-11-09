@@ -30,7 +30,7 @@ const Navbar = () => {
   return (
     <div>
       <nav className="navbar non-printable">
-        <div className="brand-title">ENERCON</div>
+        <div className="brand-title gradient">ENERCON</div>
         <a href="#" className="toggle-button" onClick={() => handleOnClick()}>
           <span className="bar"></span>
           <span className="bar"></span>

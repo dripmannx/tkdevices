@@ -203,7 +203,7 @@ export default function Table() {
           
           */
           editable={{
-            onRowAdd: (newData, tableData) =>
+            onRowAdd: (newData, tableData)  =>
               new Promise((resolve, reject) => {
                 //Backend call
                 fetch(url, {
