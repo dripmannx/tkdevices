@@ -14,6 +14,6 @@ urlpatterns = [
     path('handouts',handout),
     path('files',file_provider),
     path('file', file_provider_view),
-    
+    path("permissions",permissions),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

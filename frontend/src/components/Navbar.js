@@ -1,8 +1,9 @@
 //Beim component reload checken ob user eingeloggt
-import "../../static/css/Navbar.css"
+import "../../static/css/Navbar.css";
 import React, { useEffect, useState } from "react";
 import getCurrentUser from "./APIRequests";
-
+import useFetch from "./Hooks/Fetching/useFetch";
+import getData from "./APIRequests";
 const Navbar = () => {
   const [isActive, setActive] = useState(false);
   const handleOnClick = () => {
@@ -12,6 +13,14 @@ const Navbar = () => {
   const url = "/api/current_user";
   const [username, setUsername] = useState([]);
   const [loginState, setLoginState] = useState(true);
+  const [permissions,setPermissions] = useState([]);
+
+  useEffect(() => {
+    getData(permissions,setPermissions,"/api/permissions");
+
+
+  },[]);
+
   if (window.location.href !== "http://localhost:8000/") {
     useEffect(() => {
       getCurrentUser(username, setUsername, url);
@@ -27,6 +36,8 @@ const Navbar = () => {
       setLoginState(true);
     }
   }, []);
+
+
   return (
     <div>
       <nav className="navbar non-printable">
@@ -52,6 +63,7 @@ const Navbar = () => {
                 <li>
                   <a href="/upload">upload</a>
                 </li>
+               
               </>
             )}
             <li>

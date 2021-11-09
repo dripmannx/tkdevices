@@ -39,11 +39,11 @@ export async function getCurrentUser(e, username, setUsername, url) {
   const response = await fetch(url, {
     headers: { Authorization: `Token ${localStorage.getItem("token")}` },
   });
-  console.log(response);
   if (response.ok) {
-    const username = await response.json();
-    console.log("hi");
-    return setUsername(username);
+    const user = await response.json();
+   
+   
+    return setUsername(user);
   } else if (response.statusText === "Unauthorized") {
     window.location.replace("http://localhost:8000");
   }

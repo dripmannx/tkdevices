@@ -82,12 +82,24 @@ def user(request, format=None):
     logged_in_user = User.objects.get(username=request.user.username)
     content = {
         'user': str(logged_in_user) ,#`django.contrib.auth.User` instance.
-        "permissions":logged_in_user.get_all_permissions(), #`django.models.User
+        #`django.models.User
     }
     
-    print(content)
+    
     return Response(content)
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def permissions(request, format=None):
+    logged_in_user = User.objects.get(username=request.user.username)
+    content = {
+        "permissions":logged_in_user.get_all_permissions()
+        #`django.models.User
+    }
+    
+    
+    return Response(content)
 
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
