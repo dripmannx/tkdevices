@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
@@ -35,6 +37,7 @@
     "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/x-grid": "^4.0.0-alpha.37",
+    "@mui/material": "^5.0.6",
     "@react-pdf/renderer": "^1.6.17",
     "cdbreact": "^1.2.1",
     "material-table": "^1.69.3",

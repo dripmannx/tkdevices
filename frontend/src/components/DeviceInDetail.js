@@ -3,26 +3,27 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+import { Button } from "@mui/material";
+import Stack from "@mui/material/Stack";
 import Typography from "@material-ui/core/Typography";
 import "./../../static/css/DeviceInDetail.css";
 import { QRCode } from "react-qr-svg";
 import getData, { ForwardLogIn } from "./APIRequests";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
+import useFetch from "./Hooks/Fetching/useFetch";
 function status(state) {
   if (state === true) {
     return "lagernd";
   }
-  return "rausgegeben";
+  return "in Nutzung";
 }
 
 export default function DeviceInDetail() {
-
   ForwardLogIn();
-   const location = useLocation();
+  const location = useLocation();
 
-   console.log(location.pathname);
+  console.log(location.pathname);
 
   const identifier = location.pathname.split("/").pop();
   document.title = `iPhone ${identifier}`;
@@ -30,44 +31,7 @@ export default function DeviceInDetail() {
 
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
-  const information = () => {
-    return (
-      <div className="root">
-        <div className="content">
-          <ul className="data">
-            <li className="pos printable item1">iPhone {data["model"]}</li>
-            <li className="pos printable item2">S/N: {data["serialnumber"]}</li>
-            <li className="pos non-printable">
-              Status: {status(data["status"])}
-            </li>
-            <li className="pos printable item3">
-              Batterie: {data["batterylife"]}%
-            </li>
-            <li className="pos printable item4">
-              Speicher: {data["capacity"]}GB
-            </li>
-          </ul>
-        </div>
 
-        <Button
-          onClick={() => updateDevice(data)}
-          size="small"
-          className="non-printable"
-        >
-          Status ändern
-        </Button>
-        <Button
-          size="small"
-          className="non-printable"
-          onClick={() => {
-            window.print();
-          }}
-        >
-          Drucken
-        </Button>
-      </div>
-    );
-  };
   async function getDevice() {
     setError(false);
     const response = await fetch(url, {
@@ -75,8 +39,8 @@ export default function DeviceInDetail() {
     });
     console.log(response);
     if (response.ok) {
-      const data = await response.json();
-      return setData(data);
+      const device = await response.json();
+      return setData(device);
     } else {
       return setError(true);
     }
@@ -86,17 +50,11 @@ export default function DeviceInDetail() {
     getDevice();
   }, []);
 
-  console.log(data);
-  function updateDevice(data) {
-    console.log(data, "Hi");
-    const clonedData = [data];
-    clonedData["status"] = false;
-    console.log(clonedData["status"]);
-    console.log(clonedData);
+  const handleOnClick = async () => {
+    const clonedData = data;
+    clonedData.status = !clonedData.status;
     setData(clonedData);
-
-    console.log(data, "data");
-    fetch(url, {
+    await fetch(url, {
       method: "PUT",
       headers: {
         Authorization: `Token ${localStorage.getItem("token")}`,
@@ -108,57 +66,42 @@ export default function DeviceInDetail() {
         getDevice();
       })
       .catch((err) => console.log(err));
-  }
+  };
+  return (
+    <>
+      {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
+      {error === false && (
+        <div className="wrapper">
+          <div className="file__upload">
+            <div className="header">
+              <p>
+                <span>iPhone {data.model}</span>
+              </p>
+            </div>
+            <form className="body">
+              <div>
+                <p>S/N: {data.serialnumber}</p>
 
- 
-    return (
-      <>
-        {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
-        {error === false && (
-          <Card className="root">
-            <CardContent>
-              <div className="content">
-                <div
-                  className="pos printable item1"
-                  variant="h5"
-                  component="h2"
-                >
-                  iPhone {data["model"]}
-                </div>
-                <div className="pos printable item2">
-                  S/N: {data["serialnumber"]}
-                </div>
-                <div className="pos non-printable">
-                  Status: {status(data["status"])}
-                </div>
-                <div className="pos printable item3">
-                  Batterie: {data["batterylife"]}%
-                </div>
-                <div className="pos printable item4">
-                  Speicher: {data["capacity"]}GB
-                </div>
+                <p className={data.status ? "text-green-600" : "text-red-600"}>
+                  <span className="text-black">Status: </span>
+                  {status(data.status)}
+                </p>
+
+                <p>Speicher: {data.capacity}GB</p>
+                <p>Batterie: {data.batterylife}%</p>
               </div>
-            </CardContent>
-            <CardActions>
+
               <Button
-                onClick={() => updateDevice(data)}
-                size="small"
-                className="non-printable"
+                variant="{data} contained"
+                className="Btn-state"
+                onClick={() => handleOnClick()}
               >
-                Status ändern
+                Status Ändern
               </Button>
-              <Button
-                size="small"
-                className="non-printable"
-                onClick={() => {
-                  window.print();
-                }}
-              >
-                Drucken
-              </Button>
-            </CardActions>
-          </Card>
-        )}
-      </>
-    );
+            </form>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }

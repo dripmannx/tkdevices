@@ -81,8 +81,21 @@ def file_provider_view(request, pk):
 def user(request, format=None):
     content = {
         'user': str(request.user),  # `django.contrib.auth.User` instance.
+        "perm":str(request.user_permissions), # `django.cont
     }
     return Response(content)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+def user(request, format=None):
+    content = {
+        'user': str(request.user),  # `django.contrib.auth.User` instance.
+        "perm":str(request.user_permissions), # `django.cont
+    }
+    print(content)
+    return Response(content)
+
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
@@ -192,9 +205,10 @@ def device_detail(request, serialnumber):
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
-        print(data)
+        
         serializer = DeviceSerializer(queryset, data=data)
         if serializer.is_valid():
+            print(data)
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)

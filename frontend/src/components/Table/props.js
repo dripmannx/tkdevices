@@ -11,7 +11,7 @@ export default function Props() {
            </>
        );    
 }
-export const localization =[{
+export const localization ={
             body: {
               emptyDataSourceMessage: "Keine Einträge",
               addTooltip: "Hinzufügen",
@@ -57,4 +57,4 @@ export const localization =[{
               searchTooltip: "Suche...",
               searchPlaceholder: "Suche...",}
             
-}];
+};

@@ -1,93 +1,70 @@
-@media print {
-  @page {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-    
-    .footer,
-    .non-printable, .title {
-        display: none !important;
-    }
-    
-    
-    
-    .root .content {
-      float: right;
-      font-size:10px;
-    }
-    .root .content .data li {
-      list-style: none;
-    }
-    
-     /*
-     .root .item1{
-      float:top;
-     font-weight: bold;
-      
-    }
-     .root .item2{
-      float:top;
-    }
-     .root .item3{
-      float:top;
-      
-    }
-     .root .item4{
-      float:top;
-    }
-     */
+
+
+
+
+.file__upload {
+    width: 400px;
+    height: 445px;
+    margin: 20px;
+    box-shadow: 0 0 5px rgba(0,0,0,.3);}
+
+
+.file__upload .header {
+    width: 100%;
+    height: 145px;
+    background: #4db6ac;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
 }
-@media only screen 
-  and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
-  and (-webkit-min-device-pixel-ratio: 2  ) {
-  .root {
-    background-color:black;
-margin-top: 10em;
-margin-left: 10em;
-  }
+
+.file__upload .header p {
+    color: #FFF;
 }
-@media (max-width: 600px) {
-  .root{
-    max-width: screen-width;
-  }
-  }
 
-
-
-
-.root {
-
-
-
-
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-  max-width: 350px;
-  }
- .root:hover {
-
-   box-shadow: 0 16px 70px -12.125px rgba(0,0,0,0.3)
-   
-  
-  }
- 
-.root .title {
-    font-size: 14;
-  }
-.root .green {
-    margin-bottom: 12;
-    color:"red";
-  }
-.root .red {
-    margin-bottom: 12;
-    color:"red";
-  }
-.root .pos {
-    margin-bottom: 12,
-  }
-a { text-decoration: none; }
-.notFound {
-  color: hsl(255,0%,100%);
- justify-content: center; 
- text-align: center;
+.file__upload .header p i.fa {
+    margin-right: 10px;
 }
+
+.file__upload .header p span {
+    font-size: 2rem;
+    font-weight: 100;
+    
+}
+
+.file__upload .header p span span {
+    font-weight: 600;
+}
+
+.file__upload .body {
+    background: #FFF;
+    width: 100%;
+    height: calc(100% - 145px);
+    border-radius: 0 0 5px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.file__upload .body .Btn-state{
+  background:#4db6ac;
+}
+
+.file__upload .body i.fa {
+    color: #d3d3d3;
+    margin-bottom: 20px;
+}
+
+.file__upload .body p strong {
+    color: hsl(174, 42%, 51%);
+    cursor: pointer;
+}
+.file__upload .body p strong:hover {
+   color : hsl(174, 42%, 40%);
+}
+
+

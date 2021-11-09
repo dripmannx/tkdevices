@@ -49,46 +49,6 @@ const Login = () => {
       });
   };
 
-  /*
-  return (
-    <div>
-      <title>Bitte Einloggen</title>
-      {loading === false && <h1>Login</h1>}
-      {loading === false && (
-        <form className="box" onSubmit={onSubmit}>
-          {errors === true && <h2 className="error">Username oder passwort falsch</h2>}
-          <label className="inputTitle" htmlFor="username">
-            Username:
-          </label>{" "}
-          <br />
-          <input
-            placeholder="Max Mustermann"
-            name="Username"
-            type="text"
-            value={username}
-            required
-            onChange={(e) => setUsername(e.target.value)}
-          />{" "}
-          <br />
-          <label className="inputTitle" htmlFor="password">
-            Password:
-          </label>{" "}
-          <br />
-          <input
-            placeholder="Musterpasswort"
-            name="password"
-            type="password"
-            value={password}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />{" "}
-          <br />
-          <input type="submit" value="Login" />
-        </form>
-      )}
-    </div>
-  );
-  */
   return (
     <>
       {loading === false && (

@@ -29,9 +29,6 @@ class Device(models.Model):
     status = models.BooleanField(default=True, blank=True)
     removed_from_DEP = models.BooleanField(default=False)
     status_defect = models.BooleanField(default=False)
-    permissions = (
-            ('assign_device', 'Assign device'),
-        )
    
     
 class Handout(models.Model):
@@ -39,6 +36,4 @@ class Handout(models.Model):
     is_shipped = models.BooleanField(default=False)
     owner = models.CharField(default="system" ,max_length=20)
     timestamp = models.DateTimeField(default=datetime.now)
-    permissions = (
-            ('assign_handout', 'Assign handout'),
-        )
+   
