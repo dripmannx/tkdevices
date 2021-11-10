@@ -1,7 +1,13 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
 import Props, { localization } from "./props";
-import React, { useState, useEffect, forwardRef, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useRef,
+  useReducer,
+} from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "../../../static/css/table.css";
 import { QRCode } from "react-qr-svg";
@@ -42,13 +48,13 @@ export default function Table() {
   let forbidden = false;
   document.title = " Lagernde Geräte";
   const url = "/api/device";
+
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
 
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devices
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devicedata
   useEffect(() => {
     getData(data, setData, url);
-    
   }, []);
 
   console.log(forbidden);
@@ -151,9 +157,7 @@ export default function Table() {
     },
   ];
 
-  
-
-  const deviceCount = data.length.toString()+ " Geräte lagernd";
+  const deviceCount = data.length.toString() + " Geräte lagernd";
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -166,12 +170,10 @@ export default function Table() {
           position={ToastsContainerPosition.BOTTOM_CENTER}
         />
         <MaterialTable
-         
           //icons={tableIcons}
           title={deviceCount}
           data={data}
           columns={columns}
-          
           /*
           cellEditable={{
             cellStyle: {},
@@ -202,7 +204,7 @@ export default function Table() {
           }}
           */
           editable={{
-            onRowAdd: (newData, tableData)  =>
+            onRowAdd: (newData, tableData) =>
               new Promise((resolve, reject) => {
                 //Backend call
                 fetch(url, {
@@ -216,7 +218,7 @@ export default function Table() {
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
                     getData(data, setData, url);
-                    
+
                     resolve();
                   });
               }),
@@ -270,8 +272,8 @@ export default function Table() {
             }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
-          actions={[ 
-            {
+          actions={[
+            (rowData) => ({
               icon: SmartphoneIcon,
               tooltip: "Gerät öffnen",
               onClick: (event, rowData) => {
@@ -279,12 +281,11 @@ export default function Table() {
                   "http://localhost:8000/devices/" + rowData.serialnumber
                 );
               },
-            },
+            }),
           ]}
           localization={localization}
         />
       </div>
-     
     </ThemeProvider>
   );
 }

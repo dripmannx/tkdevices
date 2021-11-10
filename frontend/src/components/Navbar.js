@@ -18,7 +18,7 @@ const Navbar = () => {
   useEffect(() => {
     getData(permissions,setPermissions,"/api/permissions");
 
-
+    
   },[]);
 
   if (window.location.href !== "http://localhost:8000/") {
@@ -36,8 +36,14 @@ const Navbar = () => {
       setLoginState(true);
     }
   }, []);
-
-
+ if (permissions.permissions) {
+   permissions.permissions.forEach((p) => {
+     let per = p.split("_");
+     let hub = p.split(".")
+     console.log(per[0], per[1]);
+     console.log(per,hub);
+   });
+ }
   return (
     <div>
       <nav className="navbar non-printable">
