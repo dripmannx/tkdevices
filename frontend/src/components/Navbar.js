@@ -11,7 +11,6 @@ const Navbar = () => {
   const [isActive, setActive] = useState(false);
   const handleOnClick = () => {
     setActive(!isActive);
-    console.log(isActive);
   };
 
   const url = "/api/current_user";
@@ -19,7 +18,6 @@ const Navbar = () => {
   const [loginState, setLoginState] = useState(true);
   const [permissions, setPermissions] = useState([]);
   const { user, setUser } = useContext(UserContext);
-  console.log(user);
 /* 
   useEffect(() => {
     if (window.location.href !== "http://localhost:8000/") {
@@ -29,7 +27,7 @@ const Navbar = () => {
  */
    
     useEffect(() => {
-     if (window.location.href !== "http://localhost:8000/") {
+     if (window.location.href !== "http://localhost:8000/" && user===null) {
     setUser(JSON.parse(localStorage.getItem("user")));
  }
     }, []);
@@ -44,7 +42,6 @@ const Navbar = () => {
       console.log(per, hub);
     });
   } */
-  console.log(user);
   return (
     <div>
       <nav className="navbar non-printable">

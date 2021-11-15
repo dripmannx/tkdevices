@@ -5,7 +5,6 @@ export default function Props() {
     let location = useLocation();
     
   
-       console.log(location.pathname)
        return(
            <>
            </>

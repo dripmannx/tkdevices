@@ -60,7 +60,6 @@ export default function Table() {
     getData(data, setData, url);
   }, []);
 
-  console.log(forbidden);
   const columns = [
     {
       title: "Seriennummer",
@@ -163,9 +162,8 @@ export default function Table() {
   const deviceCount = data.length.toString() + " Geräte lagernd";
 
   return (
-    <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={darkTheme}>
       <pre>{JSON.stringify(user, null, 2)}</pre>;
-      <Props />
       <title className="">{deviceCount}</title>
       <div className="Table">
         <ToastsContainer
