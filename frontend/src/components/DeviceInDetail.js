@@ -12,6 +12,7 @@ import getData, { ForwardLogIn } from "./APIRequests";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import useFetch from "./Hooks/Fetching/useFetch";
+import getCurrentUser from "./APIRequests"
 function status(state) {
   if (state === true) {
     return "lagernd";
@@ -31,11 +32,12 @@ export default function DeviceInDetail() {
 
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
+const [username, setUsername] = useState([]);
 
   async function getDevice() {
     setError(false);
     const response = await fetch(url, {
-      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      headers: { Authorization: `Token ${(localStorage.getItem("token"))}` },
     });
     console.log(response);
     if (response.ok) {
@@ -49,7 +51,10 @@ export default function DeviceInDetail() {
   useEffect(() => {
     getDevice();
   }, []);
-
+useEffect(() => {
+  getCurrentUser(username, setUsername, "/api/current_user");
+  
+},[]);
   const handleOnClick = async () => {
     const clonedData = data;
     clonedData.status = !clonedData.status;
@@ -57,7 +62,7 @@ export default function DeviceInDetail() {
     await fetch(url, {
       method: "PUT",
       headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
+        Authorization: `Token ${(localStorage.getItem("token"))}`,
       },
       body: JSON.stringify(data),
     })
@@ -67,9 +72,23 @@ export default function DeviceInDetail() {
       })
       .catch((err) => console.log(err));
   };
+  let userp = [];
+console.log(username.permissions)
+if (username.permissions) {
+  username.permissions.forEach((p) => {
+    let per = p.split("_");
+    let hub = p.split(".");
+    userp.push(hub);
+    console.log(userp);
+    console.log(per[0], per[1]);
+    console.log(per, hub);
+  });
+ 
+} console.log(userp,"hi");
   return (
     <>
-      {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
+    <div>{JSON.stringify(username,null,2)}</div>
+      {/* {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
       {error === false && (
         <div className="wrapper">
           <div className="file__upload">
@@ -101,7 +120,7 @@ export default function DeviceInDetail() {
             </form>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 }

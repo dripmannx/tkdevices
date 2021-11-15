@@ -1,7 +1,7 @@
 import useAsync from "./useAsync";
 
 const DEFAULT_OPTIONS = {
-  headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+  headers: {  },
 };
 
 export default function useFetch(url, options = {}, dependencies = []) {

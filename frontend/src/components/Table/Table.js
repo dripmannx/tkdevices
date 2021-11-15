@@ -7,12 +7,14 @@ import React, {
   forwardRef,
   useRef,
   useReducer,
+  useContext
 } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import "../../../static/css/table.css";
 import { QRCode } from "react-qr-svg";
 import useNewTab from "../openInNewTab";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
+import UserContext from "../User/UserContext";
 import {
   ToastsContainer,
   ToastsStore,
@@ -51,6 +53,7 @@ export default function Table() {
 
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
+  const {user,setuser} = useContext(UserContext);
 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devicedata
   useEffect(() => {
@@ -161,9 +164,9 @@ export default function Table() {
 
   return (
     <ThemeProvider theme={darkTheme}>
+      <pre>{JSON.stringify(user, null, 2)}</pre>;
       <Props />
       <title className="">{deviceCount}</title>
-
       <div className="Table">
         <ToastsContainer
           store={ToastsStore}
@@ -188,7 +191,7 @@ export default function Table() {
                 fetch(url + "/" + rowData.serialnumber, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(rowData),
                 })
@@ -210,7 +213,7 @@ export default function Table() {
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -229,7 +232,7 @@ export default function Table() {
                 fetch(url + "/" + oldData.serialnumber, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -246,7 +249,7 @@ export default function Table() {
                 fetch(url + "/" + oldData.serialnumber, {
                   method: "DELETE",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");

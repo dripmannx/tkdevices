@@ -4,14 +4,13 @@ import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import "./../../static/css/table.css";
 import openInNewTab from "./openInNewTab";
-import { QRCode } from "react-qr-svg";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
   ToastsContainer,
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-import getData,{checkLogIn} from "./APIRequests";
+import getData from "./APIRequests";
 import LinkIcon from "@material-ui/icons/Link";
 
 const darkTheme = createTheme({
@@ -34,7 +33,6 @@ const darkTheme = createTheme({
 
 export default function HandoutTable() {
   document.title = `Offene Aufträge`;
-  checkLogIn();
 
   const url = `/api/handouts`;
   const urlUser = `/api/current_user`;
@@ -143,7 +141,7 @@ export default function HandoutTable() {
                 fetch(url + "/" + rowData.id, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
 
                   body: JSON.stringify(rowData),
@@ -165,7 +163,7 @@ export default function HandoutTable() {
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -188,7 +186,7 @@ export default function HandoutTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -205,7 +203,7 @@ export default function HandoutTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");

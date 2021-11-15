@@ -20,13 +20,13 @@ const fileUpload = () => {
     const { loading, error, value } = useFetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
+        Authorization: `Token ${(localStorage.getItem("token"))}`,
       },
     },[data]);
     */
     fetch(url, {
       headers: {
-        Authorization: `Token ${localStorage.getItem("token")}`,
+        Authorization: `Token ${(localStorage.getItem("token"))}`,
       },
       method: "POST",
       body: data,

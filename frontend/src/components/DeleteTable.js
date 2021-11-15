@@ -76,7 +76,7 @@ export default function DeleteTable() {
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
  async function getDevices() {
    const response = await fetch(url, {
-     headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+     headers: { Authorization: `Token ${(localStorage.getItem("token"))}` },
    });
    console.log(response);
    if (response.ok) {
@@ -157,7 +157,7 @@ export default function DeleteTable() {
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -175,7 +175,7 @@ export default function DeleteTable() {
                 fetch(url + "/" + oldData.serialnumber, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -192,7 +192,7 @@ export default function DeleteTable() {
                 fetch(url + "/" + oldData.serialnumber, {
                   method: "DELETE",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
