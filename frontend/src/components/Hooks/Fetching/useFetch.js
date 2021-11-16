@@ -1,4 +1,4 @@
-import useAsync from "./useAsync";
+/* import useAsync from "./useAsync";
 
 const DEFAULT_OPTIONS = {
   headers: {  },
@@ -13,3 +13,22 @@ export default function useFetch(url, options = {}, dependencies = []) {
     });
   }, dependencies);
 }
+ */
+import React from "react";
+import { useState, useEffect } from "react";
+
+const useFetch = async (url,  options = {}) => {
+  const [state, setState] = useState({ data: null, loading: true });
+  
+    const response =  await fetch(url, {
+     options,
+    });
+    if (response.ok) {
+      console.log("tre")
+      setState({ data: resp.json(), loading: false });
+    }  return state;
+  };
+
+
+
+export default useFetch;

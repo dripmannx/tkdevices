@@ -1,37 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import UserContext from "./User/UserContext";
 import login from "./APIRequests";
+import useFetch from "./Hooks/Fetching/useFetch";
 
 export default function Index() {
-  const { user, setUser } = useContext(UserContext);
+  
+    const { data, loading } =()=> useFetch("api/devices", {
+      method: "GET",
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+    });
+  console.log(data)
 
   return (
     <div>
       <h2>Home</h2>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-      {user ? (
-        <button
-          onClick={() => {
-            // call logout
-            setUser(null);
-          }}
-        >
-          logout
-        </button>
-      ) : (
-        <button
-          onClick={async () => {
-            const test = await login({
-              username: "LD",
-              password: "ENERCON_01",
-            });
-            const responseData = await test.json();
-            setUser(responseData);
-          }}
-        >
-          login
-        </button>
-      )}
+      <div>{!data ? "loading..." : data}</div>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
     </div>
   );
 }

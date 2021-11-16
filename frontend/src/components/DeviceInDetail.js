@@ -51,9 +51,26 @@ export default function DeviceInDetail() {
     getDevice();
   }, []);
 
-  const handleOnClick = async () => {
+  const handleOnState = async () => {
     const clonedData = data;
     clonedData.status = !clonedData.status;
+    setData(clonedData);
+    await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((resp) => resp.json())
+      .then(() => {
+        getDevice();
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleOnDefect = async () => {
+    const clonedData = data;
+    clonedData.status = !clonedData.status_defect;
     setData(clonedData);
     await fetch(url, {
       method: "PUT",
@@ -95,9 +112,16 @@ export default function DeviceInDetail() {
               </div>
 
               <Button
-                variant="{data} contained"
+                variant="contained"
                 className="Btn-state"
-                onClick={() => handleOnClick()}
+                onClick={() => handleOnState()}
+              >
+                Status Ändern
+              </Button>
+              <Button
+                variant="contained"
+                className="Btn-defect"
+                onClick={() => handleOnDefect()}
               >
                 Status Ändern
               </Button>
