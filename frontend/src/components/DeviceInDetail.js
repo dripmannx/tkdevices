@@ -21,13 +21,13 @@ function status(state) {
 }
 
 export default function DeviceInDetail() {
-  ForwardLogIn();
+  
   const location = useLocation();
-
-  console.log(location.pathname);
-
-  const identifier = location.pathname.split("/").pop();
-  document.title = `iPhone ${identifier}`;
+  
+ 
+  const identifier = location.state;
+  
+  document.title = `iPhone ${location.state}`;
   const url = "/api/device/" + identifier;
 
   const [data, setData] = useState([]);
@@ -51,10 +51,7 @@ const [username, setUsername] = useState([]);
   useEffect(() => {
     getDevice();
   }, []);
-useEffect(() => {
-  getCurrentUser(username, setUsername, "/api/current_user");
-  
-},[]);
+
   const handleOnClick = async () => {
     const clonedData = data;
     clonedData.status = !clonedData.status;
@@ -72,23 +69,11 @@ useEffect(() => {
       })
       .catch((err) => console.log(err));
   };
-  let userp = [];
-console.log(username.permissions)
-if (username.permissions) {
-  username.permissions.forEach((p) => {
-    let per = p.split("_");
-    let hub = p.split(".");
-    userp.push(hub);
-    console.log(userp);
-    console.log(per[0], per[1]);
-    console.log(per, hub);
-  });
- 
-} console.log(userp,"hi");
+
   return (
     <>
     <div>{JSON.stringify(username,null,2)}</div>
-      {/* {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
+      {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
       {error === false && (
         <div className="wrapper">
           <div className="file__upload">
@@ -120,7 +105,7 @@ if (username.permissions) {
             </form>
           </div>
         </div>
-      )} */}
+      )}
     </>
   );
 }

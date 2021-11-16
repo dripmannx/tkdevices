@@ -20,13 +20,6 @@ const Navbar = () => {
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
   console.log(location.pathname)
-/* 
-  useEffect(() => {
-    if (window.location.href !== "http://localhost:8000/") {
-      getData(permissions, setPermissions, "/api/permissions");
-    }
-  }, []);
- */
    
     useEffect(() => {
      if (location.pathname !== "/" && user===null) {

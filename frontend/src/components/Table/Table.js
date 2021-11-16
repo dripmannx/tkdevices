@@ -17,6 +17,7 @@ import { QRCode } from "react-qr-svg";
 import useNewTab from "../openInNewTab";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
 import UserContext from "../User/UserContext";
+import Router,{useHistory} from "react-router-dom";
 import {
   ToastsContainer,
   ToastsStore,
@@ -25,10 +26,9 @@ import {
 import getData from "../APIRequests";
 
 export default function Table() {
-  let forbidden = false;
   document.title = " Lagernde Geräte";
   const url = "/api/device";
-
+  const history = useHistory();
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const {user,setuser} = useContext(UserContext);
@@ -256,9 +256,7 @@ export default function Table() {
               icon: SmartphoneIcon,
               tooltip: "Gerät öffnen",
               onClick: (event, rowData) => {
-                useNewTab(
-                  "http://localhost:8000/devices/" + rowData.serialnumber
-                );
+                history.push({pathname:`/devices/`+rowData.serialnumber,state:rowData.serialnumber})
               },
             }),
           ]}

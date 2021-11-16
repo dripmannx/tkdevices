@@ -35,7 +35,7 @@ const Routing = () => {
         <Route path="/devices" exact component={Table} />
         <Route path="/logout" component={Logout} />
         <Route path="/handout" component={HandoutTable} />
-        <Route path="/devices/" component={DeviceInDetail} /> 
+        <Route path="/devices/:serialnumber" component={DeviceInDetail} /> 
         {/* <Route path="/upload" component={fileUpload} /> */}
         <Route path="/test" component={Index} />
       </UserContext.Provider>
