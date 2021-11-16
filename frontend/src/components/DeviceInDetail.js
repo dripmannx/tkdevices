@@ -12,7 +12,7 @@ import getData, { ForwardLogIn } from "./APIRequests";
 import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import useFetch from "./Hooks/Fetching/useFetch";
-import getCurrentUser from "./APIRequests"
+import getCurrentUser from "./APIRequests";
 function status(state) {
   if (state === true) {
     return "lagernd";
@@ -21,23 +21,22 @@ function status(state) {
 }
 
 export default function DeviceInDetail() {
-  
   const location = useLocation();
-  
- 
-  const identifier = location.state;
-  
+
+  let identifier=null;
+  location.state===undefined ? identifier = location.pathname.split("/").pop():identifier=location.state
+
   document.title = `iPhone ${location.state}`;
   const url = "/api/device/" + identifier;
 
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
-const [username, setUsername] = useState([]);
+  const [username, setUsername] = useState([]);
 
   async function getDevice() {
     setError(false);
     const response = await fetch(url, {
-      headers: { Authorization: `Token ${(localStorage.getItem("token"))}` },
+      headers: { Authorization: `Token ${localStorage.getItem("token")}` },
     });
     console.log(response);
     if (response.ok) {
@@ -59,7 +58,7 @@ const [username, setUsername] = useState([]);
     await fetch(url, {
       method: "PUT",
       headers: {
-        Authorization: `Token ${(localStorage.getItem("token"))}`,
+        Authorization: `Token ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(data),
     })
@@ -72,7 +71,7 @@ const [username, setUsername] = useState([]);
 
   return (
     <>
-    <div>{JSON.stringify(username,null,2)}</div>
+      <div>{JSON.stringify(username, null, 2)}</div>
       {error === true && <h1 className="notFound">Kein Gerät Gefunden</h1>}
       {error === false && (
         <div className="wrapper">

@@ -19,24 +19,15 @@ const Navbar = () => {
   const [permissions, setPermissions] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
-  console.log(location.pathname)
    
-    useEffect(() => {
+  useEffect(() => {
      if (location.pathname !== "/" && user===null) {
+       console.log("user set");
     setUser(JSON.parse(localStorage.getItem("user")));
  }
     }, []);
  
-    /* setUser(JSON.parse(localStorage.getItem("user"))); */
-
-  /*   if (permissions.permissions) {
-    permissions.permissions.forEach((p) => {
-      let per = p.split("_");
-      let hub = p.split(".");
-      console.log(per[0], per[1]);
-      console.log(per, hub);
-    });
-  } */
+   
   return (
     <div>
       <nav className="navbar non-printable">
