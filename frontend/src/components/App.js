@@ -1,13 +1,15 @@
-import React, { Component } from "react";
+import React, { Component,useContext } from "react";
 import { render } from "react-dom";
 import Routing from "./Routing";
-import Navbar from "./Navbar"
 import ForwardLogIn from "./APIRequests";
+
 const App = () => {
   ForwardLogIn();
+  
+  
   return (
     <>
-      <Navbar/>
+      
       <Routing />
     </>
   );

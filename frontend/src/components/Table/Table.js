@@ -1,63 +1,43 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
-import Props, { localization } from "./props";
+import Props, { localization,darkTheme } from "../props";
 import React, {
   useState,
   useEffect,
   forwardRef,
   useRef,
   useReducer,
+  useContext
 } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
 import "../../../static/css/table.css";
+
 import { QRCode } from "react-qr-svg";
 import useNewTab from "../openInNewTab";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
+import UserContext from "../User/UserContext";
+import Router,{useHistory} from "react-router-dom";
 import {
   ToastsContainer,
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
 import getData from "../APIRequests";
-const darkTheme = createTheme({
-  header: {
-    zIndex: -1,
-  },
-  palette: {
-    type: "dark",
-    palette: {
-      primary: {
-        main: "#4caf50",
-      },
-      secondary: {
-        main: "#ff9100",
-      },
-    },
-  },
-  overrides: {
-    MuiTableRow: {
-      root: {
-        "&:hover": {
-          backgroundColor: "#2E2E2E !important",
-        },
-      },
-    },
-  },
-});
+
 export default function Table() {
-  let forbidden = false;
   document.title = " Lagernde Geräte";
   const url = "/api/device";
-
+  const history = useHistory();
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
+  const {user,setuser} = useContext(UserContext);
 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devicedata
   useEffect(() => {
     getData(data, setData, url);
   }, []);
 
-  console.log(forbidden);
   const columns = [
     {
       title: "Seriennummer",
@@ -160,10 +140,9 @@ export default function Table() {
   const deviceCount = data.length.toString() + " Geräte lagernd";
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Props />
+      <ThemeProvider theme={darkTheme}>
+      <pre>{JSON.stringify(user, null, 2)}</pre>;
       <title className="">{deviceCount}</title>
-
       <div className="Table">
         <ToastsContainer
           store={ToastsStore}
@@ -188,7 +167,7 @@ export default function Table() {
                 fetch(url + "/" + rowData.serialnumber, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(rowData),
                 })
@@ -210,7 +189,7 @@ export default function Table() {
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -229,7 +208,7 @@ export default function Table() {
                 fetch(url + "/" + oldData.serialnumber, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -246,7 +225,7 @@ export default function Table() {
                 fetch(url + "/" + oldData.serialnumber, {
                   method: "DELETE",
                   headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
@@ -277,9 +256,7 @@ export default function Table() {
               icon: SmartphoneIcon,
               tooltip: "Gerät öffnen",
               onClick: (event, rowData) => {
-                useNewTab(
-                  "http://localhost:8000/devices/" + rowData.serialnumber
-                );
+                history.push({pathname:`/devices/`+rowData.serialnumber,state:rowData.serialnumber})
               },
             }),
           ]}

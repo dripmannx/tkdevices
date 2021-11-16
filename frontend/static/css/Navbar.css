@@ -49,16 +49,16 @@ body {
   color: white;
   padding: 1rem;
 }
-.navbar-links li a:hover {
+/* .navbar-links li a:hover {
 
   background-image: linear-gradient(90deg, red, blue);
   background-clip: text;
   color:transparent;
-}
-
-/* .navbar-links li:hover {
-  background-color: #555;
 } */
+
+.navbar-links li:hover {
+  background-color: #555;
+}
 
 .toggle-button {
   position: absolute;

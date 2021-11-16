@@ -9,5 +9,6 @@ urlpatterns = [
     path("logout", index),
     path("statics", index),
     path("upload",index),
+    path("test",index),
     path("devices/<str:serialnumber>", index),
     ]

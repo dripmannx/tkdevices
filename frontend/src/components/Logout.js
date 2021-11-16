@@ -1,16 +1,18 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment,useContext } from "react";
 import getCurrentUser from "./APIRequests";
+import UserContext from "./User/UserContext";
+import Router, {useHistory }from "react-router-dom";
 const Logout = () => {
   const url = "/api/current_user";
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState([]);
+  const {user,setUser} = useContext(UserContext);
+  const history = useHistory();
   document.title = `Logout`;
 
+ 
   useEffect(() => {
-    getCurrentUser(username, setUsername, url);
-  }, []);
-  useEffect(() => {
-    if (localStorage.getItem("token") == null) {
+    if ((localStorage.getItem("token")) == null) {
       window.location.replace("http://localhost:8000");
     } else {
       setLoading(false);
@@ -19,8 +21,11 @@ const Logout = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    localStorage.removeItem("user");
     localStorage.removeItem("token");
-    window.location.replace("http://localhost:8000");
+    setUser(null);
+
+    history.push("/");
   };
   /*
 return (
@@ -40,6 +45,7 @@ return (
 */
   return (
     <>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
       <div className="wrapper">
         <form className="login" onSubmit={onSubmit}>
           <p className="title">Wirklich ausloggen?</p>
@@ -48,7 +54,6 @@ return (
             <span className="state">Log out</span>
           </button>
         </form>
-      
       </div>
     </>
   );

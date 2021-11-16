@@ -20,7 +20,28 @@ from rest_framework.permissions import DjangoObjectPermissions
 from .serializers import DataSerializer
 
 
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        logged_in_user = User.objects.get(username=user)
+ 
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email,
+            "username":user.username,
+            "permissions":str(user.get_all_permissions()),
+
+        })
 
 @api_view(['GET','POST'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
@@ -81,8 +102,14 @@ def file_provider_view(request, pk):
 def user(request, format=None):
     logged_in_user = User.objects.get(username=request.user.username)
     content = {
-        'user': str(logged_in_user) ,#`django.contrib.auth.User` instance.
+        'username': str(logged_in_user) ,#`django.contrib.auth.User` instance.
         #`django.models.User
+        "permissions":logged_in_user.get_all_permissions(),
+        "full_name":str(logged_in_user.get_full_name()),
+        "first_name":str(logged_in_user.get_short_name()),
+        "email":str(logged_in_user.email),
+
+
     }
     
     
@@ -169,18 +196,25 @@ def devices(request):
     """
     Get all non defect Devices and add a Device
     """
+    logged_in_user = User.objects.get(username=request.user.username)
+    if logged_in_user.has_perm('api.add_device'):
+        print("hell§o")
+    
+
     if request.method == 'GET':
-        queryset = Device.objects.filter(
-            status_defect=False).order_by('-batterylife', '-status')
-        serializer = DeviceSerializer(queryset, many=True)
-        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+        if logged_in_user.has_perm('api.view_device'):
+            queryset = Device.objects.filter(
+                status_defect=False).order_by('-batterylife', '-status')
+            serializer = DeviceSerializer(queryset, many=True)
+            return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = DeviceSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
+        if logged_in_user.has_perm('api.add_device'):
+            data = JSONParser().parse(request)
+            serializer = DeviceSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
 
