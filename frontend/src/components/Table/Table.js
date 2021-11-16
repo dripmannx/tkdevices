@@ -1,6 +1,6 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
-import Props, { localization } from "./props";
+import Props, { localization,darkTheme } from "../props";
 import React, {
   useState,
   useEffect,
@@ -10,7 +10,9 @@ import React, {
   useContext
 } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
 import "../../../static/css/table.css";
+
 import { QRCode } from "react-qr-svg";
 import useNewTab from "../openInNewTab";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
@@ -21,31 +23,7 @@ import {
   ToastsContainerPosition,
 } from "react-toasts";
 import getData from "../APIRequests";
-const darkTheme = createTheme({
-  header: {
-    zIndex: -1,
-  },
-  palette: {
-    type: "dark",
-    palette: {
-      primary: {
-        main: "#4caf50",
-      },
-      secondary: {
-        main: "#ff9100",
-      },
-    },
-  },
-  overrides: {
-    MuiTableRow: {
-      root: {
-        "&:hover": {
-          backgroundColor: "#2E2E2E !important",
-        },
-      },
-    },
-  },
-});
+
 export default function Table() {
   let forbidden = false;
   document.title = " Lagernde Geräte";

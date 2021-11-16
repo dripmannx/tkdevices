@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import React from 'react'
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 export default function Props() {
     let location = useLocation();
@@ -57,3 +58,29 @@ export const localization ={
               searchPlaceholder: "Suche...",}
             
 };
+
+export const darkTheme = createTheme({
+  header: {
+    zIndex: -1,
+  },
+  palette: {
+    type: "dark",
+    palette: {
+      primary: {
+        main: "#4caf50",
+      },
+      secondary: {
+        main: "#ff9100",
+      },
+    },
+  },
+  overrides: {
+    MuiTableRow: {
+      root: {
+        "&:hover": {
+          backgroundColor: "#2E2E2E !important",
+        },
+      },
+    },
+  },
+});

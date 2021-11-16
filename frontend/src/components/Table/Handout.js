@@ -1,138 +1,128 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
-import React, { useState, useEffect, forwardRef } from "react";
-import "./../../static/css/table.css";
+import React, { useState, useEffect, forwardRef,useContext } from "react";
+import "../../../static/css/table.css";
+import openInNewTab from "../openInNewTab";
+import UserContext from "../User/UserContext"
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
   ToastsContainer,
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
+import getData from "../APIRequests";
+import LinkIcon from "@material-ui/icons/Link";
+import {darkTheme} from "../props";
 
-import getData, { ForwardLogIn } from "./APIRequests";
-const darkTheme = createTheme({
-  header: {
-    zIndex: 0,
-  },
-  palette: {
-    type: "dark",
-  },
-  overrides: {
-    MuiTableRow: {
-      
-        zIndex: 0,
-      
-      hover: {
-        "&:hover": {
-          backgroundColor: "#fff !important",
-        },
-      },
-    },
-  },
-});
 
-export default function DeleteTable() {
-  document.title = `Defekte Geräte`; 
-  ForwardLogIn();
-  const url = "/api/devices/defect";
+export default function HandoutTable() {
+  document.title = `Offene Aufträge`;
+
+  const url = `/api/handouts`;
+  const urlUser = `/api/current_user`;
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
+  const {user, setUser} = useContext(UserContext);
+
+  
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+  
+
+  useEffect(() => {
+    getData(data, setData, url);
+  }, []);
   const columns = [
     {
-      title: "Seriennummer",
-      field: "serialnumber",
-      filterPlaceholder: "S/N eingeben",
-      validate: (rowData) => 
-        rowData.serialnumber === undefined ||
-        rowData.serialnumber === "" ||
-        rowData.serialnumber.length != 12 ||
-        rowData.serialnumber !== rowData.serialnumber.toUpperCase()
-          ? "S/N im richtigen Format angeben"
-          : true,
-      tooltip: "Seriennummer sortieren",
-    },
-    {
-      title: "Status defekt",
-      field: "status_defect",
-      filterPlaceholder: "Status auswählen",
-      type: "boolean",
+      title: "Link",
+      field: "link",
+      tooltip: "Nach Link suchen",
+      filterPlaceholder: "nach Link suchen",
       validate: (rowData) =>
-        rowData.status_defect === undefined || rowData.model ===""
-          ? "Status als defekt melden"
+        rowData.link === undefined || rowData.link === ""
+          ? "Link eingeben"
           : true,
-      tooltip: "Sortieren",
+      sorting: false,
     },
     {
-      title: "DEP entfernt",
-      field: "removed_from_DEP",
-      filterPlaceholder: "Entfernt aus DEP",
-      type: "boolean",
-      defaultSort: "asc",
-      tooltip: "Nach DEP Status sortieren",
+      title: "Status",
+      field: "is_shipped",
+      tooltip: "Nach Status filtern",
+      filterPlaceholder: "Status auswählen",
+      validate: (rowData) =>
+        rowData.is_shipped === undefined ? "Status als defekt melden" : true,
+      tooltip: "Sortieren",
+      lookup: { true: "versendet", false: "nicht versendet" },
+      initialEditValue: false,
+    },
+    {
+      title: "Ersteller",
+      field: "owner",
+      tooltip: "Nach Erstellern filtern",
+      initialEditValue: "username",
+      editable: "never",
     },
   ];
- 
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
- async function getDevices() {
-   const response = await fetch(url, {
-     headers: { Authorization: `Token ${(localStorage.getItem("token"))}` },
-   });
-   console.log(response);
-   if (response.ok) {
-     const data = await response.json();
-     return setData(data);
-   }
- }
-  useEffect(() => {
-    //getData(data,setData, url);
-    getDevices();
-  }, []);
-  
-  const deviceCountNotRemoved = $.grep(data, function (n, i) {
-    return n.removed_from_DEP === false;
+
+  const handouts_not_shipped = $.grep(data, function (n, i) {
+    return n.is_shipped === false;
   });
-  const deviceCountDefect = $.grep(data, function (n, i) {
-    return n.status_defect === true;
+  const handouts = $.grep(data, function (n, i) {
+    return n.is_shipped === true || n.is_shipped === false;
   });
 
-  const deviceCount =
-    deviceCountDefect.length + " Geräte defekt und nicht aus dem DEP entfernt";
+  const deviceCount = handouts.length + " Aufträge vorhanden";
 
-  return (  
+  return (
     <ThemeProvider theme={darkTheme}>
-      <title>{deviceCountDefect.length} Defekte Geräte</title>
+      <title>{handouts_not_shipped.length} offene Aufträge</title>
       <div className="Table">
-       
         <h1 className="first-title" align="center">
           {deviceCount}
         </h1>
 
         <ToastsContainer
           store={ToastsStore}
-          position={ToastsContainerPosition.TOP_RIGHT}
+          position={ToastsContainerPosition.BOTTOM_CENTER}
         />
 
         <MaterialTable
           className="TableRow"
-          title={deviceCountNotRemoved.length + " Geräte nicht entfernt"}
+          title={handouts_not_shipped.length + " Aufträge nicht bearbeitet"}
           data={data}
           columns={columns}
-      
+          /*
+          detailPanel={[
+            {
+              tooltip: "Show Name",
+              render: (rowData) => {
+                return (
+                  <div
+                    style={{
+                      fontSize: 20,
+                      textAlign: "left",
+                      color: "white",
+                    }}
+                  >
+                    Ersteller: {rowData.owner}
+                  </div>
+                );
+              },
+            },
+          ]}
+          */
           cellEditable={{
-            isCellEditable: (rowData) => rowData.model === "",
             cellStyle: {},
             onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
               return new Promise((resolve, reject) => {
                 //Backend call
-                
                 const clonedData = [...data];
                 clonedData[rowData.tableData.id][columnDef.field] = newValue;
                 setData(clonedData);
-                fetch(url + "/" + rowData.serialnumber, {
+                fetch(url + "/" + rowData.id, {
                   method: "PUT",
                   headers: {
-                    "Content-type": "application/json",
+                    Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
 
                   body: JSON.stringify(rowData),
@@ -144,10 +134,7 @@ export default function DeleteTable() {
                     resolve();
                     ToastsStore.success("Änderung gespeichert");
                   });
-
-
               });
-            
             },
           }}
           editable={{
@@ -161,6 +148,11 @@ export default function DeleteTable() {
                   },
                   body: JSON.stringify(newData),
                 })
+                  .then((resp) => {
+                    if (resp.statusText === "unauthorized") {
+                      window.location.replace("http://localhost:8000");
+                    }
+                  })
                   .then((resp) => resp.json())
                   .then((resp) => {
                     ToastsStore.success("Neues Gerät gespeichert");
@@ -172,7 +164,7 @@ export default function DeleteTable() {
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(url + "/" + oldData.serialnumber, {
+                fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
                     Authorization: `Token ${(localStorage.getItem("token"))}`,
@@ -189,32 +181,41 @@ export default function DeleteTable() {
             onRowDelete: (oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call
-                fetch(url + "/" + oldData.serialnumber, {
+                fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
                     Authorization: `Token ${(localStorage.getItem("token"))}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
-                  getData(data, setData, url);
+                   getData(data, setData, url);
                   resolve();
                 });
               }),
           }}
-         
           options={{
             paging: false,
             maxBodyHeight: 700,
             actionsColumnIndex: -1,
             addRowPosition: "first",
             filtering: true,
-            headerStyle:{zIndex: 0},
+            headerStyle: { zIndex: 1 },
+
             rowStyle: (rowData) => ({
               backgroundColor:
                 selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
             }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
+          actions={[
+            {
+              icon: LinkIcon,
+              tooltip: "Link öffnen",
+              onClick: (event, rowData) => {
+                openInNewTab(rowData.link);
+              },
+            },
+          ]}
         />
       </div>
     </ThemeProvider>

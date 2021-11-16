@@ -1,7 +1,7 @@
 import React, { Component, useState, useMemo } from "react";
 import Table from "./Table/Table";
-import HandoutTable from "./Handout";
-import DeleteTable from "./DeleteTable";
+import HandoutTable from "./Table/Handout";
+import DeleteTable from "./Table/DeleteTable";
 
 import {
   BrowserRouter as Router,
@@ -16,15 +16,12 @@ import Login from "./Login";
 import Logout from "./Logout";
 import DeviceInDetail from "./DeviceInDetail";
 import Navbar from "./Navbar";
-import fileUpload from "./fileUpload";
 import UserContext from "./User/UserContext";
 import Index from "./Test";
-import useCurrentUser from "./APIRequests";
 
 const Routing = () => {
   const [user, setUser] = useState(null);
-  const history = useHistory();
-  const url = "/api/current_user"
+
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
@@ -38,7 +35,7 @@ const Routing = () => {
         <Route path="/devices" exact component={Table} />
         <Route path="/logout" component={Logout} />
         <Route path="/handout" component={HandoutTable} />
-        {/* <Route path="/devices/" component={DeviceInDetail} /> */}
+        <Route path="/devices/" component={DeviceInDetail} /> 
         {/* <Route path="/upload" component={fileUpload} /> */}
         <Route path="/test" component={Index} />
       </UserContext.Provider>

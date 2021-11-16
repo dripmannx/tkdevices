@@ -5,7 +5,7 @@ import getCurrentUser from "./APIRequests";
 import useFetch from "./Hooks/Fetching/useFetch";
 import getData, { useCurrentUser } from "./APIRequests";
 import UserContext from "./User/UserContext";
-import Router, { Link, Location } from "react-router-dom";
+import Router, { Link, useLocation } from "react-router-dom";
 const Navbar = () => {
   //toggle navigation button on mobile view
   const [isActive, setActive] = useState(false);
@@ -18,6 +18,8 @@ const Navbar = () => {
   const [loginState, setLoginState] = useState(true);
   const [permissions, setPermissions] = useState([]);
   const { user, setUser } = useContext(UserContext);
+  const location = useLocation();
+  console.log(location.pathname)
 /* 
   useEffect(() => {
     if (window.location.href !== "http://localhost:8000/") {
@@ -27,7 +29,7 @@ const Navbar = () => {
  */
    
     useEffect(() => {
-     if (window.location.href !== "http://localhost:8000/" && user===null) {
+     if (location.pathname !== "/" && user===null) {
     setUser(JSON.parse(localStorage.getItem("user")));
  }
     }, []);
