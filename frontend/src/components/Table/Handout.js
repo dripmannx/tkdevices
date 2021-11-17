@@ -150,7 +150,7 @@ export default function HandoutTable() {
                 })
                   .then((resp) => {
                     if (resp.statusText === "unauthorized") {
-                      window.location.replace("http://localhost:8000");
+                     history.push("/")
                     }
                   })
                   .then((resp) => resp.json())

@@ -8,9 +8,9 @@ import UserContext from "./User/UserContext";
 import Router, { Link, useLocation } from "react-router-dom";
 const Navbar = () => {
   //toggle navigation button on mobile view
-  const [isActive, setActive] = useState(false);
+  const [isActive, setIsActive]= useState(false);
   const handleOnClick = () => {
-    setActive(!isActive);
+    setIsActive(!isActive);
   };
 
   const url = "/api/current_user";

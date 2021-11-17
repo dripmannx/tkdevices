@@ -45,32 +45,7 @@ const Login = () => {
       setErrors(true);
     }
 
-    /* 
-    fetch("http://localhost:8000/api/api-token-auth/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.token) {
-          localStorage.clear();
-          localStorage.setItem("token", data.token);
-          setIsLoggedIn(true);
-          setUser(getCurrentUser(user, setUser, urlUser));
-          console.log(user);
-          //window.location.replace("http://localhost:8000/devices");
-        } else {
-          setIsLoggedIn(false);
-          setUsername("");
-          setPassword("");
-          localStorage.clear();
-          setErrors(true);
-        }
-      }); */
+    
   };
 
   return (

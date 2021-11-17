@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./../../static/css/fileUpload.css";
 import useFetch from "./Hooks/Fetching/useFetch";
-const url = "http://localhost:8000/api/files";
+const url = "api/files";
 const fileUpload = () => {
   const [file, setFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);

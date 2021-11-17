@@ -19,12 +19,20 @@ function status(state) {
   }
   return "in Nutzung";
 }
-
+function statusDefect(state_defect) {
+  if (state_defect === true) {
+    console.log(state_defect)
+    return "Defekt";
+  }
+  return "einwadfrei";
+}
 export default function DeviceInDetail() {
   const location = useLocation();
 
-  let identifier=null;
-  location.state===undefined ? identifier = location.pathname.split("/").pop():identifier=location.state
+  let identifier = null;
+  location.state === undefined
+    ? (identifier = location.pathname.split("/").pop())
+    : (identifier = location.state);
 
   document.title = `iPhone ${location.state}`;
   const url = "/api/device/" + identifier;
@@ -41,6 +49,7 @@ export default function DeviceInDetail() {
     console.log(response);
     if (response.ok) {
       const device = await response.json();
+      console.log(device,device.status_defect);
       return setData(device);
     } else {
       return setError(true);
@@ -109,6 +118,11 @@ export default function DeviceInDetail() {
 
                 <p>Speicher: {data.capacity}GB</p>
                 <p>Batterie: {data.batterylife}%</p>
+                <p
+                  className={!data.status_defect ? "text-green-600" : "text-red-600"}>
+                  <span className="text-black">Status: </span>
+                  {statusDefect(data.status_defect)}{" "}
+                </p>
               </div>
 
               <Button
@@ -122,7 +136,8 @@ export default function DeviceInDetail() {
                 variant="contained"
                 className="Btn-defect"
                 onClick={() => handleOnDefect()}
-              >Defect melden
+              >
+                Defect melden
               </Button>
             </form>
           </div>

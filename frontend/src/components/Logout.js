@@ -13,7 +13,7 @@ const Logout = () => {
  
   useEffect(() => {
     if ((localStorage.getItem("token")) == null) {
-      window.location.replace("http://localhost:8000");
+      history.push("/")
     } else {
       setLoading(false);
     }
