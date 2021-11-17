@@ -2,14 +2,14 @@
 
 
 
-.file__upload {
+.device-content {
     width: 400px;
     height: 445px;
     margin: 20px;
     box-shadow: 0 0 5px rgba(0,0,0,.3);}
 
 
-.file__upload .header {
+.device-content .header {
     width: 100%;
     height: 145px;
     background: #4db6ac;
@@ -20,25 +20,25 @@
     border-radius: 5px 5px 0 0;
 }
 
-.file__upload .header p {
+.device-content .header p {
     color: #FFF;
 }
 
-.file__upload .header p i.fa {
+.device-content .header p i.fa {
     margin-right: 10px;
 }
 
-.file__upload .header p span {
+.device-content .header p span {
     font-size: 2rem;
     font-weight: 100;
     
 }
 
-.file__upload .header p span span {
+.device-content .header p span span {
     font-weight: 600;
 }
 
-.file__upload .body {
+.device-content .body {
     background: #FFF;
     width: 100%;
     height: calc(100% - 145px);
@@ -50,20 +50,26 @@
     text-align: center;
 }
 
-.file__upload .body .Btn-state{
+.device-content .body .button-wrapper .Btn-state{
   background:#4db6ac;
 }
+.device-content .body .button-wrapper .Btn-defect{
+    background-color: red;
+    width:5rem;
+    margin-left: 1rem;
+   
+}
 
-.file__upload .body i.fa {
+.device-content .body i.fa {
     color: #d3d3d3;
     margin-bottom: 20px;
 }
 
-.file__upload .body p strong {
+.device-content .body p strong {
     color: hsl(174, 42%, 51%);
     cursor: pointer;
 }
-.file__upload .body p strong:hover {
+.device-content .body p strong:hover {
    color : hsl(174, 42%, 40%);
 }
 
