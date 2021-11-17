@@ -20,16 +20,14 @@ export default async function getData(data, setData, url,forbidden=false) {
   }
 }
 export function ForwardLogIn() {
- const history = useHistory(); 
   if ((localStorage.getItem("user")) === null) {
-        history.push("/");
+    window.location.replace("http://localhost:8000");
   }
-  
-  
-  console.log("keines")
 }
 /*
 export function checkLogIn(loginState, setLoginState) {
+  
+
   if ((localStorage.getItem("token")) == null) {
     setLoginState(false);
     
