@@ -240,7 +240,7 @@ export default function DeviceInDetail() {
   };
   const handleOnDefect = async () => {
     const clonedData = data;
-    clonedData.status = !clonedData.status_defect;
+    clonedData.status_defect = !clonedData.status_defect;
     setData(clonedData);
     await fetch(url, {
       method: "PUT",
