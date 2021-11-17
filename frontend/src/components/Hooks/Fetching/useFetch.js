@@ -14,21 +14,35 @@ export default function useFetch(url, options = {}, dependencies = []) {
   }, dependencies);
 }
  */
-import React from "react";
-import { useState, useEffect } from "react";
 
-const useFetch = async (url,  options = {}) => {
-  const [state, setState] = useState({ data: null, loading: true });
-  
-    const response =  await fetch(url, {
-     options,
-    });
-    if (response.ok) {
-      console.log("tre")
-      setState({ data: resp.json(), loading: false });
-    }  return state;
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
+
+const useFetch = ({ url, method, body = null, headers = null }) => {
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setloading] = useState(true);
+
+  const fetchData = () => {
+    axios[method](url, JSON.parse(headers), JSON.parse(body))
+      .then((res) => {
+        setResponse(res.data);
+      })
+      .catch((err) => {
+        setError(err);
+      })
+      .finally(() => {
+        setloading(false);
+      });
   };
 
+  useEffect(() => {
+    fetchData();
+  }, [method, url, body, headers]);
 
+  return { response, error, loading };
+};
 
 export default useFetch;

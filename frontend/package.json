@@ -39,6 +39,7 @@
     "@material-ui/x-grid": "^4.0.0-alpha.37",
     "@mui/material": "^5.0.6",
     "@react-pdf/renderer": "^1.6.17",
+    "axios": "^0.24.0",
     "cdbreact": "^1.2.1",
     "material-table": "^1.69.3",
     "react-icons": "^4.3.1",
