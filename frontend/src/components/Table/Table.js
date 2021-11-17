@@ -113,7 +113,7 @@ export default function Table() {
 
       lookup: {
         true: "lagernd",
-        false: "rausgegeben",
+        false: "in Nutzung",
       },
       cellStyle: (data, rowData) => ({
         color: data === "lagernd" ? "green" : "red",

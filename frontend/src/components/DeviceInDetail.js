@@ -122,8 +122,7 @@ export default function DeviceInDetail() {
                 variant="contained"
                 className="Btn-defect"
                 onClick={() => handleOnDefect()}
-              >
-                Status Ändern
+              >Defect melden
               </Button>
             </form>
           </div>
