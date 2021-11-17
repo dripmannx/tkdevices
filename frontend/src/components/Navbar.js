@@ -1,33 +1,32 @@
 //Beim component reload checken ob user eingeloggt
 import "../../static/css/Navbar.css";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import getCurrentUser from "./APIRequests";
 import useFetch from "./Hooks/Fetching/useFetch";
 import getData, { useCurrentUser } from "./APIRequests";
 import UserContext from "./User/UserContext";
 import Router, { Link, useLocation } from "react-router-dom";
+import useDetectOutsideClick from "./Test";
 const Navbar = () => {
   //toggle navigation button on mobile view
-  const [isActive, setIsActive]= useState(false);
+  const dropdownRef = useRef(null);
+  const [isActive, setIsActive] = useState(false);
   const handleOnClick = () => {
     setIsActive(!isActive);
   };
 
   const url = "/api/current_user";
-  const [username, setUsername] = useState([]);
-  const [loginState, setLoginState] = useState(true);
-  const [permissions, setPermissions] = useState([]);
+  
   const { user, setUser } = useContext(UserContext);
   const location = useLocation();
-   
+
   useEffect(() => {
-     if (location.pathname !== "/" && user===null) {
-       console.log("user set");
-    setUser(JSON.parse(localStorage.getItem("user")));
- }
-    }, []);
- 
-   
+    if (location.pathname !== "/" && user === null) {
+      console.log("user set");
+      setUser(JSON.parse(localStorage.getItem("user")));
+    }
+  }, []);
+
   return (
     <div>
       <nav className="navbar non-printable">

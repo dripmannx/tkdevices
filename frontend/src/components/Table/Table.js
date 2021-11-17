@@ -1,5 +1,6 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
+//importing Talbe Style and Übersetztung
 import Props, { localization,darkTheme } from "../props";
 import React, {
   useState,
@@ -10,7 +11,7 @@ import React, {
   useContext
 } from "react";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-
+//import CSS Styles
 import "../../../static/css/table.css";
 
 import { QRCode } from "react-qr-svg";
@@ -36,6 +37,7 @@ export default function Table() {
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devicedata
   useEffect(() => {
     getData(data, setData, url);
+    
   }, []);
 
   const columns = [
@@ -235,6 +237,7 @@ export default function Table() {
               }),
           }}
           options={{
+            
             paging: false,
             maxBodyHeight: 700,
             actionsColumnIndex: -1,
