@@ -24,6 +24,18 @@ export function ForwardLogIn() {
     window.location.replace("http://localhost:8000");
   }
 }
+function calculateDaysBetweenDates(begin, end) {
+  
+
+}
+
+
+
+
+
+
+
+
 /*
 export function checkLogIn(loginState, setLoginState) {
   
