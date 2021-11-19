@@ -74,7 +74,7 @@ const Login = () => {
             />
             <i className="fa fa-key"></i>
 
-            <button input type="submit" value="Login">
+            <button type="submit" value="Login">
               <i className="spinner"></i>
               <span className="state">Log in</span>
             </button>

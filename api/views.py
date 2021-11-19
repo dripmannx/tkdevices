@@ -147,9 +147,10 @@ def handout(request):
         serializer = HandoutSerializer(data=data)
 
         if serializer.is_valid():
-
+            print("is valid")
             serializer.save()
             return JsonResponse(serializer.data, status=201)
+        print("is not")
         return JsonResponse(serializer.errors, status=400)
 
 

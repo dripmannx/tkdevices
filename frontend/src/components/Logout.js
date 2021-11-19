@@ -49,7 +49,7 @@ return (
       <div className="wrapper">
         <form className="login" onSubmit={onSubmit}>
           <p className="title">Wirklich ausloggen?</p>
-          <button input type="submit" value="Login">
+          <button type="submit" value="Login">
             <i className="spinner"></i>
             <span className="state">Log out</span>
           </button>

@@ -59,7 +59,7 @@ export default function HandoutTable() {
       title: "Ersteller",
       field: "owner",
       tooltip: "Nach Erstellern filtern",
-      initialEditValue: "username",
+      initialEditValue:"user.username",
       editable: "never",
     },
   ];
@@ -67,9 +67,7 @@ export default function HandoutTable() {
   const handouts_not_shipped = $.grep(data, function (n, i) {
     return n.is_shipped === false;
   });
-  const handouts = $.grep(data, function (n, i) {
-    return n.is_shipped === true || n.is_shipped === false;
-  });
+  const handouts = data.length.toString()
 
   const deviceCount = handouts.length + " Aufträge vorhanden";
 
@@ -122,7 +120,7 @@ export default function HandoutTable() {
                 fetch(url + "/" + rowData.id, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${(localStorage.getItem("token"))}`,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
 
                   body: JSON.stringify(rowData),
@@ -138,27 +136,28 @@ export default function HandoutTable() {
             },
           }}
           editable={{
-            onRowAdd: (newData) =>
+            onRowAdd: (newData, tableData) =>
               new Promise((resolve, reject) => {
                 //Backend call
                 fetch(url, {
                   method: "POST",
                   headers: {
-                    Authorization: `Token ${(localStorage.getItem("token"))}`,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                   body: JSON.stringify(newData),
-                })
-                  .then((resp) => {
-                    if (resp.statusText === "unauthorized") {
-                     history.push("/")
-                    }
-                  })
-                  .then((resp) => resp.json())
-                  .then((resp) => {
+                }).then((resp) => {
+                  if (resp.ok) {
                     ToastsStore.success("Neues Gerät gespeichert");
+                    resp.json();
                     getData(data, setData, url);
+
                     resolve();
-                  });
+                  } else {
+                   
+                    reject(); 
+                    ToastsStore.error("Fehler beim Speichern");
+                  }
+                });
               }),
 
             onRowUpdate: (newData, oldData) =>
@@ -167,7 +166,7 @@ export default function HandoutTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "PUT",
                   headers: {
-                    Authorization: `Token ${(localStorage.getItem("token"))}`,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                   body: JSON.stringify(newData),
                 })
@@ -184,11 +183,11 @@ export default function HandoutTable() {
                 fetch(url + "/" + oldData.id, {
                   method: "DELETE",
                   headers: {
-                    Authorization: `Token ${(localStorage.getItem("token"))}`,
+                    Authorization: `Token ${localStorage.getItem("token")}`,
                   },
                 }).then((resp) => {
                   ToastsStore.success("Gerät Gelöscht");
-                   getData(data, setData, url);
+                  getData(data, setData, url);
                   resolve();
                 });
               }),
