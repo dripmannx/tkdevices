@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
 import React, { useState, useEffect, forwardRef } from "react";
 import "../../../static/css/table.css";
-import {darkTheme} from "../props"
+import {darkTheme} from "./props"
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
   ToastsContainer,

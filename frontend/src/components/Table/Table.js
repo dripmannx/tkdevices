@@ -1,7 +1,7 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
 //importing Talbe Style and Übersetztung
-import Props, { localization, darkTheme } from "../props";
+import Props, { localization, darkTheme } from "./props";
 import React, {
   useState,
   useEffect,
@@ -32,13 +32,21 @@ export default function Table() {
   const history = useHistory();
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  const { user, setuser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devicedata
   useEffect(() => {
     getData(data, setData, url);
   }, []);
-
+  const usePermission = (permission) => {
+    if (
+      JSON.parse(localStorage.getItem("user")).permissions.includes(permission)
+    )
+      return true;
+    console.log(permission);
+    return false;
+  };
+  console.log(usePermission("api.view_device"));
   const columns = [
     {
       title: "Seriennummer",
@@ -155,92 +163,67 @@ export default function Table() {
           title={deviceCount}
           data={data}
           columns={columns}
-          /*
-          cellEditable={{
-            cellStyle: {},
-            onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-              return Promise((resolve, reject) => {
-                //Backend call
-
-                const clonedData = [...data];
-                clonedData[rowData.tableData.id][columnDef.field] = newValue;
-                setData(clonedData);
-                console.log(clonedData);
-                fetch(url + "/" + rowData.serialnumber, {
-                  method: "PUT",
-                  headers: {
-                    Authorization: `Token ${(localStorage.getItem("token"))}`,
-                  },
-                  body: JSON.stringify(rowData),
-                })
-                  .then((resp) => resp.json())
-                  .then(() => {
-                    ToastsStore.success("Änderung gespeichert");
-                    getDevices();
-                    resolve();
-                  })
-                  .catch((err) => console.log(err));
-              });
-            },
-          }}
-          */
           editable={{
-            onRowAdd: (newData, tableData) =>
-              new Promise((resolve, reject) => {
-                //Backend call
-                fetch(url, {
-                  method: "POST",
-                  headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
-                  },
-                  body: JSON.stringify(newData),
-                })
-                  .then((resp) => {
-                    if(resp.ok){ToastsStore.success("Neues Gerät gespeichert");
-                    resp.json();
-                    getData(data, setData, url);
+            onRowAdd: !usePermission("api.add_device")
+              ? undefined
+              : (newData, tableData) =>
+                  new Promise((resolve, reject) => {
+                    //Backend call
+                    fetch(url, {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Token ${localStorage.getItem("token")}`,
+                      },
+                      body: JSON.stringify(newData),
+                    }).then((resp) => {
+                      if (resp.ok) {
+                        ToastsStore.success("Neues Gerät gespeichert");
+                        resp.json();
+                        getData(data, setData, url);
 
-                    resolve();
-                  }else{
-                    ToastsStore.error("Fehler beim Speichern");
-                    reject();
-                  }
-                    
-                  })
-                  
-              }),
+                        resolve();
+                      } else {
+                        ToastsStore.error("Fehler beim Speichern");
+                        reject();
+                      }
+                    });
+                  }),
 
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve, reject) => {
-                //Backend call
-                fetch(url + "/" + oldData.serialnumber, {
-                  method: "PUT",
-                  headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
-                  },
-                  body: JSON.stringify(newData),
-                })
-                  .then((resp) => resp.json())
-                  .then((resp) => {
-                    ToastsStore.success("Gerätedaten gespeichert");
-                    getData(data, setData, url);
-                    resolve();
-                  });
-              }),
-            onRowDelete: (oldData) =>
-              new Promise((resolve, reject) => {
-                //Backend call
-                fetch(url + "/" + oldData.serialnumber, {
-                  method: "DELETE",
-                  headers: {
-                    Authorization: `Token ${localStorage.getItem("token")}`,
-                  },
-                }).then((resp) => {
-                  ToastsStore.success("Gerät Gelöscht");
-                  getData(data, setData, url);
-                  resolve();
-                });
-              }),
+            onRowUpdate: !usePermission("api.change_device")
+              ? undefined
+              : (newData, oldData) =>
+                  new Promise((resolve, reject) => {
+                    //Backend call
+                    fetch(url + "/" + oldData.serialnumber, {
+                      method: "PUT",
+                      headers: {
+                        Authorization: `Token ${localStorage.getItem("token")}`,
+                      },
+                      body: JSON.stringify(newData),
+                    })
+                      .then((resp) => resp.json())
+                      .then((resp) => {
+                        ToastsStore.success("Gerätedaten gespeichert");
+                        getData(data, setData, url);
+                        resolve();
+                      });
+                  }),
+            onRowDelete: !usePermission("api.delete_device")
+              ? undefined
+              : (oldData) =>
+                  new Promise((resolve, reject) => {
+                    //Backend call
+                    fetch(url + "/" + oldData.serialnumber, {
+                      method: "DELETE",
+                      headers: {
+                        Authorization: `Token ${localStorage.getItem("token")}`,
+                      },
+                    }).then((resp) => {
+                      ToastsStore.success("Gerät Gelöscht");
+                      getData(data, setData, url);
+                      resolve();
+                    });
+                  }),
           }}
           options={{
             paging: false,

@@ -13,36 +13,62 @@ export default function useFetch(url, options = {}, dependencies = []) {
     });
   }, dependencies);
 }
- */
+ 
 
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://jsonplaceholder.typicode.com";
-
 const useFetch = ({ url, method, body = null, headers = null }) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
-  const [loading, setloading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [isAuthorized, setIsAuthorized] = useState(true);
 
   const fetchData = () => {
-    axios[method](url, JSON.parse(headers), JSON.parse(body))
-      .then((res) => {
-        setResponse(res.data);
-      })
-      .catch((err) => {
-        setError(err);
-      })
-      .finally(() => {
-        setloading(false);
-      });
+    const res = fetch(url, {
+      headers: {headers},
+      method: method,
+      body: body,
+    });
+
+    console.log(res);
+    if (res.ok) {
+      setResponse(res.json());
+    } else if (res.status === 403) {
+      setIsAuthorized(false);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, [method, url, body, headers]);
 
-  return { response, error, loading };
+  return { response, error, loading, isAuthorized };
 };
 
+export default useFetch;
+*/
+import React from "react"
+const useFetch = (url, options) => {
+  const [response, setResponse] = React.useState(null);
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const res = await fetch(url, options);
+        const json = await res.json();
+        setResponse(json);
+      } catch (error) {
+        setError(error);
+      }setLoading(false);
+    };
+    fetchData();
+  }, [url,options]);
+
+  return { response, error,loading };
+};
 export default useFetch;

@@ -1,10 +1,10 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
-import React, { useState, useEffect, forwardRef,useContext } from "react";
+import React, { useState, useEffect, forwardRef, useContext } from "react";
 import "../../../static/css/table.css";
 import openInNewTab from "../openInNewTab";
-import UserContext from "../User/UserContext"
+import UserContext from "../User/UserContext";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import {
   ToastsContainer,
@@ -13,8 +13,9 @@ import {
 } from "react-toasts";
 import getData from "../APIRequests";
 import LinkIcon from "@material-ui/icons/Link";
-import {darkTheme} from "../props";
+import { darkTheme } from "./props";
 
+import useFetch from "../Hooks/Fetching/useFetch";
 
 export default function HandoutTable() {
   document.title = `Offene Aufträge`;
@@ -23,15 +24,29 @@ export default function HandoutTable() {
   const urlUser = `/api/current_user`;
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  const {user, setUser} = useContext(UserContext);
-
-  
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
-  
-
+  const { user, setUser } = useContext(UserContext);
+  const username = JSON.parse(localStorage.getItem("user")).username;
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devices
+   const check_permission = (permission) => {
+     if (
+       !JSON.parse(localStorage.getItem("user")).permissions.includes(
+         permission
+       )
+     )
+       return false;
+     console.log(permission);
+     return true;
+   };
   useEffect(() => {
-    getData(data, setData, url);
+    
+   getData(data, setData, url);
   }, []);
+
+  const { response, error, loading, permissions } = useFetch("/api/devices", {
+    method: "get",
+    headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+  });
+
   const columns = [
     {
       title: "Link",
@@ -59,7 +74,7 @@ export default function HandoutTable() {
       title: "Ersteller",
       field: "owner",
       tooltip: "Nach Erstellern filtern",
-      initialEditValue:"user.username",
+      initialEditValue: username,
       editable: "never",
     },
   ];
@@ -67,11 +82,14 @@ export default function HandoutTable() {
   const handouts_not_shipped = $.grep(data, function (n, i) {
     return n.is_shipped === false;
   });
-  const handouts = data.length.toString()
+  const handouts = data.length.toString();
 
   const deviceCount = handouts.length + " Aufträge vorhanden";
+  console.log({ response, error, loading, permissions });
 
-  return (
+  const ADD_HANDOUT = "api.add_handout";
+ 
+ return (
     <ThemeProvider theme={darkTheme}>
       <title>{handouts_not_shipped.length} offene Aufträge</title>
       <div className="Table">
@@ -83,7 +101,7 @@ export default function HandoutTable() {
           store={ToastsStore}
           position={ToastsContainerPosition.BOTTOM_CENTER}
         />
-
+        {/*  */}
         <MaterialTable
           className="TableRow"
           title={handouts_not_shipped.length + " Aufträge nicht bearbeitet"}
@@ -136,7 +154,7 @@ export default function HandoutTable() {
             },
           }}
           editable={{
-            onRowAdd: (newData, tableData) =>
+            onRowAdd: !check_permission(ADD_HANDOUT)?undefined:(newData, tableData) =>
               new Promise((resolve, reject) => {
                 //Backend call
                 fetch(url, {
@@ -153,13 +171,11 @@ export default function HandoutTable() {
 
                     resolve();
                   } else {
-                   
-                    reject(); 
+                    reject();
                     ToastsStore.error("Fehler beim Speichern");
                   }
                 });
               }),
-
             onRowUpdate: (newData, oldData) =>
               new Promise((resolve, reject) => {
                 //Backend call

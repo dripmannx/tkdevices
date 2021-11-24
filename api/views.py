@@ -131,28 +131,30 @@ def permissions(request, format=None):
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-@permission_required(['api.view_handout','api.add_handout'],raise_exception=True)
 def handout(request):
     
     """
     Get all Handouts
     """
+    logged_in_user = User.objects.get(username=request.user.username)
     if request.method == 'GET':
-        devices = Handout.objects.all().order_by('is_shipped')
-        serializer = HandoutSerializer(devices, many=True)
-        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
-
+        if logged_in_user.has_perm('api.view_handout'):
+            devices = Handout.objects.all().order_by('is_shipped')
+            serializer = HandoutSerializer(devices, many=True)
+            return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+        return Response(status=403)
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = HandoutSerializer(data=data)
+        if logged_in_user.has_perm('api.add_handout'):
+            data = JSONParser().parse(request)
+            serializer = HandoutSerializer(data=data)
 
-        if serializer.is_valid():
-            print("is valid")
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        print("is not")
-        return JsonResponse(serializer.errors, status=400)
-
+            if serializer.is_valid():
+                print("is valid")
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            print("is not")
+            return JsonResponse(serializer.errors, status=400)
+        return Response(status=403)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
@@ -192,14 +194,11 @@ class DeviceView(generics.CreateAPIView):
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-@permission_required(['api.view_device','api.add_device'],raise_exception=True)
 def devices(request):
     """
     Get all non defect Devices and add a Device
     """
     logged_in_user = User.objects.get(username=request.user.username)
-    if logged_in_user.has_perm('api.add_device'):
-        print("hell§o")
     
 
     if request.method == 'GET':
@@ -208,7 +207,7 @@ def devices(request):
                 status_defect=False).order_by('-batterylife', '-status')
             serializer = DeviceSerializer(queryset, many=True)
             return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
-
+        return Response(status=403)
     elif request.method == 'POST':
         if logged_in_user.has_perm('api.add_device'):
             data = JSONParser().parse(request)
@@ -216,17 +215,17 @@ def devices(request):
             if serializer.is_valid():
                 serializer.save()
                 return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
-
+            return JsonResponse(serializer.errors, status=400)
+        return Response(status=403)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-@permission_required(['api.change_device','api.view_device','api.delete_device'],raise_exception=True)
 def device_detail(request, serialnumber):
+    logged_in_user = User.objects.get(username=request.user.username)
+    
     # Retrieve, update or delete a device.
-    permission_classes = [ DjangoObjectPermissions]
     try:
             queryset = Device.objects.get(serialnumber=serialnumber)
        
@@ -237,24 +236,27 @@ def device_detail(request, serialnumber):
     
 
     if request.method == 'GET':
-        serializer = DeviceSerializer(queryset)
-        return JsonResponse(serializer.data)
-        
+        if logged_in_user.has_perm('api.view_device'):
+            serializer = DeviceSerializer(queryset)
+            return JsonResponse(serializer.data)
+        return Response(status=403)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        
-        serializer = DeviceSerializer(queryset, data=data)
-        if serializer.is_valid():
-            print(data)
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-
+        if logged_in_user.has_perm('api.change_device'):
+            data = JSONParser().parse(request)
+            
+            serializer = DeviceSerializer(queryset, data=data)
+            if serializer.is_valid():
+                print(data)
+                serializer.save()
+                return JsonResponse(serializer.data)
+            return JsonResponse(serializer.errors, status=400)
+        return Response(status=403)
     elif request.method == 'DELETE':
-        queryset.delete()
-        return HttpResponse(status=204)
-
+        if logged_in_user.has_perm('api.delete_device'):
+            queryset.delete()
+            return HttpResponse(status=204)
+        return Response(status=403)
 
 @authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])

@@ -1,7 +1,7 @@
 import React,{useContext} from "react";
 import Router,{useHistory  } from "react-router-dom";
 import UserContext from "./User/UserContext"
-export default async function getData(data, setData, url,forbidden=false) {
+export default async function getData(data, setData, url,forbidden=false,) {
   
   if (url !== undefined) {
     const response = await fetch(url, {
@@ -14,19 +14,13 @@ export default async function getData(data, setData, url,forbidden=false) {
       return setData(data);
     } else if (response.status === 401) {
       history.push("/")
-    } else if (response.status === 403) {
-      return(forbidden=true);
-    }
+    } 
   }
 }
 export function ForwardLogIn() {
   if ((localStorage.getItem("user")) === null) {
     window.location.replace("http://localhost:8000");
   }
-}
-function calculateDaysBetweenDates(begin, end) {
-  
-
 }
 
 
