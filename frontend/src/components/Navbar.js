@@ -1,5 +1,6 @@
 //Beim component reload checken ob user eingeloggt
 import "../../static/css/Navbar.css";
+import usePermission from "./Hooks/usePermission";
 import React, { useEffect, useState, useContext, useRef } from "react";
 import getCurrentUser from "./APIRequests";
 import useFetch from "./Hooks/Fetching/useFetch";
@@ -42,18 +43,22 @@ const Navbar = () => {
           <ul>
             {user && (
               <>
-                <li>
-                  <Link to="/devices">Geräte</Link>
-                </li>
-                <li>
-                  <Link to="/defect">Defekte</Link>
-                </li>
-                <li>
-                  <Link to="/handout">Aufträge</Link>
-                </li>
-                <li>
-                  <Link to="/upload">upload</Link>
-                </li>
+                {usePermission("api.view_device") ? (
+                  <li>
+                    <Link to="/devices">Geräte</Link>
+                  </li>
+                ) : null}
+                {usePermission("api.view_device") ? (
+                  <li>
+                    <Link to="/defect">Geräte</Link>
+                  </li>
+                ) : null}
+                {usePermission("api.view_handout") ? (
+                  <li>
+                    <Link to="/handout">Geräte</Link>
+                  </li>
+                ) : null}
+               
               </>
             )}
             <li>

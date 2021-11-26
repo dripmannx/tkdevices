@@ -25,7 +25,7 @@ import {
   ToastsContainerPosition,
 } from "react-toasts";
 import getData from "../APIRequests";
-
+import usePermission from "../Hooks/usePermission";
 export default function Table() {
   document.title = " Lagernde Geräte";
   const url = "/api/device";
@@ -33,14 +33,7 @@ export default function Table() {
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const { user, setUser } = useContext(UserContext);
-  const usePermission = (permission) => {
-    if (
-      JSON.parse(localStorage.getItem("user")).permissions.includes(permission)
-    )
-      return true;
-    console.log(permission);
-    return false;
-  };
+ 
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devicedata
   useEffect(() => {
     getData(data, setData, url);
@@ -213,7 +206,6 @@ export default function Table() {
                           ToastsStore.success("Geräte Daten gespeichert");
                           resp.json();
                           getData(data, setData, url);
-
                           resolve();
                         } else {
                           ToastsStore.error("Fehler beim Speichern");
