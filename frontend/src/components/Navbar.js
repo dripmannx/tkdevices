@@ -50,12 +50,12 @@ const Navbar = () => {
                 ) : null}
                 {usePermission("api.view_device") ? (
                   <li>
-                    <Link to="/defect">Geräte</Link>
+                    <Link to="/defect">Defekt</Link>
                   </li>
                 ) : null}
                 {usePermission("api.view_handout") ? (
                   <li>
-                    <Link to="/handout">Geräte</Link>
+                    <Link to="/handout">Aufträge</Link>
                   </li>
                 ) : null}
                

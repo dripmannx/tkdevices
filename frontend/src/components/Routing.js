@@ -29,10 +29,9 @@ const Routing = () => {
     <Router>
       <UserContext.Provider value={value}>
         <Navbar />
-
         <Route path="/" exact component={Login} />
         <Route path="/defect" component={DeleteTable} />
-        <Route path="/devices" exact component={Table} />
+        <Route path="/devices" exact component={Table}/>
         <Route path="/logout" component={Logout} />
         <Route path="/handout" component={HandoutTable} />
         <Route path="/devices/:serialnumber" component={DeviceInDetail} /> 
