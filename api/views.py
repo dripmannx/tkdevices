@@ -23,7 +23,23 @@ from .serializers import DataSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+#Custom TokenObtainPairView, adding username to the token encoded
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
 
+        # Add custom claims
+        token['username'] = user.username
+        
+        # ...
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -44,7 +60,6 @@ class CustomAuthToken(ObtainAuthToken):
         })
 
 @api_view(['GET','POST'])
-@authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def file_provider(request, format=None):
     if request.method == 'GET':
@@ -192,7 +207,6 @@ class DeviceView(generics.CreateAPIView):
     serializer_class = DeviceSerializer
 
 @api_view(['GET', 'POST'])
-@authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def devices(request):
     """
@@ -220,7 +234,6 @@ def devices(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def device_detail(request, serialnumber):
     logged_in_user = User.objects.get(username=request.user.username)
