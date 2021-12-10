@@ -18,8 +18,8 @@ const handleOnCheck = (e) => {
   return (
     <div>
       <nav className="navbar non-printable">
-        <div className="brand-title gradient">
-          ENERCON<Link to="/devices"></Link>
+        <div>
+          <li className="brand-title gradient"><Link to="/">ENERCON</Link></li>
         </div>
         <a href="#" className="toggle-button" onClick={() => handleOnClick()}>
           <span className="bar"></span>

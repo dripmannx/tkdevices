@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Router, { Link, useHistory ,Redirect} from "react-router-dom";
 import AuthContext, { AuthProvider } from "../utils/AuthContext";
-import axiosInstance from "./axios";
 const LoginPage = () => {
   document.title = `Login`;
   const [username, setUsername] = useState("");

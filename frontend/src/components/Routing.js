@@ -1,7 +1,7 @@
 import React, { Component, useState, useMemo } from "react";
-import Table from "./Table/Table";
-import HandoutTable from "./Table/Handout";
-import DeleteTable from "./Table/DeleteTable";
+import Table from "../pages/Table/Table";
+import HandoutTable from "../pages/Table/Handout";
+import DeleteTable from "../pages/Table/DeleteTable";
 import PrivateRoute from "../utils/PrivateRoute";
 import NoUserRoute from "../utils/NoUserRoute";/*
 import PublicRoute from "../utils/PublicRoute"; */
@@ -14,9 +14,9 @@ import {
   useHistory,
   
 } from "react-router-dom";
-import Login from "./Login";
-import Logout from "./Logout";
-import DeviceInDetail from "./DeviceInDetail";
+import Login from "../pages/Login";
+import Logout from "../pages/Login";
+import DeviceInDetail from "../pages/DeviceInDetail";
 import Navbar from "./Navbar";
 import AuthContext,{AuthProvider} from "../utils/AuthContext";
 import Landing,{HomePage} from "./Landing";

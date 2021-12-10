@@ -57,7 +57,8 @@ export default Landing;
 export const HomePage = () => {
   return (
     <Box sx={{ p: 3 }}>
-      <p>landing</p>
+      <h1 className="text-white text-center">landing Page</h1>
+      <p className="text-white text-center">More Content Comming SoonAP</p>
     </Box>
   );
 }; 
