@@ -11,6 +11,7 @@ export default function Props() {
            </>
        );    
 }
+//Table German trans
 export const localization ={
             body: {
               emptyDataSourceMessage: "Keine Einträge",
@@ -31,7 +32,7 @@ export const localization ={
               groupedBy: "Gruppiert nach:",
             },
             header: {
-              actions: "Aktionen",
+              actions: "",
             },
             pagination: {
               labelDisplayedRows: "{from}-{to} von {count}",

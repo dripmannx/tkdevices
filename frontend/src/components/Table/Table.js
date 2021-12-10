@@ -1,5 +1,6 @@
 //This File is for the Table View. It calls the RestAPI Endpoint(POST,DELETE,PUT,GET) for the different actions. It uses the material-table for the Table View
 import MaterialTable from "material-table";
+import useAxios from "../../utils/useAxios";
 //importing Talbe Style and Übersetztung
 import Props, { localization, darkTheme } from "./props";
 import React, {
@@ -10,38 +11,41 @@ import React, {
   useReducer,
   useContext,
 } from "react";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider, alpha } from "@material-ui/core/styles";
 //import CSS Styles
 import "../../../static/css/table.css";
 
-import { QRCode } from "react-qr-svg";
-import useNewTab from "../openInNewTab";
 import SmartphoneIcon from "@material-ui/icons/Smartphone";
-import UserContext from "../User/UserContext";
+import LoopIcon from "@material-ui/icons/Loop";
+import AuthContext from "../../utils/AuthContext";
 import Router, { useHistory } from "react-router-dom";
 import {
   ToastsContainer,
   ToastsStore,
   ToastsContainerPosition,
 } from "react-toasts";
-import getData from "../APIRequests";
-import usePermission from "../Hooks/usePermission";
 export default function Table() {
   document.title = " Lagernde Geräte";
   const url = "/api/device";
   const history = useHistory();
   const [data, setData] = useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  const { user, setUser } = useContext(UserContext);
- 
+  const { user } = useContext(AuthContext);
+  const api = useAxios();
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devicedata
   useEffect(() => {
-    getData(data, setData, url);
-    if (!usePermission("api.view_device")) {
+    getDevices();
+    if (!user.is_staff) {
       localization.body.emptyDataSourceMessage = "Keine Berechtigung zu lesen";
     }
   }, []);
+  const getDevices = async () => {
+    let response = await api.get("/api/device");
 
+    if (response.status === 200) {
+      setData(response.data);
+    }
+  };
   const columns = [
     {
       title: "Seriennummer",
@@ -81,7 +85,7 @@ export default function Table() {
       validate: (rowData) =>
         rowData.batterylife === undefined ||
         rowData.batterylife === "" ||
-        rowData.batterylife < 0 ||
+        rowData.batterylife < 1 ||
         rowData.batterylife > 100
           ? "Wert zwischen 0 und 100"
           : true,
@@ -151,127 +155,171 @@ export default function Table() {
           store={ToastsStore}
           position={ToastsContainerPosition.BOTTOM_CENTER}
         />
-        {!usePermission("api.view_device") ? (
-          <div className="text-center">Keine Berechtigung zu lesen</div>
-        ) : (
-          <MaterialTable
-            //icons={tableIcons}
-            title={deviceCount}
-            data={data}
-            columns={columns}
-            editable={{
-              //add Row if user has permission to do so
-              onRowAdd: !usePermission("api.add_device")
-                ? undefined
-                : (newData, tableData) =>
-                    new Promise((resolve, reject) => {
-                      //Backend call
-                      fetch(url, {
-                        method: "POST",
-                        headers: {
-                          Authorization: `Token ${localStorage.getItem(
-                            "token"
-                          )}`,
-                        },
-                        body: JSON.stringify(newData),
-                      }).then((resp) => {
-                        if (resp.ok) {
-                          ToastsStore.success("Neues Gerät gespeichert");
-                          resp.json();
-                          getData(data, setData, url);
 
-                          resolve();
-                        } else {
-                          ToastsStore.error("Fehler beim Speichern");
-                          reject();
-                        }
-                      });
-                    }),
-              //update Row if user has permission to do so
-              onRowUpdate: !usePermission("api.change_device")
-                ? undefined
-                : (newData, oldData) =>
-                    new Promise((resolve, reject) => {
-                      //Backend call
-                      fetch(url + "/" + oldData.serialnumber, {
-                        method: "PUT",
-                        headers: {
-                          Authorization: `Token ${localStorage.getItem(
-                            "token"
-                          )}`,
-                        },
-                        body: JSON.stringify(newData),
-                      }).then((resp) => {
-                        if (resp.ok) {
-                          ToastsStore.success("Geräte Daten gespeichert");
-                          resp.json();
-                          getData(data, setData, url);
-                          resolve();
-                        } else {
-                          ToastsStore.error("Fehler beim Speichern");
-                          reject();
-                        }
-                      });
-                    }),
-              //delete Row uf user has permission to do so
-              onRowDelete: !usePermission("api.delete_device")
-                ? undefined
-                : (oldData) =>
-                    new Promise((resolve, reject) => {
-                      //Backend call
-                      fetch(url + "/" + oldData.serialnumber, {
-                        method: "DELETE",
-                        headers: {
-                          Authorization: `Token ${localStorage.getItem(
-                            "token"
-                          )}`,
-                        },
-                      }).then((resp) => {
-                        if (resp.ok) {
-                          ToastsStore.success("Gerät gelöscht");
-                          resp.json();
-                          getData(data, setData, url);
+        <MaterialTable
+          //icons={tableIcons}
+          title={deviceCount}
+          data={data}
+          columns={columns}
+          editable={{
+            //add Row if user has permission to do so
+            onRowAdd: (newData, tableData) =>
+              new Promise(async (resolve, reject) => {
+                //Backend call
 
-                          resolve();
-                        } else {
-                          ToastsStore.error("Fehler beim Löschen");
-                          reject();
-                        }
-                      });
-                    }),
-            }}
-            options={{
-              paging: false,
-              maxBodyHeight: 700,
-              actionsColumnIndex: -1,
-              addRowPosition: "first",
-              filtering: true,
-              exportButton: true,
-              headerStyle: {
-                zIndex: 0,
-              },
-
-              rowStyle: (rowData) => ({
-                backgroundColor:
-                  selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
-              }),
-              filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
-            }}
-            actions={[
-              (rowData) => ({
-                icon: SmartphoneIcon,
-                tooltip: "Gerät öffnen",
-                onClick: (event, rowData) => {
-                  history.push({
-                    pathname: `/devices/` + rowData.serialnumber,
-                    state: rowData.serialnumber,
+                await api
+                  .post("/api/device", newData)
+                  .then((response) => {
+                    ToastsStore.success("Gerät hinzugefügt");
+                    getDevices();
+                    resolve();
+                  })
+                  .catch(function (error) {
+                    //Case if Data is redundant or not complete || BAD REQUEST
+                    if (error.response.status === 400) {
+                      ToastsStore.error("Daten nicht vollständig oder doppelt");
+                      //Case if permission is serverbased withddrawn but not frontendbased || FORBIDDEN
+                    } else if (error.response.status === 403) {
+                      ToastsStore.error("Keine Berechtigung");
+                    } else if (response.status === 404) {
+                      ToastsStore.error("Keine Verbindung zum Server");
+                    }
+                    reject();
                   });
-                },
               }),
-            ]}
-            localization={localization}
-          />
-        )}
+            //update Row if user has permission to do so
+            onRowUpdate: (newData, oldData) =>
+              new Promise(async (resolve, reject) => {
+                await api
+                  .put(`/api/device/${oldData.serialnumber}`, newData)
+                  .then((response) => {
+                    ToastsStore.success("Gerätedaten gespeichert");
+                    getDevices();
+                    resolve();
+                  })
+                  .catch(function (error) {
+                    //Case if Data is redundant or not complete || BAD REQUEST
+                    if (error.response.status === 400) {
+                      ToastsStore.error("Daten nicht vollständig oder doppelt");
+                      //Case if permission is serverbased withddrawn but not frontendbased || FORBIDDEN
+                    } else if (error.response.status === 403) {
+                      ToastsStore.error("Keine Berechtigung");
+                      //Case if Server is not responding || INTERNAL SERVER ERROR 404
+                    } else if (response.status === 404) {
+                      ToastsStore.error("Keine Verbindung zum Server");
+                    }
+                    reject();
+                  });
+              }),
+            //Backend call
+            /* fetch(url + "/" + oldData.serialnumber, {
+                  method: "PUT",
+                  headers: {
+                    Authorization: `Token ${localStorage.getItem("token")}`,
+                  },
+                  body: JSON.stringify(newData),
+                }).then((resp) => {
+                  if (resp.ok) {
+                    ToastsStore.success("Geräte Daten gespeichert");
+                    resp.json();
+                    getData(data, setData, url);
+                    resolve();
+                  } else {
+                    ToastsStore.error("Fehler beim Speichern");
+                    reject();
+                  }
+                });
+              }), */
+
+            //delete Row uf user has permission to do so
+            onRowDelete: (oldData) =>
+              new Promise(async (resolve, reject) => {
+                //Backend call
+                await api
+                  .delete(`/api/device/${oldData.serialnumber}`, oldData)
+                  .then((response) => {
+                    ToastsStore.success("Gerät gelöscht");
+                    getDevices();
+                    resolve();
+                  })
+                  .catch(function (error) {
+                    //Case if Data is redundant or not complete || BAD REQUEST
+                    if (error.response.status === 400) {
+                      ToastsStore.error("Daten nicht aktuell");
+                      //Case if permission is serverbased withddrawn but not frontendbased || FORBIDDEN
+                    } else if (error.response.status === 403) {
+                      ToastsStore.error("Keine Berechtigung");
+                    } else if (response.status === 404) {
+                      ToastsStore.error("Keine Verbindung zum Server");
+                    }
+                    reject();
+                  });
+              }),
+          }}
+          options={{
+            paging: false,
+            maxBodyHeight: 700,
+            actionsColumnIndex: -1,
+            addRowPosition: "first",
+            filtering: true,
+            exportButton: true,
+            headerStyle: {
+              zIndex: 0,
+            },
+
+            rowStyle: (rowData) => ({
+              backgroundColor:
+                selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
+            }),
+            filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
+          }}
+          actions={[
+            (rowData) => ({
+              icon: SmartphoneIcon,
+              tooltip: "Gerät öffnen",
+              onClick: (event, rowData) => {
+                history.push({
+                  pathname: `/devices/` + rowData.serialnumber,
+                  state: rowData.serialnumber,
+                });
+              },
+            }),
+            (rowData) => ({
+              icon: LoopIcon,
+              tooltip: "Status ändern",
+              onClick: (event, rowData) => {
+                new Promise(async (resolve, reject) => {
+                  const clonedData = rowData;
+                  clonedData.status = !clonedData.status;
+
+                  await api
+                    .put(`/api/device/${rowData.serialnumber}`, clonedData)
+                    .then((response) => {
+                      ToastsStore.success("Status Geändert");
+                      getDevices();
+                      resolve();
+                    })
+                    .catch(function (error) {
+                      //Case if Data is redundant or not complete || BAD REQUEST 400
+                      if (error.response.status === 400) {
+                        ToastsStore.error(
+                          "Daten nicht vollständig oder doppelt"
+                        );
+                        //Case if permission is serverbased withdrawn but not frontendbased || FORBIDDEN 403
+                      } else if (error.response.status === 403) {
+                        ToastsStore.error("Keine Berechtigung");
+                        //Case if Server not responding
+                      } else if (response.status === 404) {
+                        ToastsStore.error("Keine Verbindung zum Server");
+                      }
+                      reject();
+                    });
+                });
+              },
+            }),
+          ]}
+          localization={localization}
+        />
       </div>
     </ThemeProvider>
   );

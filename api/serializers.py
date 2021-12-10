@@ -1,5 +1,20 @@
 from rest_framework import serializers
 from .models import Device, Handout,Data,User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+#Custom TokenObtainPairView, adding username to the token encoded
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        token["is_staff"] = user.is_staff
+        # ...
+
+        return token
 class User(serializers.ModelSerializer):
     class Meta:
         model=User

@@ -13,5 +13,6 @@
             "database": "buch",
             "username": "root"
         }
-    ]
+    ],
+    "todo-tree.tree.showBadges": false
 }

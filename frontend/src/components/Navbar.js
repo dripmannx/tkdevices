@@ -1,32 +1,19 @@
 //Beim component reload checken ob user eingeloggt
 import "../../static/css/Navbar.css";
-import usePermission from "./Hooks/usePermission";
 import React, { useEffect, useState, useContext, useRef } from "react";
-import getCurrentUser from "./APIRequests";
-import useFetch from "./Hooks/Fetching/useFetch";
-import getData, { useCurrentUser } from "./APIRequests";
-import UserContext from "./User/UserContext";
+import AuthContext from "../utils/AuthContext";
 import Router, { Link, useLocation } from "react-router-dom";
-import useDetectOutsideClick from "./Test";
 const Navbar = () => {
+  const { user } = useContext(AuthContext);
   //toggle navigation button on mobile view
-  const dropdownRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
   const handleOnClick = () => {
     setIsActive(!isActive);
   };
 
-  const url = "/api/current_user";
-  
-  const { user, setUser } = useContext(UserContext);
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname !== "/" && user === null) {
-      console.log("user set");
-      setUser(JSON.parse(localStorage.getItem("user")));
-    }
-  }, []);
+const handleOnCheck = (e) => {
+  isActive? setIsActive(false): setIsActive(true);
+}
 
   return (
     <div>
@@ -43,26 +30,34 @@ const Navbar = () => {
           <ul>
             {user && (
               <>
-                {usePermission("api.view_device") ? (
-                  <li>
-                    <Link to="/devices">Geräte</Link>
-                  </li>
-                ) : null}
-                {usePermission("api.view_device") ? (
-                  <li>
-                    <Link to="/defect">Defekt</Link>
-                  </li>
-                ) : null}
-                {usePermission("api.view_handout") ? (
-                  <li>
-                    <Link to="/handout">Aufträge</Link>
-                  </li>
-                ) : null}
-               
+                {user?.is_staff && (
+                  <>
+                    <li>
+                      <Link to="/devices" onClick={() => handleOnCheck()}>
+                        Geräte
+                      </Link>
+                    </li>
+
+                    <li>
+                      <Link to="/defect" onClick={() => handleOnCheck()}>
+                        Defekt
+                      </Link>
+                    </li>
+
+                    <li>
+                      <Link to="/handout" onClick={() => handleOnCheck()}>
+                        Aufträge
+                      </Link>
+                    </li>
+                  </>
+                )}
               </>
             )}
             <li>
-              <Link to={user ? "/logout" : "/"}>
+              <Link
+                to={user ? "/logout" : "/login"}
+                onClick={() => handleOnCheck()}
+              >
                 {user ? "Logout" : "Login"}
               </Link>
             </li>

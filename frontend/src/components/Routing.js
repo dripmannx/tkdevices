@@ -2,7 +2,9 @@ import React, { Component, useState, useMemo } from "react";
 import Table from "./Table/Table";
 import HandoutTable from "./Table/Handout";
 import DeleteTable from "./Table/DeleteTable";
-
+import PrivateRoute from "../utils/PrivateRoute";
+import NoUserRoute from "../utils/NoUserRoute";/*
+import PublicRoute from "../utils/PublicRoute"; */
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,28 +18,23 @@ import Login from "./Login";
 import Logout from "./Logout";
 import DeviceInDetail from "./DeviceInDetail";
 import Navbar from "./Navbar";
-import UserContext from "./User/UserContext";
-import Index from "./Test";
-
+import AuthContext,{AuthProvider} from "../utils/AuthContext";
+import Landing,{HomePage} from "./Landing";
 const Routing = () => {
-  const [user, setUser] = useState(null);
-
-
-  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+  
 
   return (
     <Router>
-      <UserContext.Provider value={value}>
-        <Navbar />
-        <Route path="/" exact component={Login} />
-        <Route path="/defect" component={DeleteTable} />
-        <Route path="/devices" exact component={Table}/>
-        <Route path="/logout" component={Logout} />
-        <Route path="/handout" component={HandoutTable} />
-        <Route path="/devices/:serialnumber" component={DeviceInDetail} /> 
-        {/* <Route path="/upload" component={fileUpload} /> */}
-        <Route path="/test" component={Index} />
-      </UserContext.Provider>
+      <AuthProvider>
+        <Navbar /> 
+        <Route exact path="/" component={HomePage}/>
+        <NoUserRoute path="/login" exact component={Login} />
+        <PrivateRoute path="/defect" component={DeleteTable} /> 
+        <PrivateRoute path="/devices" exact component={Table} />
+        <PrivateRoute path="/logout" component={Logout} />
+        <PrivateRoute path="/handout" component={HandoutTable} />
+        <PrivateRoute path="/devices/:serialnumber" component={DeviceInDetail}/>
+      </AuthProvider>
     </Router>
   );
 };
