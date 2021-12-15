@@ -16,7 +16,6 @@ export default function DeleteTable() {
   document.title = `Defekte Geräte`;
   const url = "/api/devices/defect";
   const [data, setData] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null);
   const api = useAxios();
   const columns = [
     {
@@ -33,17 +32,35 @@ export default function DeleteTable() {
       tooltip: "Seriennummer sortieren",
     },
     {
-      title: "Status defekt",
-      field: "status_defect",
+      title: "Modell",
+      field: "model",
+      lookup: {
+        "SE 2016": "iPhone SE 2016",
+        "SE 2020": "iPhone SE 2020",
+        "6s": "iPhone 6s",
+        7: "iPhone 7",
+        11: "iPhone 11",
+      },
+      validate: (rowData) =>
+        rowData.model === undefined || rowData.model === ""
+          ? "Model auswählen"
+          : true,
+      filterPlaceholder: "Modell auswählen",
+      initialEditValue: "SE 2016",
+    },
+    {
+      title: "Zustand",
+      field: "condition",
       filterPlaceholder: "Status auswählen",
       type: "boolean",
       validate: (rowData) =>
-        rowData.status_defect !== true || rowData.model === ""
-          ? "Status als defekt melden"
+        rowData.condition !== true || rowData.model === null
+          ? "Zustand als defekt melden"
           : true,
       tooltip: "Sortieren",
       initialEditValue: true,
     },
+
     {
       title: "DEP entfernt",
       field: "removed_from_DEP",
@@ -54,13 +71,18 @@ export default function DeleteTable() {
     },
   ];
 
-  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all devices
+  //useEffect Hook to fetch the data from the REST API Endpoint, wich provided all device data
 
   useEffect(() => {
-    getDevices();
+    let isApiSubscribed = true;
+
+    if(isApiSubscribed) getDevices();
+    return () => {
+      isApiSubscribed = false;
+    }
   }, []);
   const getDevices = async () => {
-    let response = await api.get("/api/devices/defect");
+    let response = await api.get(url);
 
     if (response.status === 200) {
       setData(response.data);
@@ -70,7 +92,7 @@ export default function DeleteTable() {
     return n.removed_from_DEP === false;
   });
   const deviceCountDefect = $.grep(data, function (n, i) {
-    return n.status_defect === true;
+    return n.condition === true;
   });
 
   const deviceCount =
@@ -91,41 +113,8 @@ export default function DeleteTable() {
           title={deviceCountNotRemoved.length + " Geräte nicht entfernt"+"\n"+deviceCountDefect.length+" Geräte defekt"}
           data={data}
           columns={columns}
-          cellEditable={{
-            isCellEditable: (rowData) => rowData.model === "",
-            cellStyle: {},
-            onCellEditApproved: (newValue, oldValue, rowData, columnDef) => {
-              return new Promise(async(resolve, reject) => {
-                //Backend call
-
-                const clonedData = [...data];
-                clonedData[rowData.tableData.id][columnDef.field] = newValue;
-                setData(clonedData);
-                  await api
-                    .put(`/api/device/${rowData.serialnumber}`, clonedData)
-                    .then((response) => {
-                      ToastsStore.success("Gerätedaten gespeichert");
-                      getDevices();
-                      resolve();
-                    })
-                    .catch(function (error) {
-                      //Case if Data is redundant or not complete || BAD REQUEST 400
-                      if (error.response.status === 400) {
-                        ToastsStore.error(
-                          "Daten nicht vollständig oder doppelt"
-                        );
-                        //Case if permission is serverbased withdrawn but not frontendbased || FORBIDDEN 403
-                      } else if (error.response.status === 403) {
-                        ToastsStore.error("Keine Berechtigung");
-                        //Case if Server not responding
-                      }else if (response.status === 404) {
-                        ToastsStore.error("Keine Verbindung zum Server");
-                      }
-                      reject();
-                    });
-                });
-              },
-          }}
+          
+            
           editable={{
             //add Row if user has permission to do so
             onRowAdd: (newData, tableData) =>
@@ -208,10 +197,6 @@ export default function DeleteTable() {
             addRowPosition: "first",
             filtering: true,
             headerStyle: { zIndex: 0 },
-            rowStyle: (rowData) => ({
-              backgroundColor:
-                selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
-            }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
         />

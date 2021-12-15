@@ -59,7 +59,7 @@ class DeviceSerializer(serializers.ModelSerializer):
                   "capacity",
                   "status", 
                   "removed_from_DEP",
-                  "status_defect")
+                  "condition")
 
 
 class DeleteDeviceSerializer(serializers.ModelSerializer):
@@ -68,5 +68,5 @@ class DeleteDeviceSerializer(serializers.ModelSerializer):
         fields = ("id",
                   "serialnumber",
                   "removed_from_DEP",
-                  "status_defect",
+                  "condition",
                   "model")

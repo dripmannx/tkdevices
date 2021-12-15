@@ -92,12 +92,14 @@ const getDevice = async () => {
   };
   const handleOnDefect = async () => {
     const clonedData = data;
-    clonedData.status_defect = !clonedData.status_defect;
+    clonedData.condition = !clonedData.condition;
     setData(clonedData);
       await api
         .put(url, clonedData)
         .then((response) => {
-           ToastsStore.success(`Status als ${statusDefect(data.status_defect)} gesetzt`);
+           ToastsStore.success(
+             `Status als ${statusDefect(data.condition)} gesetzt`
+           );
           getDevice();
         })
         .catch(function (error) {
@@ -143,11 +145,11 @@ const getDevice = async () => {
                 <p>Batterie: {data.batterylife}%</p>
                 <p
                   className={
-                    !data.status_defect ? "text-green-600" : "text-red-600"
+                    !data.condition ? "text-green-600" : "text-red-600"
                   }
                 >
                   <span className="text-black">Zustand: </span>
-                  {statusDefect(data.status_defect)}{" "}
+                  {statusDefect(data.condition)}{" "}
                 </p>
               </div>
               <div className="button-wrapper">

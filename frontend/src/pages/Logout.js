@@ -6,11 +6,10 @@ const Logout = () => {
   document.title = `Logout`;
 
  
-
+const test = "hallo";
 
 
   return (
-    <>
       <div className="wrapper">
         <form className="login" onSubmit={logoutUser}>
           <p className="title">Wirklich ausloggen, {user.username}?</p>
@@ -20,7 +19,6 @@ const Logout = () => {
           </button>
         </form>
       </div>
-    </>
   );
 };
 

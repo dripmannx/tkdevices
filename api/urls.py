@@ -9,12 +9,10 @@ urlpatterns = [
     path('device', devices),
     path("device/<str:serialnumber>",device_detail, name="device_detail"),
     path('devices/defect', device_defect),
-    path('devices/defect/<int:serialnumber>', defect_device_detail),
+    path('devices/defect/<str:serialnumber>', defect_device_detail),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('handouts/<int:pk>',handout_details),
     path('handouts',handout),
-    path('files',file_provider),
-    path('file', file_provider_view),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

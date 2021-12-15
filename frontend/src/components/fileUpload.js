@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "./../../static/css/fileUpload.css";
-import useFetch from "./Hooks/Fetching/useFetch";
-const url = "api/files";
+//Component not in use
+import useAxios from "../utils/useAxios";
+
 const fileUpload = () => {
+  const url = "api/files";
+const api = useAxios()
   const [file, setFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -12,7 +15,8 @@ const fileUpload = () => {
     console.log(event.target.files[0]);
     console.log("hi", file);
   };
-  const onClickHandler = () => {
+  const onClickHandler = (e) => {
+    e.preventDefault();
     const data = new FormData();
     data.append("file", file);
     console.log(file, data);
@@ -24,21 +28,12 @@ const fileUpload = () => {
       },
     },[data]);
     */
-    fetch(url, {
-      headers: {
-        Authorization: `Token ${(localStorage.getItem("token"))}`,
-      },
-      method: "POST",
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("Success:", result);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
+    api.post(url,data)
+    .then(res => {
+      if(res.status === 200){
+        console.log(res.data)
+      }
+    })};
   return (
     <div className="wrapper">
       <div className="file__upload">

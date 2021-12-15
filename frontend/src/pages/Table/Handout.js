@@ -19,7 +19,6 @@ export default function HandoutTable() {
   const api = useAxios();
   const url = `/api/handouts`;
   const [data, setData] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null);
   const { user } = useContext(AuthContext);
   //useEffect Hook to fetch the data from the REST API Endpoint, wich provides all devices
 function isURL(_string) {
@@ -214,11 +213,6 @@ function isURL(_string) {
             addRowPosition: "first",
             filtering: true,
             headerStyle: { zIndex: 1 },
-
-            rowStyle: (rowData) => ({
-              backgroundColor:
-                selectedRow === rowData.tableData.id ? "#2E2E2E" : "#424242",
-            }),
             filterCellStyle: { Color: "#2E2E2E", paddingTop: 1 },
           }}
           actions={[

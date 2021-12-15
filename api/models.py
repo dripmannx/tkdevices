@@ -14,13 +14,13 @@ class Data(models.Model):
         return str(self.file.name)
 class Device(models.Model):
    
-    serialnumber = models.CharField(validators=[RegexValidator(regex='^.{12}$', message='Length has to be 12', code='nomatch')],max_length=12, unique=True, blank=False)
+    serialnumber = models.CharField(max_length=12, unique=True, blank=False)
     model = models.CharField(max_length=12, blank=True)
     batterylife = models.IntegerField( blank=True, null=True)
     capacity = models.IntegerField( blank=True, null=True)
     status = models.BooleanField(default=True, blank=True)
     removed_from_DEP = models.BooleanField(default=False)
-    status_defect = models.BooleanField(default=False)
+    condition = models.BooleanField(default=False)
    
     
 class Handout(models.Model):

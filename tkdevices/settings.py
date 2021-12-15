@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-$n#ypyy3gu(r()pbzl8#r631fjqxl$+##-9=k&5l9orid$g%&l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -44,14 +43,11 @@ INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'corsheaders',
     "rest_framework_simplejwt.token_blacklist",
-    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-
     "corsheaders.middleware.CorsMiddleware",
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -116,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Istanbul'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -138,15 +134,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
  'rest_framework_simplejwt.authentication.JWTAuthentication',        
     ],
-    
-    #'DEFAULT_PERMISSION_CLASSES': [
-    #    'rest_framework.permissions.DjangoModelPermissions',
-    
-    #]
 }
 MEDIA_URL = "/media/"                                 # add this 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS = ['*']
+
 #JSON WEB TOKEN Settings and confi
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -154,35 +147,28 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
-
     'ALGORITHM': 'HS256',
-    
     'VERIFYING_KEY': None,
     'AUDIENCE': None,
     'ISSUER': None,
     'JWK_URL': None,
     'LEEWAY': 0,
-
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
     'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
-
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
-
     'JTI_CLAIM': 'jti',
-
-    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
-    
-'AUTH_COOKIE': 'refresh_token',  # Cookie name. Enables cookies if value is set.
-'AUTH_COOKIE_DOMAIN': None,     # A string like "example.com", or None for standard domain cookie.
-'AUTH_COOKIE_SECURE': False,    # Whether the auth cookies should be secure (https:// only).
-'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
-'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
-'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests.
-                                # This can be 'Lax', 'Strict', or None to disable the flag.
 }
+""" header =0
+payload = 0
+def base64UrlEncode(arg):
+    pass
+def HMACSHA256(arg):
+    pass
+
+encodedString = base64UrlEncode(header) + "." + base64UrlEncode(payload);
+hash = HMACSHA256(encodedString, SECRET_KEY);
+jwt = encodedString + "." + hash; """

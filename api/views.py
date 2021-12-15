@@ -48,9 +48,7 @@ def file_provider(request, format=None):
  
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@authentication_classes([TokenAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-@permission_required('api.change_data', 'api.view_data', raise_exception=True)
 def file_provider_view(request, pk):
 
     # Retrieve, update or delete a device.
@@ -152,7 +150,7 @@ def devices(request):
     """
     if request.method == 'GET':
         queryset = Device.objects.filter(
-            status_defect=False).order_by('-batterylife', '-status')
+            condition=False).order_by('-batterylife', '-status')
         serializer = DeviceSerializer(queryset, many=True)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
     elif request.method == 'POST':
@@ -203,7 +201,7 @@ def device_defect(request):
     if request.method == 'GET':
         
         devices = Device.objects.filter(
-            status_defect=True, removed_from_DEP=False)
+            condition=True, removed_from_DEP=False)
         serializer = DeleteDeviceSerializer(devices, many=True)
         return JsonResponse(serializer.data, safe=False)
 

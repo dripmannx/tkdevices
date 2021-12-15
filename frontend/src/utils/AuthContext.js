@@ -1,40 +1,3 @@
-/* import React, { createContext } from "react";
-import jwt_decode from "jwt-decode";
-const AuthContext = createContext({});
-
-export default AuthContext;
-
-export const AuthProvider = ({children}) => {
-  const [authToken, setAuthToken] = useState(null);
-  const [user, setUser] = useState(null);
-
-  const loginUser = async (e) => {
-    const TOKEN_URL = "/api/token/";
-    const response = await fetch(TOKEN_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: e.target.username.value,
-        password: e.target.password.value,
-      }),
-      
-    });
-    if (response.ok) {    
-        const data = await response.json();
-        setAuthToken(data)
-        setUser(jwt_decode(data.access));
-    }
-    
-  };
-  const contextData = {user:user,loginUser:loginUser}
-  return (
-      <AuthContext.Provider value={contextData}>
-        {children}
-        </AuthContext.Provider>
-  );
-}; */
 import React, { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useHistory } from "react-router-dom";
@@ -60,16 +23,19 @@ export const AuthProvider = ({ children }) => {
 
   let loginUser = async (e) => {
     e.preventDefault();
-    let response = await fetch("http://127.0.0.1:8000/api/token/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: e.target.username.value,
-        password: e.target.password.value,
-      }),
-    });
+    let response = await fetch(
+      "https://statutory-fairfield-yukon-ion.trycloudflare.com/api/token/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: e.target.username.value,
+          password: e.target.password.value,
+        }),
+      }
+    );
     let data = await response.json();
 
     if (response.status === 200) {
@@ -99,6 +65,7 @@ export const AuthProvider = ({ children }) => {
     setUser: setUser,
     loginUser: loginUser,
     logoutUser: logoutUser,
+    loading:loading
   };
 
   useEffect(() => {
