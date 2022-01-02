@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   let loginUser = async (e) => {
     e.preventDefault();
     let response = await fetch(
-      "https://statutory-fairfield-yukon-ion.trycloudflare.com/api/token/",
+      "http://localhost:8000/api/token/",
       {
         method: "POST",
         headers: {

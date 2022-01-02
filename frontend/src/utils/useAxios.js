@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { useContext, useState } from "react";
 import AuthContext from "./AuthContext";
 import { useHistory } from "react-router-dom";
-const baseURL = "https://statutory-fairfield-yukon-ion.trycloudflare.com";
+const baseURL = "http://localhost:8000";
 
 const useAxios = () => {
   const { authTokens, setUser, setAuthTokens,logoutUser } = useContext(AuthContext);
