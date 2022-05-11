@@ -165,7 +165,7 @@ const getDevice = async () => {
                   className="Btn-defect"
                   onClick={() => handleOnDefect()}
                 >
-                  Defekt Status ändern
+                 Zustand Ändern 
                 </Button>
               </div>
             </form>
