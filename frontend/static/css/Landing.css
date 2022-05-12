@@ -1,0 +1,24 @@
+.title {
+    color: #e60045
+}
+.container{
+    display:flex;
+    flex-direction:column;
+}
+.container .img{
+    margin:0px;
+    height:auto;
+    width: 540px;
+    float:left;
+
+}
+.container .i {
+   display:flex;
+   flex-direction:row;
+   margin-top: 4rem;
+}
+@media (max-width: 640px) {
+    .container .i {
+        flex-direction: column;
+    }
+}

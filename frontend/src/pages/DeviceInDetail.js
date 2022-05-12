@@ -1,16 +1,9 @@
 
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
+
 import { Button } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import Typography from "@material-ui/core/Typography";
 import "./../../static/css/DeviceInDetail.css";
-import { QRCode } from "react-qr-svg";
-import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, } from "react-router-dom";
 import useAxios from "../utils/useAxios";
 import {
   ToastsContainer,
@@ -23,6 +16,7 @@ function status(state) {
   }
   return "in Nutzung";
 }
+
 function statusDefect(state_defect) {
   if (state_defect === true) {
     console.log(state_defect);
@@ -30,9 +24,10 @@ function statusDefect(state_defect) {
   }
   return "einwadfrei";
 }
+
 export default function DeviceInDetail() {
   const location = useLocation();
-const api = useAxios();
+  const api = useAxios();
   let identifier = null;
   location.state === undefined
     ? (identifier = location.pathname.split("/").pop())
@@ -43,25 +38,25 @@ const api = useAxios();
 
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
-  
 
- 
-const getDevice = async () => {
-   await api
-     .get(url)
-     .then((response) => {
-       
-       setData(response.data)
-     })
-     .catch(function (error) {
-         //Case if permission is serverbased withddrawn but not frontendbased || FORBIDDEN
-       if (error.response.status === 403) {
-         ToastsStore.error("Keine Berechtigung");
-       } else if (response.status === 404) {
-         ToastsStore.error("Keine Verbindung zum Server");
-       }setError(true)
-     });
-};
+
+
+  const getDevice = async () => {
+    await api
+      .get(url)
+      .then((response) => {
+
+        setData(response.data)
+      })
+      .catch(function (error) {
+        //Case if permission is serverbased withddrawn but not frontendbased || FORBIDDEN
+        if (error.response.status === 403) {
+          ToastsStore.error("Keine Berechtigung");
+        } else if (response.status === 404) {
+          ToastsStore.error("Keine Verbindung zum Server");
+        } setError(true)
+      });
+  };
   useEffect(() => {
     getDevice();
   }, []);
@@ -70,52 +65,52 @@ const getDevice = async () => {
     const clonedData = data;
     clonedData.status = !clonedData.status;
     setData(clonedData);
-      await api
-        .put(url, clonedData)
-        .then((response) => {
-          getDevice();
-          ToastsStore.success(`Status als ${status(data.status)} gesetzt`);
+    await api
+      .put(url, clonedData)
+      .then((response) => {
+        getDevice();
+        ToastsStore.success(`Status als ${status(data.status)} gesetzt`);
 
-        })
-        .catch(function (error) {
-          //Case if Data is redundant or not complete || BAD REQUEST 400
-          if (error.response.status === 400) {
-            ToastsStore.error("Daten nicht vollständig oder doppelt");
-            //Case if permission is serverbased withdrawn but not frontendbased || FORBIDDEN 403
-          } else if (error.response.status === 403) {
-            ToastsStore.error("Keine Berechtigung");
-            //Case if Server not responding
-          } else if (response.status === 404) {
-            ToastsStore.error("Keine Verbindung zum Server");
-          }
-        });
+      })
+      .catch(function (error) {
+        //Case if Data is redundant or not complete || BAD REQUEST 400
+        if (error.response.status === 400) {
+          ToastsStore.error("Daten nicht vollständig oder doppelt");
+          //Case if permission is serverbased withdrawn but not frontendbased || FORBIDDEN 403
+        } else if (error.response.status === 403) {
+          ToastsStore.error("Keine Berechtigung");
+          //Case if Server not responding
+        } else if (response.status === 404) {
+          ToastsStore.error("Keine Verbindung zum Server");
+        }
+      });
   };
   const handleOnDefect = async () => {
     const clonedData = data;
     clonedData.condition = !clonedData.condition;
     setData(clonedData);
-      await api
-        .put(url, clonedData)
-        .then((response) => {
-           ToastsStore.success(
-             `Status als ${statusDefect(data.condition)} gesetzt`
-           );
-          getDevice();
-        })
-        .catch(function (error) {
-          //Case if Data is redundant or not complete || BAD REQUEST 400
-          if (error.response.status === 400) {
-            ToastsStore.error("Daten nicht vollständig oder doppelt");
-            //Case if permission is serverbased withdrawn but not frontendbased || FORBIDDEN 403
-          } else if (error.response.status === 403) {
-            ToastsStore.error("Keine Berechtigung");
-            //Case if Server not responding
-          } else if (response.status === 404) {
-            ToastsStore.error("Keine Verbindung zum Server");
-          }
-        });
+    await api
+      .put(url, clonedData)
+      .then((response) => {
+        ToastsStore.success(
+          `Zustand als ${statusDefect(data.condition)} gesetzt`
+        );
+        getDevice();
+      })
+      .catch(function (error) {
+        //Case if Data is redundant or not complete || BAD REQUEST 400
+        if (error.response.status === 400) {
+          ToastsStore.error("Daten nicht vollständig oder doppelt");
+          //Case if permission is serverbased withdrawn but not frontendbased || FORBIDDEN 403
+        } else if (error.response.status === 403) {
+          ToastsStore.error("Keine Berechtigung");
+          //Case if Server not responding
+        } else if (response.status === 404) {
+          ToastsStore.error("Keine Verbindung zum Server");
+        }
+      });
   };
-  
+
 
   return (
     <>
@@ -165,7 +160,7 @@ const getDevice = async () => {
                   className="Btn-defect"
                   onClick={() => handleOnDefect()}
                 >
-                 Zustand Ändern 
+                  Zustand Ändern
                 </Button>
               </div>
             </form>

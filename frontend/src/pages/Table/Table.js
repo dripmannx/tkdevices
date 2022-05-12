@@ -45,7 +45,7 @@ export default function Table() {
     getDevices();
     if (!user.is_staff) {
       localization.body.emptyDataSourceMessage = "Keine Berechtigung zu lesen";
-      
+
     }
   }, []);
   const getDevices = async () => {
@@ -63,10 +63,10 @@ export default function Table() {
       field: "serialnumber",
       validate: (rowData) =>
         rowData.serialnumber === undefined ||
-        rowData.serialnumber === "" ||
-        rowData.serialnumber.length != 12 ||
-        rowData.serialnumber !== rowData.serialnumber.toUpperCase() ||
-        rowData.serialnumber.indexOf(" ") >= 0
+          rowData.serialnumber === "" ||
+          rowData.serialnumber.length != 12 ||
+          rowData.serialnumber !== rowData.serialnumber.toUpperCase() ||
+          rowData.serialnumber.indexOf(" ") >= 0
           ? "S/N im richtigen Format angeben"
           : true,
       filterPlaceholder: "S/N eingeben",
@@ -95,9 +95,9 @@ export default function Table() {
 
       validate: (rowData) =>
         rowData.batterylife === undefined ||
-        rowData.batterylife === "" ||
-        rowData.batterylife < 1 ||
-        rowData.batterylife > 100
+          rowData.batterylife === "" ||
+          rowData.batterylife < 1 ||
+          rowData.batterylife > 100
           ? "Wert zwischen 0 und 100"
           : true,
       filtering: false,

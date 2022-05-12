@@ -2,7 +2,8 @@
     width: 400px;
     height: 445px;
     margin: 20px;
-    box-shadow: 0 0 5px rgba(0,0,0,.3);}
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+}
 
 
 .device-content .header {
@@ -27,7 +28,7 @@
 .device-content .header p span {
     font-size: 2rem;
     font-weight: 100;
-    
+
 }
 
 .device-content .header p span span {
@@ -45,19 +46,20 @@
     flex-direction: column;
     text-align: center;
 }
+
 .device-content .body .button-wrapper {
     display: flex;
     flex-direction: column;
 }
-.device-content .body .button-wrapper .Btn-state{
+
+.device-content .body .button-wrapper .Btn-state {
     margin-top: 1rem;
-  background:#4db6ac;
+    background: #4db6ac;
 }
-.device-content .body .button-wrapper .Btn-defect{
+
+.device-content .body .button-wrapper .Btn-defect {
     background-color: red;
-   
     margin-top: 1rem;
-   
 }
 
 .device-content .body i.fa {
@@ -69,8 +71,7 @@
     color: hsl(174, 42%, 51%);
     cursor: pointer;
 }
+
 .device-content .body p strong:hover {
-   color : hsl(174, 42%, 40%);
+    color: hsl(174, 42%, 40%);
 }
-
-

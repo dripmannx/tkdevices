@@ -18,7 +18,7 @@ import Logout from "../pages/Logout";
 import DeviceInDetail from "../pages/DeviceInDetail";
 import Navbar from "./Navbar";
 import AuthContext, { AuthProvider } from "../utils/AuthContext";
-import Landing, { HomePage } from "../pages/Landing";
+import  HomePage from "../pages/Landing";
 const Routing = () => {
   return (
     <Router>
