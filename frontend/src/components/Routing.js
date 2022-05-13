@@ -24,7 +24,8 @@ const Routing = () => {
     <Router>
       <AuthProvider>
         <Navbar />
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={HomePage }/>
+      
         <NoUserRoute path="/login" exact component={Login} />
         <PrivateRoute path="/defect" component={DeleteTable} />
         <PrivateRoute path="/devices" exact component={Table} />

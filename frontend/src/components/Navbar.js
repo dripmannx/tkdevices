@@ -19,7 +19,7 @@ const handleOnCheck = (e) => {
     <div>
       <nav className="navbar non-printable">
         <div>
-          <li className="brand-title gradient"><Link to="/">ENERCON</Link></li>
+          <li className="brand-title gradient"><Link to="/"><img src="../../static/img/EnerconLogo.png"></img></Link></li>
         </div>
         <a href="#" className="toggle-button" onClick={() => handleOnClick()}>
           <span className="bar"></span>

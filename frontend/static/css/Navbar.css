@@ -29,7 +29,8 @@ body {
   list-style: none;
   background-color: hsl(173°, 100%, 17%);
   color: hsl(173, 100%, 25%);
-  
+  height: auto;
+  width:65%;
 }
 
 .navbar-links {
