@@ -9,7 +9,7 @@
 .device-content .header {
     width: 100%;
     height: 145px;
-    background: #4db6ac;
+    background: hsl(174, 42%, 60%);
     padding: 20px;
     display: flex;
     justify-content: center;

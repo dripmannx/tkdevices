@@ -24,7 +24,7 @@ function statusDefect(state_defect) {
   }
   return "einwadfrei";
 }
-
+/* TestComment */
 export default function DeviceInDetail() {
   const location = useLocation();
   const api = useAxios();
