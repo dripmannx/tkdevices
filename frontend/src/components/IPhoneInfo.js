@@ -3,7 +3,32 @@ import "../../static/css/iPhoneInfo.css";
 import x from "../../static/img/iphone-x-later-put-device-into-recovery-mode-animation.gif";
 import six from "../../static/img/iphone6-put-device-into-recovery-mode.png";
 import seven from "../../static/img/iphone7-put-device-into-recovery-mode.png";
-
+export  const arr = [
+    {
+        id:0,
+        headline: "iPhone X", 
+        text:
+          "Phone 8 oder neuer, einschließlich iPhone SE (2. Generation): Drücke die Lauter-Taste, und lasse sie sofort wieder los. Drücke die Leiser-Taste, und lasse sie sofort wieder los. Halte anschließend die Seitentaste gedrückt, bis der Bildschirm des Wiederherstellungsmodus angezeigt wird.",
+        image: x
+      
+    },
+    {
+        id: 1,
+        headline: "iPhone 7", 
+        text:
+          'iPhone 7, iPhone 7 Plus und iPod touch (7. Generation): Halte die Seitentaste oder die obere Taste und die Taste "Leiser" gleichzeitig gedrückt. Halte sie weiterhin gedrückt, bis der Bildschirm des Wiederherstellungsmodus angezeigt wird.',
+        image: seven
+    
+    },
+    {
+        id:2,
+        headline: "iPhone X", 
+        text:
+          'iPhone 6s oder älter, einschließlich iPhone SE (1. Generation), und iPod touch (6. Generation) oder älter: Halte die Home-Taste und die obere Taste (oder Seitentaste) gleichzeitig gedrückt. Halte sie weiterhin gedrückt, bis der Bildschirm des Wiederherstellungsmodus angezeigt wird',
+        image: six
+      
+    }
+  ]
 function IPhoneInfo({ model }) {
     const iphoneX = {
         headline: "iPhone X", text:

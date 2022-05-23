@@ -171,7 +171,7 @@ export default function Table() {
         </div>
       ) : (
         <>
-          <title className="">{deviceCount}</title>
+          {/* <title className="">{deviceCount}</title> */}
           <div className="Table">
             <ToastsContainer
               store={ToastsStore}

@@ -42,6 +42,36 @@
     color: hsl(173, 100%, 25%);
   }
 
+  .iphone{
+    color:white;
+}
+.container{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    width:100%;
+}
+
+.container .i {
+   display:flex;
+   flex-direction:row;
+   align-items:center;
+   justify-content:center;
+   margin-top: 4rem;
+   color:white;
+}
+.container .i .img{
+  margin:0px;
+  height:auto;
+  width: 440px;
+  
+
+}
+.container .i .textContainer {
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+}
 
 
 @media (max-width: 640px) {

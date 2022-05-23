@@ -105,6 +105,7 @@ body {
 	 border-bottom: 1px solid #eee;
 	 padding-bottom: 20px;
    text-align: center;
+   white-space: pre-line;
 }
  .login button {
    cursor: pointer;
